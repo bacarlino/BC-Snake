@@ -1,3 +1,5 @@
+import os
+from pathlib import Path
 import random
 
 import pygame
@@ -10,7 +12,11 @@ pygame.init()
 
 
 def get_pixelfont(size):
-    return pygame.font.Font("font/Pixeltype.ttf", size)
+    this_file = Path(__file__).resolve()
+    project_root = this_file.parent.parent
+    font_path = project_root / "assets" / "fonts" / "Pixeltype.ttf"
+
+    return pygame.font.Font(str(font_path), size)
 
 
 def rand_rgb():
