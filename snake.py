@@ -2,7 +2,6 @@ import time
 
 import pygame
 
-import config as cfg
 import ui_elements as ui
 
 
@@ -21,8 +20,8 @@ class Snake:
         self.head_position = self.initial_position
         self.initial_direction = direction
         self.direction = self.initial_direction
-        self.alive = True
-        self.next_move = None
+        self.next_direction = None
+        self.body_collide = False
         self.has_eaten = False
         self.initial_timer = .15
         self.timer = self.initial_timer
@@ -42,6 +41,7 @@ class Snake:
 
     def reset(self):
         self.moving = False
+        self.body_collide = False
         self.head_position = self.initial_position
         self.direction = self.initial_direction
         self.timer = self.initial_timer
@@ -50,29 +50,38 @@ class Snake:
     
 
     def update(self, time_now):
+
+        # check the timer
         snake_dt = time_now - self.prev_time
         if snake_dt >= self.timer:
             
+            # updates self.direction using self.next_direction
             self.update_direction()
+
+            # calculate move
             new_x = self.head_position[0] + ((self.direction[0] * self.size))
             new_y = self.head_position[1] + ((self.direction[1] * self.size))
 
+            # handle self body collision
             if self.body_collision(new_x, new_y):
-                self.reset()
-                # self.score = 0
-                return False
+                self.body_collide = True
+                return
             
+            # hand screen wrap
             new_x, new_y = self.check_wrap(new_x, new_y)
+
+            # if all is good finally set the new head position
             self.set_head_position((new_x, new_y))
             self.body.insert(0, self.head_position)
 
+            # if there's not a fruit, pop the tail
             if self.has_eaten:
-                # self.score += len(self.body) * 10
                 self.timer /= self.timer_reducer
                 self.has_eaten = False
             else:
                 self.body.pop(-1)
             
+            # reset the timer
             self.set_prev_time(time_now)
 
     def draw(self, window):
@@ -96,16 +105,16 @@ class Snake:
         return False
   
     def update_direction(self):
-        if self.next_move == "up":
+        if self.next_direction == "up":
             if not abs(self.direction[1]):
                 self.direction = (0, -1)
-        elif self.next_move == "down":
+        elif self.next_direction == "down":
             if not abs(self.direction[1]):
                 self.direction = (0, 1)
-        elif self.next_move == "left":
+        elif self.next_direction == "left":
             if not abs(self.direction[0]):
                 self.direction = (-1, 0)
-        elif self.next_move == "right":
+        elif self.next_direction == "right":
             if not abs(self.direction[0]):
                 self.direction = (1, 0)
 

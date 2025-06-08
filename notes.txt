@@ -1,7 +1,0 @@
-4 Levels 
-
-Options:
-- Pixel Sizes
-- Speeds 
-- Amount of fruit
-- Wall collisions or collide

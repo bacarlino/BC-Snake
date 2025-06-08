@@ -8,7 +8,7 @@ class State(Enum):
     START = auto()
     PLAYING = auto()
     PAUSED = auto()
-    LOSS = auto()
+    CRASH = auto()
 
 
 class GameState(ABC):

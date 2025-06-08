@@ -2,16 +2,36 @@ import time
 
 import pygame
 
-from .. import config as cfg
+import config as cfg
+from .game_over import GameOver
 from .game_state import GameState
-from ..input import Play
-from .. import ui_elements as ui
+from input import Play
+from .pause import Pause
+from snake import Snake
+import ui_elements as ui
 
 
 class RunTwoPlayer(GameState):
 
     def __init__(self, game):
-        super().__init__(self, game)
+        super().__init__(game)
+
+        self.game.clear_snakes()
+        self.game.add_snake(
+            Snake(
+                self.game.window_size, self.game.cell_size, 
+                (self.game.window_w * .75, self.game.window_h // 2), (-1, 0),
+                color=cfg.MAIN_COLOR
+            )
+        )
+
+        self.game.add_snake(
+            Snake(
+                self.game.window_size, self.game.cell_size, 
+                (self.game.window_w * .25, self.game.window_h // 2),
+                color=cfg.PLAYER_TWO_COLOR
+            )
+        )
 
         self.inputs = {
             Play.SNAKE_ONE_UP: False,
@@ -23,10 +43,20 @@ class RunTwoPlayer(GameState):
             Play.SNAKE_TWO_LEFT: False,
             Play.SNAKE_TWO_RIGHT: False,
             Play.START: False, 
-            Play.PAUSE: False
+            Play.PAUSE: False,
+            Play.QUIT: False
         }
 
+        print("RunTwoPlayer snakes: ", self.game.snakes)
+
     def handle_events(self, event):
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                self.inputs[Play.PAUSE] = True
+            if event.key == pygame.K_ESCAPE:
+                self.inputs[Play.QUIT] = True
+
         keys = pygame.key.get_pressed()
         
         if keys[pygame.K_UP]:
@@ -48,22 +78,50 @@ class RunTwoPlayer(GameState):
 
     def update(self):
         time_now = time.perf_counter()
-        self.game.snake.update(time_now)
-        self.game.update_fruit(self.game.snake)
-        self.game.snake.update(time_now)
-        self.game.update_fruit(self.game.snake2)
+
+        if self.inputs[Play.PAUSE] == True:
+            self.game.change_state(Pause(self.game))
+        if self.inputs[Play.QUIT] == True:
+            self.game.reset_game()
+            return
+
+        if self.inputs[Play.SNAKE_ONE_UP]:
+            self.game.snakes[0].next_direction = "up"
+        if self.inputs[Play.SNAKE_ONE_DOWN]:
+            self.game.snakes[0].next_direction = "down"
+        if self.inputs[Play.SNAKE_ONE_LEFT]:
+            self.game.snakes[0].next_direction = "left"
+        if self.inputs[Play.SNAKE_ONE_RIGHT]:
+            self.game.snakes[0].next_direction = "right"
+        
+        if self.inputs[Play.SNAKE_TWO_UP]:
+            self.game.snakes[1].next_direction = "up"
+        if self.inputs[Play.SNAKE_TWO_DOWN]:
+            self.game.snakes[1].next_direction = "down"
+        if self.inputs[Play.SNAKE_TWO_LEFT]:
+            self.game.snakes[1].next_direction = "left"
+        if self.inputs[Play.SNAKE_TWO_RIGHT]:
+            self.game.snakes[1].next_direction = "right"
+
+        for index, snake in enumerate(self.game.snakes):  
+            snake.update(time_now)
+            if snake.body_collide:
+                self.game.change_state(GameOver(self.game))
+            self.game.update_fruit(snake, index)
+
+        self.game.check_snake_collision()
 
         self.reset_inputs()
 
     def draw(self, window):
         SCORE_BANNER_SURF, SCORE_BANNER_RECT = ui.create_2player_score_banner(
-            self.game.nake.score, self.game.snake2.score
+            self.game.scores[0], self.game.scores[1]
         )
         window.blit(SCORE_BANNER_SURF, SCORE_BANNER_RECT)
 
         for fruit in self.game.fruits:
             pygame.draw.rect(
-                window, cfg.FRUIT_COLOR, ((fruit), (self.display_size))
+                window, cfg.FRUIT_COLOR, ((fruit), (self.game.display_size))
             )
 
         for snake in self.game.snakes:

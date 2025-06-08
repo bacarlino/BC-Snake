@@ -17,3 +17,4 @@ class Play(Enum):
     SNAKE_TWO_RIGHT = auto()
     START = auto()
     PAUSE = auto()
+    QUIT = auto()

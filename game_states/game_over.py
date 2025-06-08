@@ -2,12 +2,13 @@ import pygame
 
 from .game_state import GameState
 from input import Play
-import ui_elements as ui
+from .start import Start
 
-class Start(GameState):
-    
+class GameOver(GameState):
+
     def __init__(self, game):
         super().__init__(game)
+
         self.inputs = {
             Play.START: False,
             Play.QUIT: False
@@ -22,7 +23,8 @@ class Start(GameState):
 
     def update(self):
         if self.inputs[Play.START] == True:
-            self.game.change_state(self.game.run_state)
+            self.game.reset_snakes()
+            self.game.change_state(Start(self.game))
         if self.inputs[Play.QUIT] == True:
             self.game.reset_game()
 
@@ -30,4 +32,3 @@ class Start(GameState):
 
     def draw(self, window):
         self.game.run_state.draw(window)
-        window.blit(ui.PRESS_SPACE_SURF, ui.PRESS_SPACE_RECT)

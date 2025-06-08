@@ -1,14 +1,14 @@
 import pygame
 
 from .game_state import GameState
-from ..input import Menu 
+from input import Menu 
 from .title_players import TitlePlayers
-from .. import ui_elements as ui
+import ui_elements as ui
 
 class Title(GameState):
 
     def __init__(self, game):
-        super().__init__(self, game)
+        super().__init__(game)
         self.inputs = {
             Menu.SELECT: False
         }
@@ -16,7 +16,7 @@ class Title(GameState):
     def handle_events(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-               Menu.SELECT = True
+               self.inputs[Menu.SELECT] = True
                 
     def update(self):
         if self.inputs[Menu.SELECT]:
