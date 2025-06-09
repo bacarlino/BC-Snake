@@ -13,7 +13,8 @@ class Snake:
     ):
         self.body = []
         self.size = size
-        self.color = color
+        self.main_color = color
+        self.current_color = color
         self.display_size = (self.size - 4, self.size - 4)
         self.window_w, self.window_h = window_size
         self.initial_position = position
@@ -23,12 +24,17 @@ class Snake:
         self.next_direction = None
         self.body_collide = False
         self.has_eaten = False
-        self.initial_timer = .15
-        self.timer = self.initial_timer
-        self.timer_reducer = 1.015
-        self.prev_time = time.perf_counter()
+        self.initial_move_timer = .15
+        self.move_timer = self.initial_move_timer
+        self.move_timer_reducer = 1.015
+        self.prev_move_time = time.perf_counter()
         self.score = 0
+        self.dead = False
+        self.flash_timer = .1
+        self.prev_flash_time = self.prev_move_time
         self.fill_body()
+
+        self.flash_colors = [self.main_color, (230, 230, 230)]
 
     def fill_body(self, length=5):
         for count in range(length):
@@ -42,18 +48,26 @@ class Snake:
     def reset(self):
         self.moving = False
         self.body_collide = False
+        self.dead = False
+        self.current_color = self.main_color
         self.head_position = self.initial_position
         self.direction = self.initial_direction
-        self.timer = self.initial_timer
+        self.move_timer = self.initial_move_timer
         self.body = []
         self.fill_body()
     
 
     def update(self, time_now):
+        # if self.dead:
+        #     flash_dt = time_now - self.prev_flash_time
+        #     if flash_dt >= 0.1:
+        #         self.current_color = ui.flash(self.flash_colors)[0]
+        #         self.prev_flash_time = time_now
+        #     return
+        # check the move timer
 
-        # check the timer
-        snake_dt = time_now - self.prev_time
-        if snake_dt >= self.timer:
+        move_dt = time_now - self.prev_move_time
+        if move_dt >= self.move_timer:
             
             # updates self.direction using self.next_direction
             self.update_direction()
@@ -76,28 +90,39 @@ class Snake:
 
             # if there's not a fruit, pop the tail
             if self.has_eaten:
-                self.timer /= self.timer_reducer
+                self.move_timer /= self.move_timer_reducer
                 self.has_eaten = False
             else:
                 self.body.pop(-1)
-            
-            # reset the timer
-            self.set_prev_time(time_now)
+            # reset the move timer
+            self.set_prev_move_time(time_now)
+
+    def update_dead(self, time_now):
+        flash_dt = time_now - self.prev_flash_time
+        if flash_dt >= 0.1:
+            self.current_color = self.flash_colors.pop()
+            self.flash_colors.insert(0, self.current_color)
+            self.prev_flash_time = time_now
 
     def draw(self, window):
+
         for segment in self.body:
             pygame.draw.rect(
-                window, self.color, ((segment), (self.display_size))
+                window, self.current_color, ((segment), (self.display_size))
             )
 
-    def set_prev_time(self, time_now):
-        self.prev_time = time_now
+    def set_prev_move_time(self, time_now):
+        self.prev_move_time = time_now
     
     def set_head_position(self, position):
         self.head_position = position
 
     def eat(self):
         self.has_eaten = True
+
+    def die(self):
+        print("setting self.dead to True")
+        self.dead = True
 
     def body_collision(self, x, y):
         if (x, y) in self.body[3:]:

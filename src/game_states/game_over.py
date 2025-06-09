@@ -1,8 +1,11 @@
+import time
+
 import pygame
 
 from .game_state import GameState
 from input import Play
 from .start import Start
+import ui_elements as ui
 
 class GameOver(GameState):
 
@@ -28,7 +31,13 @@ class GameOver(GameState):
         if self.inputs[Play.QUIT] == True:
             self.game.reset_game()
 
+        for snake in self.game.snakes:
+            if snake.dead:
+                time_now = time.perf_counter()
+                snake.update_dead(time_now)
+
         self.reset_inputs()
 
     def draw(self, window):
         self.game.run_state.draw(window)
+        window.blit(ui.GAME_OVER_SURF, ui.GAME_OVER_RECT)

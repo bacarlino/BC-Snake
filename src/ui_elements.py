@@ -24,6 +24,10 @@ def rand_rgb():
         random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
     )
 
+def flash(colors):
+    color = colors.pop(0)
+    colors.append(color)
+    return color
 
 menu_font = get_pixelfont(50)
 highlight_font = get_pixelfont(75)
@@ -74,6 +78,12 @@ def create_press_space():
     return surf, rect
 
 
+def create_game_over():     
+    surf = get_pixelfont(100).render("GAME OVER", False, cfg.DEATH_COLOR)
+    rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
+    return surf, rect
+
+
 def create_score_banner(score):
     score_banner = f"{score}"
     surf = get_pixelfont(75).render(score_banner, False, cfg.SCORE_COLOR)
@@ -91,3 +101,4 @@ def create_2player_score_banner(p1_score, p2_score):
 TITLE_SURF, TITLE_RECT = create_title()
 PING_PANG_SURF, PING_PANG_RECT = create_ping_pang()
 PRESS_SPACE_SURF, PRESS_SPACE_RECT = create_press_space()
+GAME_OVER_SURF, GAME_OVER_RECT = create_game_over()

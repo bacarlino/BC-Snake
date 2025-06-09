@@ -106,6 +106,7 @@ class RunTwoPlayer(GameState):
         for index, snake in enumerate(self.game.snakes):  
             snake.update(time_now)
             if snake.body_collide:
+                snake.die()
                 self.game.change_state(GameOver(self.game))
             self.game.update_fruit(snake, index)
 
