@@ -1,14 +1,4 @@
 from abc import ABC, abstractmethod
-from enum import Enum, auto
-
-
-class State(Enum):
-    TITLE = auto()
-    TITLE_PLAYERS = auto()
-    START = auto()
-    PLAYING = auto()
-    PAUSED = auto()
-    CRASH = auto()
 
 
 class GameState(ABC):

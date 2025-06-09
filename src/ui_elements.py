@@ -12,9 +12,8 @@ pygame.init()
 
 
 def get_pixelfont(size):
-    this_file = Path(__file__).resolve()
-    project_root = this_file.parent.parent
-    font_path = project_root / "assets" / "fonts" / "Pixeltype.ttf"
+    base_path = Path(__file__).parent.parent
+    font_path = base_path / "assets" / "fonts" / "Pixeltype.ttf"
 
     return pygame.font.Font(str(font_path), size)
 

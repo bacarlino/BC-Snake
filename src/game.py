@@ -3,6 +3,7 @@ import time
 
 import pygame
 
+import audio
 import config as cfg
 from game_states.title import Title
 from game_states.game_over import GameOver

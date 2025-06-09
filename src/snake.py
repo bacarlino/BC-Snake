@@ -2,6 +2,7 @@ import time
 
 import pygame
 
+import audio
 import ui_elements as ui
 
 
@@ -58,13 +59,7 @@ class Snake:
     
 
     def update(self, time_now):
-        # if self.dead:
-        #     flash_dt = time_now - self.prev_flash_time
-        #     if flash_dt >= 0.1:
-        #         self.current_color = ui.flash(self.flash_colors)[0]
-        #         self.prev_flash_time = time_now
-        #     return
-        # check the move timer
+  
 
         move_dt = time_now - self.prev_move_time
         if move_dt >= self.move_timer:
@@ -118,9 +113,11 @@ class Snake:
         self.head_position = position
 
     def eat(self):
+        audio.EAT_FRUIT.play()
         self.has_eaten = True
 
     def die(self):
+        audio.COLLISION.play()
         print("setting self.dead to True")
         self.dead = True
 
