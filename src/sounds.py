@@ -11,5 +11,5 @@ eat_fruit_path = sounds_path / "slime_000.ogg"
 collision_path = sounds_path / "explosionCrunch_001.ogg"
 
 
-EAT_FRUIT = pygame.mixer.Sound(eat_fruit_path)
-COLLISION = pygame.mixer.Sound(collision_path)
+EAT_FRUIT_SFX = pygame.mixer.Sound(eat_fruit_path)
+COLLISION_SFX = pygame.mixer.Sound(collision_path)

@@ -1,7 +1,7 @@
 import pygame
 
-import config as cfg
-from game import Game
+import src.config as cfg
+from src.game import Game
 
 
 def main():

@@ -1,11 +1,10 @@
-import os
 from pathlib import Path
 import random
 
 import pygame
 
-import config as cfg
-from menu import Menu
+import src.config as cfg
+from src.menu import Menu
 
 
 pygame.init()
@@ -41,58 +40,61 @@ players_menu_items = (
 players_menu = Menu(
     players_menu_items, 0, (cfg.CENTER[0], cfg.WINDOW_H * 0.75), (1000, 150), 
     menu_font, highlight_font,
-    cfg.BACKGROUND_COLOR, cfg.MAIN_COLOR, cfg.MENU_COLOR
+    cfg.BLACK, cfg.PINK, cfg.WHITE
 )
 
 
-# difficulty_menu_items = (
-#     "Easy Street",
-#     "Medium",
-#     "Hard",
-#     "Extreme"
-# )
+def create_border(cell_size):
+    border = []
+    for point in range((cfg.WINDOW_W // cell_size)):
+        border.append((point * cell_size, 0))
+        border.append((point * cell_size, (cfg.WINDOW_H - cell_size)))
+    for point in range(cfg.WINDOW_H // cell_size):
+        border.append((0, point * cell_size))
+        border.append((cfg.WINDOW_W - cell_size, point * cell_size))
+    return border
 
-# difficulty_menu = Menu(
-#     difficulty_menu_items, 1, (cfg.CENTER[0], cfg.WINDOW_H * 0.75), (750, 150),
-#     menu_font, highlight_font,
-#     cfg.BACKGROUND_COLOR, cfg.MAIN_COLOR, cfg.MENU_COLOR
-# )
+def draw_border(window, border, cell_size):
+    for coordinate in border:
+        pygame.draw.rect(
+            window, cfg.BLUE, ((coordinate), (cell_size - 4, cell_size - 4))
+        )
 
-
+    
 def create_title():
-    surf = get_pixelfont(450).render("SNAKE", False, cfg.MAIN_COLOR)
+    surf = get_pixelfont(450).render("SNAKE", False, cfg.PINK)
     rect = surf.get_rect(center = (cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
     return surf, rect
     
 
 def create_ping_pang():
-    surf = get_pixelfont(50).render("Brandon Carlino's", False, cfg.MAIN_COLOR)
+    surf = get_pixelfont(50).render("Brandon Carlino's", False, cfg.BLUE)
     rect = surf.get_rect(midbottom=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.25))
     return surf, rect
 
 
 def create_press_space():     
-    surf = get_pixelfont(50).render("Press SPACE to begin", False, cfg.MAIN_COLOR)
+    surf = get_pixelfont(50).render("Press SPACE to begin", False, cfg.ORANGE)
     rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.9))
     return surf, rect
 
 
 def create_game_over():     
-    surf = get_pixelfont(100).render("GAME OVER", False, cfg.DEATH_COLOR)
+    surf = get_pixelfont(100).render("GAME OVER", False, cfg.ORANGE)
     rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
     return surf, rect
 
 
 def create_score_banner(score):
     score_banner = f"{score}"
-    surf = get_pixelfont(75).render(score_banner, False, cfg.SCORE_COLOR)
+    surf = get_pixelfont(75).render(score_banner, False, cfg.BLUE)
     rect = surf.get_rect(center=(cfg.CENTER[0], 75))
     return surf, rect
 
 
 def create_2player_score_banner(p1_score, p2_score):
-    score_banner = f"BLUE: {p2_score}                                        PINK: {p1_score}"
-    surf = get_pixelfont(75).render(score_banner, False, cfg.SCORE_COLOR)
+    score_banner = f"PURPLE: {p2_score}                                        PINK: {p1_score}"
+    surf = get_pixelfont(75).render(score_banner, False, cfg.BLUE)
     rect = surf.get_rect(center=(cfg.CENTER[0], 75))
     return surf, rect
 

@@ -2,13 +2,13 @@ import time
 
 import pygame
 
-import config as cfg
-from .game_over import GameOver
-from .game_state import GameState
-from input import Play
-from .pause import Pause
-from snake import Snake
-import ui_elements as ui
+import src.config as cfg
+from src.game_states.game_over import GameOver
+from src.game_states.game_state import GameState
+from src.input import Play
+from src.game_states.pause import Pause
+from src.snake import Snake
+import src.ui_elements as ui
 
 
 class RunTwoPlayer(GameState):
@@ -20,16 +20,16 @@ class RunTwoPlayer(GameState):
         self.game.add_snake(
             Snake(
                 self.game.window_size, self.game.cell_size, 
-                (self.game.window_w * .75, self.game.window_h // 2), (-1, 0),
-                color=cfg.MAIN_COLOR
+                (self.game.window_w * .75, self.game.window_h // 2), (0, 1),
+                color=cfg.PINK
             )
         )
 
         self.game.add_snake(
             Snake(
                 self.game.window_size, self.game.cell_size, 
-                (self.game.window_w * .25, self.game.window_h // 2),
-                color=cfg.PLAYER_TWO_COLOR
+                (self.game.window_w * .25, self.game.window_h // 2), (0, -1),
+                color=cfg.PURPLE
             )
         )
 

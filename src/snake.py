@@ -2,8 +2,8 @@ import time
 
 import pygame
 
-import audio
-import ui_elements as ui
+from src.sounds import EAT_FRUIT_SFX, COLLISION_SFX
+import src.ui_elements as ui
 
 
 class Snake:
@@ -23,7 +23,7 @@ class Snake:
         self.initial_direction = direction
         self.direction = self.initial_direction
         self.next_direction = None
-        self.body_collide = False
+        self.collide = False
         self.has_eaten = False
         self.initial_move_timer = .15
         self.move_timer = self.initial_move_timer
@@ -48,7 +48,7 @@ class Snake:
 
     def reset(self):
         self.moving = False
-        self.body_collide = False
+        self.collide = False
         self.dead = False
         self.current_color = self.main_color
         self.head_position = self.initial_position
@@ -58,7 +58,7 @@ class Snake:
         self.fill_body()
     
 
-    def update(self, time_now):
+    def update(self, time_now, border):
   
 
         move_dt = time_now - self.prev_move_time
@@ -71,9 +71,9 @@ class Snake:
             new_x = self.head_position[0] + ((self.direction[0] * self.size))
             new_y = self.head_position[1] + ((self.direction[1] * self.size))
 
-            # handle self body collision
-            if self.body_collision(new_x, new_y):
-                self.body_collide = True
+            # check for collisions
+            if self.body_collision(new_x, new_y) or self.border_collision(new_x, new_y, border):
+                self.collide = True
                 return
             
             # hand screen wrap
@@ -113,16 +113,20 @@ class Snake:
         self.head_position = position
 
     def eat(self):
-        audio.EAT_FRUIT.play()
+        EAT_FRUIT_SFX.play()
         self.has_eaten = True
 
     def die(self):
-        audio.COLLISION.play()
-        print("setting self.dead to True")
+        COLLISION_SFX.play()
         self.dead = True
 
     def body_collision(self, x, y):
         if (x, y) in self.body[3:]:
+            return True
+        return False
+    
+    def border_collision(self, x, y, border_list):
+        if (x, y) in border_list:
             return True
         return False
   
@@ -150,4 +154,3 @@ class Snake:
         elif self.head_position[1] < 0:
             return (x, self.window_h - self.size)
         return (x, y)
-    

@@ -1,9 +1,9 @@
 import pygame
 
-from .game_state import GameState
-from input import Menu 
-from .title_players import TitlePlayers
-import ui_elements as ui
+from src.game_states.game_state import GameState
+from src.input import Menu 
+from src.game_states.title_players import TitlePlayers
+import src.ui_elements as ui
 
 class Title(GameState):
 

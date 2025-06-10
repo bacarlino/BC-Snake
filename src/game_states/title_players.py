@@ -1,11 +1,11 @@
 import pygame
 
-from .game_state import GameState
-from input import Menu
-from .run_one_player import RunOnePlayer
-from .run_two_player import RunTwoPlayer
-from .start import Start
-import ui_elements as ui
+from src.game_states.game_state import GameState
+from src.input import Menu
+from src.game_states.run_one_player import RunOnePlayer
+from src.game_states.run_two_player import RunTwoPlayer
+from src.game_states.start import Start
+import src.ui_elements as ui
 
 
 class TitlePlayers(GameState):

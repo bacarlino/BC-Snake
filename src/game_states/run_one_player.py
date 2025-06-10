@@ -2,13 +2,13 @@ import time
 
 import pygame
 
-import config as cfg
-from input import Play
-from .game_over import GameOver
-from .game_state import GameState
-from .pause import Pause
-from snake import Snake
-import ui_elements as ui
+import src.config as cfg
+from src.input import Play
+from src.game_states.game_over import GameOver
+from src.game_states.game_state import GameState
+from src.game_states.pause import Pause
+from src.snake import Snake
+import src.ui_elements as ui
 
 
 class RunOnePlayer(GameState):
@@ -20,9 +20,11 @@ class RunOnePlayer(GameState):
             Snake(
                 self.game.window_size, self.game.cell_size, 
                 (self.game.window_w // 2, self.game.window_h // 2),
-                color=cfg.MAIN_COLOR
+                color=cfg.PINK
             )
         )
+
+        self.border = ui.create_border(self.game.cell_size)
 
         self.inputs = {
             Play.SNAKE_ONE_UP: False,
@@ -75,8 +77,8 @@ class RunOnePlayer(GameState):
             self.game.snakes[0].next_direction = "right"
 
         for index, snake in enumerate(self.game.snakes):
-            snake.update(time_now)
-            if snake.body_collide:
+            snake.update(time_now, self.border)
+            if snake.collide:
                 snake.die()
                 self.game.change_state(GameOver(self.game))
             self.game.update_fruit(snake, index)
@@ -91,8 +93,10 @@ class RunOnePlayer(GameState):
 
         for fruit in self.game.fruits:
             pygame.draw.rect(
-                window, cfg.FRUIT_COLOR, ((fruit), (self.game.display_size))
+                window, cfg.LIME, ((fruit), (self.game.display_size))
             )
+
+        ui.draw_border(window, self.border, self.game.cell_size)
         
         for snake in self.game.snakes:
             snake.draw(window)

@@ -1,8 +1,8 @@
 import pygame
 
-from .game_state import GameState
-from input import Play
-import ui_elements as ui
+from src.game_states.game_state import GameState
+from src.input import Play
+import src.ui_elements as ui
 
 class Pause(GameState):
     

@@ -2,10 +2,10 @@ import time
 
 import pygame
 
-from .game_state import GameState
-from input import Play
-from .start import Start
-import ui_elements as ui
+from src.game_states.game_state import GameState
+from src.input import Play
+from src.game_states.start import Start
+import src.ui_elements as ui
 
 class GameOver(GameState):
 
