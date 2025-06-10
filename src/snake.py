@@ -58,7 +58,7 @@ class Snake:
         self.fill_body()
     
 
-    def update(self, time_now, border):
+    def update(self, time_now, border=None, other_snake=None):
   
 
         move_dt = time_now - self.prev_move_time
@@ -72,9 +72,24 @@ class Snake:
             new_y = self.head_position[1] + ((self.direction[1] * self.size))
 
             # check for collisions
-            if self.body_collision(new_x, new_y) or self.border_collision(new_x, new_y, border):
+            if self.body_collision(new_x, new_y):
                 self.collide = True
                 return
+            
+            if border:
+                if self.border_collision(new_x, new_y, border):
+                    self.collide = True
+                    return
+                
+            # if other_snake:
+            #     if self.snake_collision(new_x, new_y, other_snake):
+            #         self.collide = True
+            #         return
+            #     if self.headon_collision(new_x, new_y, other_snake):
+            #         self.collide = True
+            #         other_snake.collide = True
+            #         return
+                
             
             # hand screen wrap
             new_x, new_y = self.check_wrap(new_x, new_y)
@@ -129,7 +144,17 @@ class Snake:
         if (x, y) in border_list:
             return True
         return False
-  
+
+    def snake_collision(self, x, y, other_snake):
+        if (x, y) in other_snake.body:
+            return True
+        return False
+
+    def headon_collision(self, x, y, other_snake):
+        if (x, y) == other_snake.head_position:
+            return True
+        return False
+    
     def update_direction(self):
         if self.next_direction == "up":
             if not abs(self.direction[1]):

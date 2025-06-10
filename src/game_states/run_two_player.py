@@ -20,7 +20,7 @@ class RunTwoPlayer(GameState):
         self.game.add_snake(
             Snake(
                 self.game.window_size, self.game.cell_size, 
-                (self.game.window_w * .75, self.game.window_h // 2), (0, 1),
+                (self.game.window_w * .75, (self.game.window_h // 2) - self.game.cell_size), (0, 1),
                 color=cfg.PINK
             )
         )
@@ -32,6 +32,10 @@ class RunTwoPlayer(GameState):
                 color=cfg.PURPLE
             )
         )
+
+        self.border = ui.create_border(self.game.cell_size)
+
+        self.headon_collision = False
 
         self.inputs = {
             Play.SNAKE_ONE_UP: False,
@@ -46,8 +50,6 @@ class RunTwoPlayer(GameState):
             Play.PAUSE: False,
             Play.QUIT: False
         }
-
-        print("RunTwoPlayer snakes: ", self.game.snakes)
 
     def handle_events(self, event):
 
@@ -103,13 +105,15 @@ class RunTwoPlayer(GameState):
         if self.inputs[Play.SNAKE_TWO_RIGHT]:
             self.game.snakes[1].next_direction = "right"
 
-        for index, snake in enumerate(self.game.snakes):  
-            snake.update(time_now)
-            if snake.body_collide:
+        self.game.snakes[0].update(time_now, self.border, self.game.snakes[1])
+        self.game.snakes[1].update(time_now, self.border, self.game.snakes[0])
+
+        for index, snake in enumerate(self.game.snakes):
+            self.game.update_fruit(snake, index)
+            if snake.collide:
                 snake.die()
                 self.game.change_state(GameOver(self.game))
-            self.game.update_fruit(snake, index)
-
+            
         self.game.check_snake_collision()
 
         self.reset_inputs()
@@ -122,8 +126,10 @@ class RunTwoPlayer(GameState):
 
         for fruit in self.game.fruits:
             pygame.draw.rect(
-                window, cfg.FRUIT_COLOR, ((fruit), (self.game.display_size))
+                window, cfg.LIME, ((fruit), (self.game.display_size))
             )
+
+        ui.draw_border(window, self.border, self.game.cell_size)
 
         for snake in self.game.snakes:
             snake.draw(window)

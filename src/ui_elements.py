@@ -87,14 +87,14 @@ def create_game_over():
 
 def create_score_banner(score):
     score_banner = f"{score}"
-    surf = get_pixelfont(75).render(score_banner, False, cfg.BLUE)
+    surf = get_pixelfont(75).render(score_banner, False, cfg.ORANGE)
     rect = surf.get_rect(center=(cfg.CENTER[0], 75))
     return surf, rect
 
 
 def create_2player_score_banner(p1_score, p2_score):
     score_banner = f"PURPLE: {p2_score}                                        PINK: {p1_score}"
-    surf = get_pixelfont(75).render(score_banner, False, cfg.BLUE)
+    surf = get_pixelfont(75).render(score_banner, False, cfg.ORANGE)
     rect = surf.get_rect(center=(cfg.CENTER[0], 75))
     return surf, rect
 

@@ -20,12 +20,8 @@ class Game:
         self.snakes = []
         self.scores = []
         self.fruits = []
-
         self.border = None
-
         self.add_fruit(4)
-
-
     
     def run(self, window):
         clock = pygame.time.Clock()
@@ -48,7 +44,7 @@ class Game:
         self.game_state.update()
           
     def draw(self, window):
-        window.fill(cfg.BACKGROUND_COLOR)
+        window.fill(cfg.BLACK)
         self.game_state.draw(window)
 
     def change_state(self, state):

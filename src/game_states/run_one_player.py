@@ -76,12 +76,14 @@ class RunOnePlayer(GameState):
         if self.inputs[Play.SNAKE_ONE_RIGHT]:
             self.game.snakes[0].next_direction = "right"
 
-        for index, snake in enumerate(self.game.snakes):
-            snake.update(time_now, self.border)
-            if snake.collide:
-                snake.die()
-                self.game.change_state(GameOver(self.game))
-            self.game.update_fruit(snake, index)
+
+        self.game.snakes[0].update(time_now, self.border)
+        self.game.update_fruit(self.game.snakes[0], 0)
+
+        if self.game.snakes[0].collide:
+            self.game.snakes[0].die()
+            self.game.change_state(GameOver(self.game))
+
 
         self.reset_inputs()
 
