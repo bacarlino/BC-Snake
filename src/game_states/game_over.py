@@ -31,8 +31,6 @@ class GameOver(GameState):
         if self.inputs[Play.QUIT] == True:
             self.game.reset_game()
 
-        # for snake in self.game.run_state.snake:
-            # if self.game.run_state.snake.dead:
         time_now = time.perf_counter()
         self.game.run_state.snake.update(time_now)
 
