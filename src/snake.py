@@ -58,8 +58,10 @@ class Snake:
         self.fill_body()
     
 
-    def update(self, time_now, border=None, other_snake=None):
-  
+    def update(self, time_now, border=None):
+        if self.dead:
+            self.update_dead(time_now)
+            return
 
         move_dt = time_now - self.prev_move_time
         if move_dt >= self.move_timer:
@@ -179,3 +181,6 @@ class Snake:
         elif self.head_position[1] < 0:
             return (x, self.window_h - self.size)
         return (x, y)
+
+    def add_score(self, score):
+        self.score += score
