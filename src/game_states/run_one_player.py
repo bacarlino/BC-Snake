@@ -122,7 +122,7 @@ class RunOnePlayer(GameState):
                 for snake in self.snakes:
                     if not (
                         coord in snake.body
-                        or coord in self.border
+                        and coord in self.border
                     ):
                         placed = True
                     

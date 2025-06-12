@@ -5,9 +5,10 @@ def get_rand_coord(
         window_h: int=None,
         cell_size: int=1
 ):
+    
     if isinstance(window_w, tuple):
-        window_w, window_h = window_w
         cell_size = window_h
+        window_w, window_h = window_w
     return (
         randint(0, window_w // cell_size - 1),
         randint(0, window_h // cell_size - 1)
