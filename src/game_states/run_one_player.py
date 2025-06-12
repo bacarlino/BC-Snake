@@ -116,9 +116,7 @@ class RunOnePlayer(GameState):
             placed = False
             while not placed:
                 coord = get_rand_coord(self.game.window_size, self.game.cell_size)
-                if self.border:
-                    if coord in self.border: continue
-                for snake in self.snakes:
-                    if not coord in snake.body:
-                        placed = True
-                        self.fruits.append((coord[0], coord[1]))
+                if self.border and coord in self.border: continue
+                if coord in self.snakes[0].body: continue
+                placed = True
+                self.fruits.append(coord)
