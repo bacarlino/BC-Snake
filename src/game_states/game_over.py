@@ -5,6 +5,7 @@ import pygame
 from src.game_states.game_state import GameState
 from src.input import Play
 from src.game_states.start import Start
+# from src.game_states.run_one_player import RunOnePlayer
 import src.ui_elements as ui
 
 class GameOver(GameState):
@@ -26,16 +27,22 @@ class GameOver(GameState):
 
     def update(self):
         if self.inputs[Play.START] == True:
-            self.game.reset_snakes()
+            from src.game_states.run_one_player import RunOnePlayer
+            self.game.run_state = RunOnePlayer(self.game)
             self.game.change_state(Start(self.game))
         if self.inputs[Play.QUIT] == True:
             self.game.reset_game()
+            return
 
         time_now = time.perf_counter()
-        self.game.run_state.snake.update(time_now)
+        self.game.run_state.snakes[0].update(time_now)
 
         self.reset_inputs()
 
     def draw(self, window):
         self.game.run_state.draw(window)
         window.blit(ui.GAME_OVER_SURF, ui.GAME_OVER_RECT)
+
+    def reset_snakes(self):
+        for index in range(len(self.snakes)):
+            self.snakes.reset()

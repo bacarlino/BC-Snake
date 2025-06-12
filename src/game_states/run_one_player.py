@@ -10,6 +10,7 @@ from src.game_states.game_state import GameState
 from src.game_states.pause import Pause
 from src.snake import Snake
 import src.ui_elements as ui
+from src.utils import get_rand_coord
 
 
 class RunOnePlayer(GameState):
@@ -17,14 +18,16 @@ class RunOnePlayer(GameState):
     def __init__(self, game):
         super().__init__(game)
         self.border = ui.create_border(self.game.cell_size)
-        self.snake = Snake(
+        self.snakes = [
+            Snake(
                 self.game.window_size, self.game.cell_size, 
                 (self.game.window_w // 2, self.game.window_h // 2),           
                 color=cfg.PINK
             )
+        ]
         self.fruits = []
-        self.cell_size = 32
         self.add_fruit(4)
+        # self.cell_size = 32
 
         self.inputs = {
             Play.SNAKE_ONE_UP: False,
@@ -67,69 +70,66 @@ class RunOnePlayer(GameState):
 
 
         if self.inputs[Play.SNAKE_ONE_UP]:
-            self.snake.next_direction = "up"
+            self.snakes[0].next_direction = "up"
         if self.inputs[Play.SNAKE_ONE_DOWN]:
-            self.snake.next_direction = "down"
+            self.snakes[0].next_direction = "down"
         if self.inputs[Play.SNAKE_ONE_LEFT]:
-            self.snake.next_direction = "left"
+            self.snakes[0].next_direction = "left"
         if self.inputs[Play.SNAKE_ONE_RIGHT]:
-            self.snake.next_direction = "right"
+            self.snakes[0].next_direction = "right"
 
 
         time_now = time.perf_counter()
-        self.snake.update(time_now, self.border)
-        self.update_fruit()
+        self.snakes[0].update(time_now, self.border)
+        self.handle_fruit_collision()
 
-        if self.snake.collide:
-            self.snake.die()
+        if self.snakes[0].collide:
+            self.snakes[0].die()
             self.game.change_state(GameOver(self.game))
 
         self.reset_inputs()
 
     def draw(self, window):
-        SCORE_BANNER_SURF, SCORE_BANNER_RECT = ui.create_score_banner(
-            self.snake.score
+        ui.draw_border(window, self.border, self.game.cell_size)
+        # SCORE_BANNER_SURF, SCORE_BANNER_RECT = ui.create_score_banner(
+        #     self.snakes[0].score
+        # )
+        window.blit(*ui.create_score_banner(
+            self.snakes[0].score
+            )
         )
-        window.blit(SCORE_BANNER_SURF, SCORE_BANNER_RECT)
-
         for fruit in self.fruits:
             pygame.draw.rect(
                 window, cfg.LIME, ((fruit), (self.game.display_size))
             )
+        self.snakes[0].draw(window)
 
-        ui.draw_border(window, self.border, self.cell_size)
-        
-        self.snake.draw(window)
-        
-    def update_fruit(self):
-        fruit_hit = self.check_hit_fruit()
-        if fruit_hit:
-            self.snake.eat()
-            self.snake.add_score(len(self.snake.body) * 10)
-            self.remove_fruit(fruit_hit)
-            self.add_fruit()
-
-    def check_hit_fruit(self):
+    def handle_fruit_collision(self):
         for fruit in self.fruits:
-            if fruit == self.snake.head_position:
-                return fruit
+            if fruit == self.snakes[0].head_position:
+                self.snakes[0].eat()
+                self.snakes[0].score += (len(self.snakes[0].body) * 10)
+                self.fruits.remove(fruit)
+                self.add_fruit()
             
     def add_fruit(self, n=1):
         for _ in range(n):
-            rand_x = random.randint(0, (self.game.window_size[0] // self.cell_size) - 1)                          
-            rand_y = random.randint(0, (self.game.window_size[1] // self.cell_size) - 1)
-            
-            conflict = False
-
-            if (rand_x, rand_y) in self.snake.body:
-                conflict = True
-
-            if not conflict:
-                self.fruits.append(
-                    (rand_x * self.cell_size, rand_y * self.cell_size)
-                )
-            else:
-                self.add_fruit()
-
-    def remove_fruit(self, fruit):
-        self.fruits.remove(fruit)
+            placed = False
+            while not placed:
+                print("while loop started, placed = ", placed)
+                coord = get_rand_coord(self.game.window_size, self.game.cell_size)
+                print("coord: ", coord)
+                for snake in self.snakes:
+                    if not (
+                        coord in snake.body
+                        or coord in self.border
+                    ):
+                        placed = True
+                    
+                        self.fruits.append(
+                            (
+                                coord[0] * self.game.cell_size, 
+                                coord[1] * self.game.cell_size
+                            )
+                        )
+                        print("Fruit placed ", self.fruits)

@@ -55,6 +55,7 @@ class Snake:
         self.direction = self.initial_direction
         self.move_timer = self.initial_move_timer
         self.body = []
+        self.score = 0
         self.fill_body()
     
 
@@ -82,16 +83,6 @@ class Snake:
                 if self.border_collision(new_x, new_y, border):
                     self.collide = True
                     return
-                
-            # if other_snake:
-            #     if self.snake_collision(new_x, new_y, other_snake):
-            #         self.collide = True
-            #         return
-            #     if self.headon_collision(new_x, new_y, other_snake):
-            #         self.collide = True
-            #         other_snake.collide = True
-            #         return
-                
             
             # hand screen wrap
             new_x, new_y = self.check_wrap(new_x, new_y)

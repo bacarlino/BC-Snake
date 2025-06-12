@@ -135,3 +135,20 @@ class RunTwoPlayer(GameState):
             snake.draw(window)
         
         # self.snake.draw(window)
+
+    def check_snake_collision(self):
+        snake = self.snakes[0]
+        snake2 = self.snakes[1]
+
+        if snake.head_position == snake2.head_position:
+            snake.die()
+            snake2.die()
+            self.game_state = GameOver(self)
+
+        if snake.head_position in snake2.body:
+            snake.die()
+            self.game_state = GameOver(self)
+
+        if snake2.head_position in snake.body:
+            snake2.die()
+            self.game_state = GameOver(self)
