@@ -26,8 +26,7 @@ class RunOnePlayer(GameState):
             )
         ]
         self.fruits = []
-        self.add_fruit(4)
-        # self.cell_size = 32
+        self.add_fruit(3)
 
         self.inputs = {
             Play.SNAKE_ONE_UP: False,
@@ -100,7 +99,7 @@ class RunOnePlayer(GameState):
         )
         for fruit in self.fruits:
             pygame.draw.rect(
-                window, cfg.LIME, ((fruit), (self.game.display_size))
+                window, cfg.GREEN, ((fruit), (self.game.display_size))
             )
         self.snakes[0].draw(window)
 
@@ -116,20 +115,10 @@ class RunOnePlayer(GameState):
         for _ in range(n):
             placed = False
             while not placed:
-                print("while loop started, placed = ", placed)
                 coord = get_rand_coord(self.game.window_size, self.game.cell_size)
-                print("coord: ", coord)
+                if self.border:
+                    if coord in self.border: continue
                 for snake in self.snakes:
-                    if not (
-                        coord in snake.body
-                        and coord in self.border
-                    ):
+                    if not coord in snake.body:
                         placed = True
-                    
-                        self.fruits.append(
-                            (
-                                coord[0] * self.game.cell_size, 
-                                coord[1] * self.game.cell_size
-                            )
-                        )
-                        print("Fruit placed ", self.fruits)
+                        self.fruits.append((coord[0], coord[1]))
