@@ -22,7 +22,7 @@ class Pause(GameState):
                 
     def update(self):
         if self.inputs[Play.PAUSE] == True:
-            self.game.change_state(self.game.run_state)
+            self.game.game_state.pop()
         if self.inputs[Play.QUIT] == True:
             self.game.reset_game()
             return

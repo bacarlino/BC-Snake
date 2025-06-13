@@ -23,7 +23,7 @@ class Snake:
         self.initial_direction = direction
         self.direction = self.initial_direction
         self.next_direction = None
-        self.collide = False
+        self.collision_detected = False
         self.has_eaten = False
         self.initial_move_timer = .15
         self.move_timer = self.initial_move_timer
@@ -48,7 +48,7 @@ class Snake:
 
     def reset(self):
         self.moving = False
-        self.collide = False
+        self.collision_detected = False
         self.dead = False
         self.current_color = self.main_color
         self.head_position = self.initial_position
@@ -76,15 +76,16 @@ class Snake:
 
             # check for collisions
             if self.body_collision(new_x, new_y):
-                self.collide = True
+                self.collision_detected = True
                 return
             
             if border:
                 if self.border_collision(new_x, new_y, border):
-                    self.collide = True
+                    print("Border hit ", self, self.body)
+                    self.collision_detected = True
                     return
             
-            # hand screen wrap
+            # handle screen wrap
             new_x, new_y = self.check_wrap(new_x, new_y)
 
             # if all is good finally set the new head position
@@ -108,7 +109,6 @@ class Snake:
             self.prev_flash_time = time_now
 
     def draw(self, window):
-
         for segment in self.body:
             pygame.draw.rect(
                 window, self.current_color, ((segment), (self.display_size))

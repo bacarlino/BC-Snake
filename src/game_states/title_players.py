@@ -15,7 +15,7 @@ class TitlePlayers(GameState):
         self.run_state_selection = None
         self.menu = ui.players_menu
 
-        self.run_states = (RunOnePlayer, RunTwoPlayer)
+        self.run_state_menu = (RunOnePlayer, RunTwoPlayer)
 
         self.inputs = {
             Menu.SELECT: False,
@@ -35,8 +35,10 @@ class TitlePlayers(GameState):
     def update(self):
 
         if self.inputs[Menu.SELECT] == True:
-            self.game.set_run_state(self.run_states[self.menu.index](self.game))
-            self.game.change_state(Start(self.game))
+            self.game.game_state.push(
+                self.run_state_menu[self.menu.index](self.game)
+            )
+            self.game.game_state.push(Start(self.game))
 
         if self.inputs[Menu.LEFT] == True:
             # self.run_state_selection = RunOnePlayer(self.game)

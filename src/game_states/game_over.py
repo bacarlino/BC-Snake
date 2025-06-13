@@ -27,22 +27,22 @@ class GameOver(GameState):
 
     def update(self):
         if self.inputs[Play.START] == True:
-            from src.game_states.run_one_player import RunOnePlayer
-            self.game.run_state = RunOnePlayer(self.game)
-            self.game.change_state(Start(self.game))
+            self.game.game_state.peek_below().reset_run_state()
+            self.game.game_state.push(Start(self.game))
         if self.inputs[Play.QUIT] == True:
             self.game.reset_game()
             return
 
         time_now = time.perf_counter()
-        self.game.run_state.snakes[0].update(time_now)
+        for snake in self.game.game_state.peek_below().snakes:
+            snake.update(time_now)
 
         self.reset_inputs()
 
     def draw(self, window):
-        self.game.run_state.draw(window)
+        self.game.game_state.peek_below().draw(window)
         window.blit(ui.GAME_OVER_SURF, ui.GAME_OVER_RECT)
 
     def reset_snakes(self):
-        for index in range(len(self.snakes)):
-            self.snakes.reset()
+        for snake in self.game.game_state.peek_below().snakes:
+            snake.reset()

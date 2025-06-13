@@ -22,12 +22,12 @@ class Start(GameState):
 
     def update(self):
         if self.inputs[Play.START] == True:
-            self.game.change_state(self.game.run_state)
+            self.game.game_state.pop()
         if self.inputs[Play.QUIT] == True:
             self.game.reset_game()
 
         self.reset_inputs()
 
     def draw(self, window):
-        self.game.run_state.draw(window)
+        self.game.game_state.peek_below().draw(window)
         window.blit(ui.PRESS_SPACE_SURF, ui.PRESS_SPACE_RECT)

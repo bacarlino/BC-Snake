@@ -3,39 +3,36 @@ import time
 import pygame
 
 import src.config as cfg
+from src.input import Play
 from src.game_states.game_over import GameOver
 from src.game_states.game_state import GameState
-from src.input import Play
 from src.game_states.pause import Pause
 from src.snake import Snake
 import src.ui_elements as ui
+from src.utils import get_rand_coord
 
 
 class RunTwoPlayer(GameState):
 
     def __init__(self, game):
         super().__init__(game)
-
-        self.game.clear_snakes()
-        self.game.add_snake(
-            Snake(
-                self.game.window_size, self.game.cell_size, 
-                (self.game.window_w * .75, (self.game.window_h // 2) - self.game.cell_size), (0, 1),
-                color=cfg.PINK
-            )
-        )
-
-        self.game.add_snake(
-            Snake(
-                self.game.window_size, self.game.cell_size, 
-                (self.game.window_w * .25, self.game.window_h // 2), (0, -1),
-                color=cfg.PURPLE
-            )
-        )
-
+        # self.game_over = False
         self.border = ui.create_border(self.game.cell_size)
-
-        self.headon_collision = False
+        self.snakes = [
+            Snake(
+                self.game.window_size, self.game.cell_size, 
+                ((self.game.window_w * .75), self.game.window_h // 2),           
+                (0, 1), color=cfg.PINK
+            ),
+            Snake(
+                self.game.window_size, self.game.cell_size, 
+                ((self.game.window_w * .25), (self.game.window_h // 2) - self.game.cell_size),
+                (0, -1), color=cfg.PURPLE
+            )
+        ]
+        print("2-player Snakes :", self.snakes[0].body, self.snakes[1].body)
+        self.fruits = []
+        self.add_fruit(3)
 
         self.inputs = {
             Play.SNAKE_ONE_UP: False,
@@ -60,7 +57,7 @@ class RunTwoPlayer(GameState):
                 self.inputs[Play.QUIT] = True
 
         keys = pygame.key.get_pressed()
-        
+
         if keys[pygame.K_UP]:
             self.inputs[Play.SNAKE_ONE_UP] = True
         elif keys[pygame.K_DOWN]:
@@ -78,63 +75,83 @@ class RunTwoPlayer(GameState):
         elif keys[pygame.K_d]:
             self.inputs[Play.SNAKE_TWO_RIGHT] = True
 
+
     def update(self):
-        time_now = time.perf_counter()
 
         if self.inputs[Play.PAUSE] == True:
-            self.game.change_state(Pause(self.game))
+            self.game.game_state.push(Pause(self.game))
         if self.inputs[Play.QUIT] == True:
             self.game.reset_game()
             return
 
+
         if self.inputs[Play.SNAKE_ONE_UP]:
-            self.game.snakes[0].next_direction = "up"
+            self.snakes[0].next_direction = "up"
         if self.inputs[Play.SNAKE_ONE_DOWN]:
-            self.game.snakes[0].next_direction = "down"
+            self.snakes[0].next_direction = "down"
         if self.inputs[Play.SNAKE_ONE_LEFT]:
-            self.game.snakes[0].next_direction = "left"
+            self.snakes[0].next_direction = "left"
         if self.inputs[Play.SNAKE_ONE_RIGHT]:
-            self.game.snakes[0].next_direction = "right"
-        
+            self.snakes[0].next_direction = "right"
         if self.inputs[Play.SNAKE_TWO_UP]:
-            self.game.snakes[1].next_direction = "up"
+            self.snakes[1].next_direction = "up"
         if self.inputs[Play.SNAKE_TWO_DOWN]:
-            self.game.snakes[1].next_direction = "down"
+            self.snakes[1].next_direction = "down"
         if self.inputs[Play.SNAKE_TWO_LEFT]:
-            self.game.snakes[1].next_direction = "left"
+            self.snakes[1].next_direction = "left"
         if self.inputs[Play.SNAKE_TWO_RIGHT]:
-            self.game.snakes[1].next_direction = "right"
+            self.snakes[1].next_direction = "right"
 
-        self.game.snakes[0].update(time_now, self.border, self.game.snakes[1])
-        self.game.snakes[1].update(time_now, self.border, self.game.snakes[0])
+        time_now = time.perf_counter()
+        game_over = False
+        for snake in self.snakes:
+            snake.update(time_now, self.border)
+            self.handle_fruit_collision(snake)
 
-        for index, snake in enumerate(self.game.snakes):
-            self.game.update_fruit(snake, index)
-            if snake.collide:
+            if snake.collision_detected:
                 snake.die()
-                self.game.change_state(GameOver(self.game))
-            
-        self.game.check_snake_collision()
+                game_over = True
+
+        if game_over:
+            self.game.game_state.push(GameOver(self.game))
+
+        # self.check_snake_collision()
 
         self.reset_inputs()
 
     def draw(self, window):
-        SCORE_BANNER_SURF, SCORE_BANNER_RECT = ui.create_2player_score_banner(
-            self.game.scores[0], self.game.scores[1]
-        )
-        window.blit(SCORE_BANNER_SURF, SCORE_BANNER_RECT)
-
-        for fruit in self.game.fruits:
-            pygame.draw.rect(
-                window, cfg.LIME, ((fruit), (self.game.display_size))
-            )
-
         ui.draw_border(window, self.border, self.game.cell_size)
-
-        for snake in self.game.snakes:
-            snake.draw(window)
         
-        # self.snake.draw(window)
+        score_surf, score_rect = ui.create_2player_score_banner(
+            self.snakes[0].score, self.snakes[1].score
+        )
+        window.blit(score_surf, score_rect)
+
+        for fruit in self.fruits:
+            pygame.draw.rect(
+                window, cfg.GREEN, ((fruit), (self.game.display_size))
+            )
+        for snake in self.snakes:
+            snake.draw(window)
+
+    def handle_fruit_collision(self, snake):
+        for fruit in self.fruits:
+            if fruit == snake.head_position:
+                snake.eat()
+                snake.score += (len(snake.body) * 10)
+                self.fruits.remove(fruit)
+                self.add_fruit()
+            
+    def add_fruit(self, n=1):
+        for _ in range(n):
+            placed = False
+            while not placed:
+                coord = get_rand_coord(self.game.window_size, self.game.cell_size)
+                if self.border and coord in self.border: continue
+                if coord in self.snakes[0].body: continue
+                if coord in self.snakes[1].body: continue
+                placed = True
+                self.fruits.append(coord)
 
     def check_snake_collision(self):
         snake = self.snakes[0]
@@ -143,12 +160,19 @@ class RunTwoPlayer(GameState):
         if snake.head_position == snake2.head_position:
             snake.die()
             snake2.die()
-            self.game_state = GameOver(self)
+            self.game.game_state.push(GameOver(self))
 
         if snake.head_position in snake2.body:
             snake.die()
-            self.game_state = GameOver(self)
+            self.game.game_state.push(GameOver(self))
 
         if snake2.head_position in snake.body:
             snake2.die()
-            self.game_state = GameOver(self)
+            self.game.game_state.push(GameOver(self))
+
+    def reset_run_state(self):
+        for snake in self.snakes:
+            snake.reset()
+        self.fruits = []
+        self.add_fruit(3)
+        
