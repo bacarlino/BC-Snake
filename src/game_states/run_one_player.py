@@ -24,6 +24,10 @@ class RunOnePlayer(GameState):
                 color=cfg.PINK
             )
         ]
+
+        for snake in self.snakes:
+            snake.moving = True
+
         self.fruits = []
         self.add_fruit(3)
 
@@ -73,7 +77,6 @@ class RunOnePlayer(GameState):
             self.game.reset_game()
             return
 
-
         if self.inputs[Play.SNAKE_ONE_UP]:
             self.snakes[0].next_direction = "up"
         if self.inputs[Play.SNAKE_ONE_DOWN]:
@@ -83,8 +86,6 @@ class RunOnePlayer(GameState):
         if self.inputs[Play.SNAKE_ONE_RIGHT]:
             self.snakes[0].next_direction = "right"
         
-
-
         time_now = time.perf_counter()
         for snake in self.snakes:
             snake.update(time_now, self.border)
@@ -105,7 +106,7 @@ class RunOnePlayer(GameState):
         window.blit(score_surf, score_rect)
         for fruit in self.fruits:
             pygame.draw.rect(
-                window, cfg.GREEN, ((fruit), (self.game.display_size))
+                window, cfg.GREEN, ((fruit), (self.game.display_size)), border_radius=6
             )
         for snake in self.snakes:
             snake.draw(window)
@@ -133,4 +134,3 @@ class RunOnePlayer(GameState):
             snake.reset()
         self.fruits = []
         self.add_fruit(3)
-        

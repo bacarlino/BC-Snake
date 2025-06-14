@@ -20,6 +20,7 @@ class Title(GameState):
                 
     def update(self):
         if self.inputs[Menu.SELECT]:
+            self.game.game_state.pop()
             self.game.game_state.push(TitlePlayers(self.game))
 
         self.reset_inputs()

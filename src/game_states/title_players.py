@@ -35,17 +35,15 @@ class TitlePlayers(GameState):
     def update(self):
 
         if self.inputs[Menu.SELECT] == True:
-            self.game.game_state.push(
-                self.run_state_menu[self.menu.index](self.game)
-            )
+            self.game.run_state = self.run_state_menu[self.menu.index]
+            self.game.game_state.pop()
+            self.game.game_state.push(self.game.run_state(self.game))
             self.game.game_state.push(Start(self.game))
 
         if self.inputs[Menu.LEFT] == True:
-            # self.run_state_selection = RunOnePlayer(self.game)
             self.menu.down()
 
         if self.inputs[Menu.RIGHT] == True:
-            # self.run_state_selection = RunTwoPlayer(self.game)
             self.menu.up()
 
         self.reset_inputs()

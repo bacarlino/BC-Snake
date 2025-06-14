@@ -13,7 +13,6 @@ class Game:
     def __init__(self, window_size):
         self.window_w, self.window_h = self.window_size = window_size
         self.running = True
-        # self.game_state = Title(self)
         self.run_state = None
         self.cell_size = 32
         self.display_size = (self.cell_size - 4, self.cell_size - 4)
@@ -44,17 +43,9 @@ class Game:
     def draw(self, window):
         self.game_state.draw(window)
 
-    # def change_state(self, state):
-    #     self.game_state = state
-
-    # def set_run_state(self, state):
-    #     self.run_state = state
-
     def change_cell_size(self, size):
         if self.window_w % size == 0:
             self.cell_size = size
 
     def reset_game(self):
-        # self.game_state.clear()
         self.game_state.push(Title(self))
-        # self.run_state = None

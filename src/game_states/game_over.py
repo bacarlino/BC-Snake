@@ -27,15 +27,19 @@ class GameOver(GameState):
 
     def update(self):
         if self.inputs[Play.START] == True:
-            self.game.game_state.peek_below().reset_run_state()
+            self.game.game_state.pop()
+            self.game.game_state.pop()
+            self.game.game_state.push(self.game.run_state(self.game))
             self.game.game_state.push(Start(self.game))
+            return
         if self.inputs[Play.QUIT] == True:
             self.game.reset_game()
             return
 
         time_now = time.perf_counter()
         for snake in self.game.game_state.peek_below().snakes:
-            snake.update(time_now)
+            if snake.dead:
+                snake.update(time_now)
 
         self.reset_inputs()
 

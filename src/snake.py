@@ -9,40 +9,46 @@ import src.ui_elements as ui
 class Snake:
 
     def __init__(
-        self, window_size, size=1, position=(0, 0), 
+        self, window_size, cell_size=1, position=(0, 0), 
         direction=(1, 0), color=ui.rand_rgb()
     ):
-        self.body = []
-        self.size = size
+        self.cell_size = cell_size
+        self.display_size = (self.cell_size - 4, self.cell_size - 4)
         self.main_color = color
         self.current_color = color
-        self.display_size = (self.size - 4, self.size - 4)
+        self.flash_colors = [self.main_color, (230, 230, 230)]
+        
+        self.body = []
+        self.has_eaten = False
+        self.score = 0
+
         self.window_w, self.window_h = window_size
         self.initial_position = position
         self.head_position = self.initial_position
+
+        self.moving = False
         self.initial_direction = direction
         self.direction = self.initial_direction
         self.next_direction = None
-        self.collision_detected = False
-        self.has_eaten = False
+
         self.initial_move_timer = .15
         self.move_timer = self.initial_move_timer
         self.move_timer_reducer = 1.015
         self.prev_move_time = time.perf_counter()
-        self.score = 0
+
+        self.collision_detected = False
         self.dead = False
-        self.flash_timer = .1
         self.prev_flash_time = self.prev_move_time
+        
         self.fill_body()
 
-        self.flash_colors = [self.main_color, (230, 230, 230)]
 
     def fill_body(self, length=5):
         for count in range(length):
             self.body.append(
                 (
-                    self.head_position[0] - ((self.size * self.direction[0]) * count), 
-                    self.head_position[1] - ((self.size * self.direction[1]) * count)
+                    self.head_position[0] - ((self.cell_size * self.direction[0]) * count), 
+                    self.head_position[1] - ((self.cell_size * self.direction[1]) * count)
                 )
             )
 
@@ -59,32 +65,39 @@ class Snake:
         self.fill_body()
     
 
-    def update(self, time_now, border=None):
+    def update(self, time_now, border=None, other_snakes=None):
         if self.dead:
+            self.moving = False
             self.update_dead(time_now)
             return
 
         move_dt = time_now - self.prev_move_time
-        if move_dt >= self.move_timer:
+        if move_dt >= self.move_timer and self.moving:
             
             # updates self.direction using self.next_direction
             self.update_direction()
 
             # calculate move
-            new_x = self.head_position[0] + ((self.direction[0] * self.size))
-            new_y = self.head_position[1] + ((self.direction[1] * self.size))
+            new_x = self.head_position[0] + ((self.direction[0] * self.cell_size))
+            new_y = self.head_position[1] + ((self.direction[1] * self.cell_size))
 
             # check for collisions
-            if self.body_collision(new_x, new_y):
+            if (new_x, new_y) in self.body[3:]:
                 self.collision_detected = True
                 return
             
-            if border:
-                if self.border_collision(new_x, new_y, border):
-                    print("Border hit ", self, self.body)
-                    self.collision_detected = True
-                    return
+            if border and (new_x, new_y) in border:
+                self.collision_detected = True
+                return
             
+            if other_snakes:
+                for snake in other_snakes:
+                    if (new_x, new_y) in snake.body:
+                        self.collision_detected = True
+                        if (new_x, new_y) == snake.head_position:
+                            snake.collision_detected = True
+                        return
+    
             # handle screen wrap
             new_x, new_y = self.check_wrap(new_x, new_y)
 
@@ -109,9 +122,19 @@ class Snake:
             self.prev_flash_time = time_now
 
     def draw(self, window):
-        for segment in self.body:
+        main_body = pygame.Rect((self.head_position), (self.display_size))
+        head_mark = main_body.copy()
+        deflate = self.display_size[0] * -0.5
+        head_mark.inflate_ip(deflate, deflate)
+        pygame.draw.rect(
+            window, self.current_color, main_body, border_radius=6
+        )
+        pygame.draw.rect(
+            window, (230, 230, 230), head_mark, border_radius=6
+        )
+        for segment in self.body[1:]:
             pygame.draw.rect(
-                window, self.current_color, ((segment), (self.display_size))
+                window, self.current_color, (segment, self.display_size), border_radius=6
             )
 
     def set_prev_move_time(self, time_now):
@@ -128,26 +151,6 @@ class Snake:
         COLLISION_SFX.play()
         self.dead = True
 
-    def body_collision(self, x, y):
-        if (x, y) in self.body[3:]:
-            return True
-        return False
-    
-    def border_collision(self, x, y, border_list):
-        if (x, y) in border_list:
-            return True
-        return False
-
-    def snake_collision(self, x, y, other_snake):
-        if (x, y) in other_snake.body:
-            return True
-        return False
-
-    def headon_collision(self, x, y, other_snake):
-        if (x, y) == other_snake.head_position:
-            return True
-        return False
-    
     def update_direction(self):
         if self.next_direction == "up":
             if not abs(self.direction[1]):
@@ -166,11 +169,11 @@ class Snake:
         if self.head_position[0] >= self.window_w:
             return (0, y)
         elif self.head_position[0] < 0: 
-            return (self.window_w - self.size, y)
+            return (self.window_w - self.cell_size, y)
         elif self.head_position[1] >= self.window_h:
             return (x, 0)
         elif self.head_position[1] < 0:
-            return (x, self.window_h - self.size)
+            return (x, self.window_h - self.cell_size)
         return (x, y)
 
     def add_score(self, score):

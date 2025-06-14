@@ -30,5 +30,5 @@ class Pause(GameState):
         self.reset_inputs()
 
     def draw(self, window):
-        self.game.run_state.draw(window)
+        self.game.game_state.peek_below().draw(window)
         window.blit(ui.PRESS_SPACE_SURF, ui.PRESS_SPACE_RECT)

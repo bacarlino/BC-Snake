@@ -5,16 +5,8 @@ class StateManager:
 
     def push(self, state):
         self.stack.append(state)
-        print(f"Pushed {state} on the stack: ")
-        for item in self.stack:
-            print(item)
-        print()
 
     def pop(self):
-        print(f"Popping {self.stack[-1]}: ")
-        for item in self.stack:
-            print(item)
-        print()
         return self.stack.pop()
 
     def peek(self):

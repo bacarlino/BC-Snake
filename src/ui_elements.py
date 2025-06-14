@@ -57,45 +57,45 @@ def create_border(cell_size):
 def draw_border(window, border, cell_size):
     for coordinate in border:
         pygame.draw.rect(
-            window, cfg.BLUE, ((coordinate), (cell_size - 4, cell_size - 4))
+            window, cfg.BLUE, ((coordinate), (cell_size - 4, cell_size - 4)), border_radius=6
         )
 
     
 def create_title():
-    surf = get_pixelfont(450).render("SNAKE", False, cfg.PINK)
+    surf = get_pixelfont(450).render("SNAKE", True, cfg.PINK)
     rect = surf.get_rect(center = (cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
     return surf, rect
     
 
 def create_ping_pang():
-    surf = get_pixelfont(50).render("Brandon Carlino's", False, cfg.BLUE)
+    surf = get_pixelfont(50).render("Brandon Carlino's", True, cfg.BLUE)
     rect = surf.get_rect(midbottom=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.25))
     return surf, rect
 
 
 def create_press_space():     
-    surf = get_pixelfont(50).render("Press SPACE to begin", False, cfg.ORANGE)
+    surf = get_pixelfont(50).render("Press SPACE to begin", True, cfg.ORANGE)
     rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.9))
     return surf, rect
 
 
 def create_game_over():     
-    surf = get_pixelfont(100).render("GAME OVER", False, cfg.ORANGE)
+    surf = get_pixelfont(100).render("GAME OVER", True, cfg.ORANGE)
     rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
     return surf, rect
 
 
 def create_score_banner(score):
     score_banner = f"{score}"
-    surf = get_pixelfont(75).render(score_banner, False, cfg.ORANGE)
-    rect = surf.get_rect(center=(cfg.CENTER[0], 75))
+    surf = get_pixelfont(50).render(score_banner, True, cfg.ORANGE)
+    rect = surf.get_rect(center=(cfg.CENTER[0], cfg.WINDOW_H * .125))
     return surf, rect
 
 
 def create_2player_score_banner(p1_score, p2_score):
     score_banner = f"PURPLE: {p2_score}                                        PINK: {p1_score}"
-    surf = get_pixelfont(75).render(score_banner, False, cfg.ORANGE)
-    rect = surf.get_rect(center=(cfg.CENTER[0], 75))
+    surf = get_pixelfont(50).render(score_banner, True, cfg.ORANGE)
+    rect = surf.get_rect(center=(cfg.CENTER[0], cfg.WINDOW_W * .125))
     return surf, rect
 
 
