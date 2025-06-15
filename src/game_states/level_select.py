@@ -21,7 +21,8 @@ class LevelSelect(GameState):
             levels.CLASSIC,
             levels.BIG, 
             levels.SUPER, 
-            levels.EXTREME
+            levels.EXTREME,
+            levels.INSANE
         )
 
         self.inputs = {

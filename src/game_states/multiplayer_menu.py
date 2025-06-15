@@ -2,41 +2,25 @@ import pygame
 
 from src.game_states.game_state import GameState
 from src.input import Menu
-from src.game_states.run_one_player import RunOnePlayer
-from src.game_states.run_two_player import RunTwoPlayer
+from src.game_states.run_coop import RunCoop
+from src.game_states.run_deathmatch import RunDeathmatch
+from src.game_states.run_timed_score import RunTimedScore
 from src.game_states.start import Start
-from src.game_states.level_select import LevelSelect
-from src.game_states.multiplayer_menu import MultiplayerMenu
 import src.ui_elements as ui
 
 
-class TitlePlayers(GameState):
+class MultiplayerMenu(GameState):
 
     def __init__(self, game):
         super().__init__(game)
-        self.run_state_selection = None
-        self.menu = ui.players_menu
+        self.level_selection = None
+        self.menu = ui.multiplayer_menu
 
-        self.next_menu_item = (LevelSelect, MultiplayerMenu)
-        self.run_states = (RunOnePlayer, RunTwoPlayer)
-
-
-        players_menu_items = (
-            "1 Player",
-            "2 Player"
+        self.multiplayer_choices = (
+            RunDeathmatch,
+            RunTimedScore,
+            RunCoop
         )
-
-        players_menu = Menu(
-            players_menu_items, 0, (cfg.CENTER[0], cfg.WINDOW_H * 0.75), (1000, 150), 
-            menu_font, highlight_font,
-            cfg.BLACK, cfg.PINK, cfg.WHITE
-        )
-
-
-
-
-
-
 
         self.inputs = {
             Menu.SELECT: False,
@@ -56,9 +40,10 @@ class TitlePlayers(GameState):
     def update(self):
 
         if self.inputs[Menu.SELECT] == True:
-            self.game.run_state = self.run_state_menu[self.menu.index]
+            self.game.load_level(self.level_choices[self.menu.index])
             self.game.game_state.pop()
-            self.game.game_state.push(self.next_menu_item[self.menu.index])
+            self.game.game_state.push(self.game.run_state(self.game))
+            self.game.game_state.push(Start(self.game))
 
         if self.inputs[Menu.LEFT] == True:
             self.menu.down()

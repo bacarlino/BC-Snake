@@ -44,11 +44,24 @@ level_menu_items = (
     "Classic",
     "Big",
     "Super",
-    "Extreme"
+    "Extreme", 
+    "Insane"
 )
 
 level_menu = Menu(
     level_menu_items, 0, (cfg.CENTER[0], cfg.WINDOW_H * 0.75), (1000, 150), 
+    menu_font, highlight_font,
+    cfg.BLACK, cfg.PINK, cfg.WHITE
+)
+
+multiplayer_menu_items = (
+    "Death Match",
+    "Timed Score",
+    "Co-Op"
+)
+
+multiplayer_menu = Menu(
+    multiplayer_menu_items, 0, (cfg.CENTER[0], cfg.WINDOW_H * 0.75), (1000, 150), 
     menu_font, highlight_font,
     cfg.BLACK, cfg.PINK, cfg.WHITE
 )

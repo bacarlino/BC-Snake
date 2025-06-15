@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+
 @dataclass
 class LevelConfig:
     has_border: bool
@@ -10,11 +11,6 @@ class LevelConfig:
     growth_rate: int
 
 
-"""
-LevelConfig(
-    has_border, speed, acceleration, cell_size, fruit_qty, growth_rate
-)
-"""
 CLASSIC = LevelConfig(
     has_border=True, 
     speed=5, 
@@ -43,13 +39,19 @@ SUPER = LevelConfig(
 )
 
 EXTREME = LevelConfig(
-    has_border=True, 
+    has_border=False, 
     speed=8, 
     acceleration=2.5, 
     cell_size=16, 
     fruit_qty=25,
     growth_rate=5
 )
-BIG = LevelConfig(True, 6, 0, 64, 1, 1)
-super = LevelConfig(True, 6, 1.5, 32, 3, 2)
-extreme = LevelConfig(False,6, 2.5, 16, 25, 5)
+
+INSANE = LevelConfig(
+    has_border=False, 
+    speed=10, 
+    acceleration=3.5, 
+    cell_size=16, 
+    fruit_qty=50,
+    growth_rate=10
+)
