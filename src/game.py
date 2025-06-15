@@ -14,7 +14,7 @@ class Game:
     def __init__(self, window_size):
         self.window_w, self.window_h = self.window_size = window_size
         self.running = True
-        self.run_state = None
+        self.saved_play_state = None
 
         self.level_config = levels.CLASSIC
         self.display_size = None
@@ -50,9 +50,11 @@ class Game:
         self.level_config = level
         self.update_display_size()
 
+    def save_play_state(self, play_state):
+        self.saved_play_state = play_state
+
     def update_display_size(self):
         self.display_size = (self.level_config.cell_size - 4, self.level_config.cell_size - 4)
-
 
     def change_cell_size(self, size):
         if self.window_w % size == 0:

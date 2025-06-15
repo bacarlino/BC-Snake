@@ -1,12 +1,13 @@
 import pygame
 
+import src.config as cfg
+from src.input import MenuInput
 from src.game_states.game_state import GameState
-from src.input import Menu
 from src.game_states.run_one_player import RunOnePlayer
 from src.game_states.run_two_player import RunTwoPlayer
-from src.game_states.start import Start
 from src.game_states.level_select import LevelSelect
 from src.game_states.multiplayer_menu import MultiplayerMenu
+from src.menu import Menu, MenuItem
 import src.ui_elements as ui
 
 
@@ -14,62 +15,64 @@ class TitlePlayers(GameState):
 
     def __init__(self, game):
         super().__init__(game)
-        self.run_state_selection = None
-        self.menu = ui.players_menu
 
-        self.next_menu_item = (LevelSelect, MultiplayerMenu)
-        self.run_states = (RunOnePlayer, RunTwoPlayer)
+        players_menu_items = [
+            MenuItem("1 Player", self.select_one_player),
+            MenuItem("2 Player", self.select_two_player)
+        ]
 
-
-        players_menu_items = (
-            "1 Player",
-            "2 Player"
+        self.players_menu = Menu(
+            items=players_menu_items,
+            index=0,
+            pos=(cfg.CENTER[0], cfg.WINDOW_H * 0.75),
+            size=(1000, 150), 
+            main_font=ui.MENU_FONT, 
+            highlight_font=ui.HIGHTLIGHT_FONT,
+            background=cfg.BLACK, 
+            main_color=cfg.PINK, 
+            highlight_color=cfg.WHITE
         )
-
-        players_menu = Menu(
-            players_menu_items, 0, (cfg.CENTER[0], cfg.WINDOW_H * 0.75), (1000, 150), 
-            menu_font, highlight_font,
-            cfg.BLACK, cfg.PINK, cfg.WHITE
-        )
-
-
-
-
-
-
 
         self.inputs = {
-            Menu.SELECT: False,
-            Menu.LEFT: False,
-            Menu.RIGHT: False
+            MenuInput.SELECT: False,
+            MenuInput.LEFT: False,
+            MenuInput.RIGHT: False
         }
 
     def handle_events(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                self.inputs[Menu.SELECT] = True
+                self.inputs[MenuInput.SELECT] = True
             if event.key == pygame.K_LEFT:
-                self.inputs[Menu.LEFT] = True
+                self.inputs[MenuInput.LEFT] = True
             if event.key == pygame.K_RIGHT:
-                self.inputs[Menu.RIGHT] = True
+                self.inputs[MenuInput.RIGHT] = True
                 
     def update(self):
 
-        if self.inputs[Menu.SELECT] == True:
-            self.game.run_state = self.run_state_menu[self.menu.index]
-            self.game.game_state.pop()
-            self.game.game_state.push(self.next_menu_item[self.menu.index])
+        if self.inputs[MenuInput.SELECT] == True:
+            self.players_menu.select()
 
-        if self.inputs[Menu.LEFT] == True:
-            self.menu.down()
+        if self.inputs[MenuInput.LEFT] == True:
+            self.players_menu.down()
 
-        if self.inputs[Menu.RIGHT] == True:
-            self.menu.up()
+        if self.inputs[MenuInput.RIGHT] == True:
+            self.players_menu.up()
 
         self.reset_inputs()
 
     def draw(self, window):
         window.blit(ui.PING_PANG_SURF, ui.PING_PANG_RECT)
         window.blit(ui.TITLE_SURF, ui.TITLE_RECT) 
-        self.menu.draw(window)
+        self.players_menu.draw(window)
         window.blit(ui.PRESS_SPACE_SURF, ui.PRESS_SPACE_RECT)
+
+    def select_one_player(self):
+        self.game.save_play_state(RunOnePlayer)
+        self.game.game_state.pop()
+        self.game.game_state.push(LevelSelect(self.game))
+
+    def select_two_player(self):
+        # self.game.save_play_state(RunTwoPlayer)
+        self.game.game_state.pop()
+        self.game.game_state.push(MultiplayerMenu(self.game))

@@ -5,7 +5,6 @@ import pygame
 from src.game_states.game_state import GameState
 from src.input import Play
 from src.game_states.start import Start
-# from src.game_states.run_one_player import RunOnePlayer
 import src.ui_elements as ui
 
 class GameOver(GameState):
@@ -29,7 +28,7 @@ class GameOver(GameState):
         if self.inputs[Play.START] == True:
             self.game.game_state.pop()
             self.game.game_state.pop()
-            self.game.game_state.push(self.game.run_state(self.game))
+            self.game.game_state.push(self.game.saved_play_state(self.game))
             self.game.game_state.push(Start(self.game))
             return
         if self.inputs[Play.QUIT] == True:

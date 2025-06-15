@@ -12,7 +12,7 @@ import src.ui_elements as ui
 from src.utils import get_rand_coord
 
 
-class RunCoop(GameState):
+class RunCoOp(GameState):
 
     def __init__(self, game):
         super().__init__(game)

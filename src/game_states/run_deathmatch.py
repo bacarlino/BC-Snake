@@ -12,7 +12,7 @@ import src.ui_elements as ui
 from src.utils import get_rand_coord
 
 
-class RunDeathmatch(GameState):
+class RunDeathMatch(GameState):
 
     def __init__(self, game):
         super().__init__(game)

@@ -1,7 +1,7 @@
 from enum import Enum, auto
 
 
-class Menu(Enum):
+class MenuInput(Enum):
     LEFT = auto()
     RIGHT = auto()
     SELECT = auto()

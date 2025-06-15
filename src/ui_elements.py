@@ -4,7 +4,7 @@ import random
 import pygame
 
 import src.config as cfg
-from src.menu import Menu
+from src.menu import Menu, MenuItem
 
 
 pygame.init()
@@ -22,47 +22,18 @@ def rand_rgb():
         random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
     )
 
-
-menu_font = get_pixelfont(50)
-highlight_font = get_pixelfont(75)
-
-# 1 Player / 2 Player Menu
-players_menu_items = (
-    "1 Player",
-    "2 Player"
-)
-
-
-players_menu = Menu(
-    players_menu_items, 0, (cfg.CENTER[0], cfg.WINDOW_H * 0.75), (1000, 150), 
-    menu_font, highlight_font,
-    cfg.BLACK, cfg.PINK, cfg.WHITE
-)
-
-
-level_menu_items = (
-    "Classic",
-    "Big",
-    "Super",
-    "Extreme", 
-    "Insane"
-)
-
-level_menu = Menu(
-    level_menu_items, 0, (cfg.CENTER[0], cfg.WINDOW_H * 0.75), (1000, 150), 
-    menu_font, highlight_font,
-    cfg.BLACK, cfg.PINK, cfg.WHITE
-)
+MENU_FONT = get_pixelfont(50)
+HIGHTLIGHT_FONT = get_pixelfont(75)
 
 multiplayer_menu_items = (
-    "Death Match",
-    "Timed Score",
-    "Co-Op"
+    MenuItem("Death Match"),
+    MenuItem("Timed Score"),
+    MenuItem("Co-Op")
 )
 
 multiplayer_menu = Menu(
     multiplayer_menu_items, 0, (cfg.CENTER[0], cfg.WINDOW_H * 0.75), (1000, 150), 
-    menu_font, highlight_font,
+    MENU_FONT, HIGHTLIGHT_FONT,
     cfg.BLACK, cfg.PINK, cfg.WHITE
 )
 
