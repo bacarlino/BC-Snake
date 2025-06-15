@@ -11,7 +11,8 @@ class Snake:
 
     def __init__(
         self, window_size, cell_size=1, position=(0, 0), 
-        direction=(1, 0), initial_speed=5, acceleration=0, color=ui.rand_rgb()
+        direction=(1, 0), initial_speed=5, acceleration=0, color=ui.rand_rgb(),
+        length=5
     ):
         self.cell_size = cell_size
         self.display_size = (self.cell_size - 4, self.cell_size - 4)
@@ -20,6 +21,7 @@ class Snake:
         self.flash_colors = [self.main_color, (230, 230, 230)]
         
         self.body = []
+        self.length = self.initial_length = length
         self.has_eaten = False
         self.belly = 0
         self.score = 0
@@ -43,7 +45,7 @@ class Snake:
         self.dead = False
         self.prev_flash_time = self.prev_move_time
         
-        self.fill_body()
+        self.fill_body(self.length)
 
 
     def fill_body(self, length=5):
@@ -56,7 +58,7 @@ class Snake:
             )
 
     def reset(self):
-        self.moving = False
+        self.moving = True
         self.collision_detected = False
         self.dead = False
         self.current_color = self.main_color
@@ -65,7 +67,7 @@ class Snake:
         self.speed = self.initial_speed
         self.move_timer = 1 / self.speed
         self.body = []
-        self.score = 0
+        # self.score = 0
         self.fill_body()
     
 

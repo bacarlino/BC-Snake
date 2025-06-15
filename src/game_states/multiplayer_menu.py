@@ -6,8 +6,7 @@ from src.input import MenuInput
 from src.game_states.level_select import LevelSelect
 from src.game_states.run_co_op import RunCoOp
 from src.game_states.run_deathmatch import RunDeathMatch
-from src.game_states.run_timed_score import RunTimedScore
-from src.game_states.start import Start
+from src.game_states.run_score_battle import RunScoreBattle
 from src.menu import Menu, MenuItem
 import src.ui_elements as ui
 
@@ -19,7 +18,7 @@ class MultiplayerMenu(GameState):
 
         self.multiplayer_menu_items = [
             MenuItem("Death Match", lambda: self.game.save_play_state(RunDeathMatch)),
-            MenuItem("Timed Score", lambda: self.game.save_play_state(RunTimedScore)),
+            MenuItem("Score Battle", lambda: self.game.save_play_state(RunScoreBattle)),
             MenuItem("Co-Op", lambda: self.game.save_play_state(RunCoOp))
         ]
 

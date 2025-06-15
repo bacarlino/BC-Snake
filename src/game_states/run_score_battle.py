@@ -12,7 +12,7 @@ import src.ui_elements as ui
 from src.utils import get_rand_coord
 
 
-class RunTimedScore(GameState):
+class RunScoreBattle(GameState):
 
     def __init__(self, game):
         super().__init__(game)
@@ -29,13 +29,13 @@ class RunTimedScore(GameState):
                 self.game.window_size, self.game.level_config.cell_size, 
                 ((self.game.window_w * .75), self.game.window_h // 2),           
                 (0, 1), color=cfg.PINK, initial_speed=self.game.level_config.speed,
-                acceleration = self.game.level_config.acceleration, length=1
+                acceleration = self.game.level_config.acceleration
             ),
             Snake(
                 self.game.window_size, self.game.level_config.cell_size, 
                 ((self.game.window_w * .25), (self.game.window_h // 2) - self.game.level_config.cell_size),
                 (0, -1), color=cfg.PURPLE, initial_speed=self.game.level_config.speed,
-                acceleration = self.game.level_config.acceleration, length=1
+                acceleration = self.game.level_config.acceleration
             )
         ]
 

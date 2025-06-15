@@ -6,7 +6,9 @@ import src.config as cfg
 from src.input import Play
 from src.game_states.game_over import GameOver
 from src.game_states.game_state import GameState
+from src.game_states.match_over import MatchOver
 from src.game_states.pause import Pause
+from src.game_states.start import Start
 from src.snake import Snake
 import src.ui_elements as ui
 from src.utils import get_rand_coord
@@ -116,6 +118,7 @@ class RunDeathMatch(GameState):
 
         time_now = time.perf_counter()
         game_over = False
+        match_over = False
         
         for snake in self.snakes:
             other_snakes = self.snakes.copy()
@@ -125,14 +128,18 @@ class RunDeathMatch(GameState):
 
             if snake.collision_detected:
                 snake.die()
-                game_over = True
-            
+                match_over = True
             self.handle_fruit_collision(snake)
 
-        if game_over:
+        if match_over:
             for snake in self.snakes:
                 snake.moving = False
-            self.game.game_state.push(GameOver(self.game))
+                if not snake.dead:
+                    snake.add_score(1)
+                if snake.score >= 3:
+                    self.game.game_state.push(GameOver(self.game))
+                    return
+            self.game.game_state.push(MatchOver(self.game))
 
         self.reset_inputs()
 
@@ -155,7 +162,6 @@ class RunDeathMatch(GameState):
         for fruit in self.fruits:
             if fruit == snake.head_position:
                 snake.eat(self.game.level_config.growth_rate)
-                snake.score += (len(snake.body) * 10)
                 self.fruits.remove(fruit)
                 self.add_fruit()
             

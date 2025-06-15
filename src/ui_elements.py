@@ -22,20 +22,10 @@ def rand_rgb():
         random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
     )
 
+
 MENU_FONT = get_pixelfont(50)
 HIGHTLIGHT_FONT = get_pixelfont(75)
 
-multiplayer_menu_items = (
-    MenuItem("Death Match"),
-    MenuItem("Timed Score"),
-    MenuItem("Co-Op")
-)
-
-multiplayer_menu = Menu(
-    multiplayer_menu_items, 0, (cfg.CENTER[0], cfg.WINDOW_H * 0.75), (1000, 150), 
-    MENU_FONT, HIGHTLIGHT_FONT,
-    cfg.BLACK, cfg.PINK, cfg.WHITE
-)
 
 def create_border(cell_size):
     border = []
@@ -46,6 +36,7 @@ def create_border(cell_size):
         border.append((0, point * cell_size))
         border.append((cfg.WINDOW_W - cell_size, point * cell_size))
     return border
+
 
 def draw_border(window, border, cell_size):
     for coordinate in border:
@@ -78,6 +69,12 @@ def create_game_over():
     return surf, rect
 
 
+def create_match_over():     
+    surf = get_pixelfont(100).render("MATCH OVER", True, cfg.ORANGE)
+    rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
+    return surf, rect
+
+
 def create_score_banner(score):
     score_banner = f"{score}"
     surf = get_pixelfont(50).render(score_banner, True, cfg.ORANGE)
@@ -96,3 +93,4 @@ TITLE_SURF, TITLE_RECT = create_title()
 PING_PANG_SURF, PING_PANG_RECT = create_ping_pang()
 PRESS_SPACE_SURF, PRESS_SPACE_RECT = create_press_space()
 GAME_OVER_SURF, GAME_OVER_RECT = create_game_over()
+MATCH_OVER_SURF, MATCH_OVER_RECT = create_match_over()

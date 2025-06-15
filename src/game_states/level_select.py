@@ -3,8 +3,6 @@ import pygame
 import src.config as cfg
 from src.input import MenuInput
 from src.game_states.game_state import GameState
-from src.game_states.run_one_player import RunOnePlayer
-from src.game_states.run_two_player import RunTwoPlayer
 from src.game_states.start import Start
 import src.level_config as levels
 from src.menu import Menu, MenuItem
