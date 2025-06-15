@@ -5,6 +5,7 @@ import pygame
 
 import src.config as cfg
 from src.game_states.title import Title
+import src.level_config as levels
 from src.state_manager import StateManager
 
 
@@ -14,10 +15,12 @@ class Game:
         self.window_w, self.window_h = self.window_size = window_size
         self.running = True
         self.run_state = None
-        self.cell_size = 32
-        self.display_size = (self.cell_size - 4, self.cell_size - 4)
-        self.game_state = StateManager()
 
+        self.level_config = levels.CLASSIC
+        self.display_size = None
+        self.update_display_size()
+        
+        self.game_state = StateManager()
         self.game_state.push(Title(self))
     
 
@@ -43,9 +46,20 @@ class Game:
     def draw(self, window):
         self.game_state.draw(window)
 
+    def load_level(self, level):
+        self.level_config = level
+        self.update_display_size()
+
+    def update_display_size(self):
+        self.display_size = (self.level_config.cell_size - 4, self.level_config.cell_size - 4)
+
+
     def change_cell_size(self, size):
         if self.window_w % size == 0:
-            self.cell_size = size
+            self.level_config.cell_size = size
 
     def reset_game(self):
         self.game_state.push(Title(self))
+
+    def load_level_config(self, level_config):
+        self.level_config = level_config

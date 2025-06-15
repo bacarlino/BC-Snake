@@ -2,6 +2,7 @@ import time
 
 import pygame
 
+from src.config import BORDER_RADIUS
 from src.sounds import EAT_FRUIT_SFX, COLLISION_SFX
 import src.ui_elements as ui
 
@@ -10,7 +11,7 @@ class Snake:
 
     def __init__(
         self, window_size, cell_size=1, position=(0, 0), 
-        direction=(1, 0), color=ui.rand_rgb()
+        direction=(1, 0), initial_speed=5, acceleration=0, color=ui.rand_rgb()
     ):
         self.cell_size = cell_size
         self.display_size = (self.cell_size - 4, self.cell_size - 4)
@@ -20,6 +21,7 @@ class Snake:
         
         self.body = []
         self.has_eaten = False
+        self.belly = 0
         self.score = 0
 
         self.window_w, self.window_h = window_size
@@ -31,9 +33,10 @@ class Snake:
         self.direction = self.initial_direction
         self.next_direction = None
 
-        self.initial_move_timer = .15
-        self.move_timer = self.initial_move_timer
-        self.move_timer_reducer = 1.015
+        self.initial_speed = initial_speed
+        self.speed = initial_speed
+        self.move_timer = 1 / self.speed
+        self.acceleration = acceleration
         self.prev_move_time = time.perf_counter()
 
         self.collision_detected = False
@@ -59,7 +62,8 @@ class Snake:
         self.current_color = self.main_color
         self.head_position = self.initial_position
         self.direction = self.initial_direction
-        self.move_timer = self.initial_move_timer
+        self.speed = self.initial_speed
+        self.move_timer = 1 / self.speed
         self.body = []
         self.score = 0
         self.fill_body()
@@ -106,9 +110,8 @@ class Snake:
             self.body.insert(0, self.head_position)
 
             # if there's not a fruit, pop the tail
-            if self.has_eaten:
-                self.move_timer /= self.move_timer_reducer
-                self.has_eaten = False
+            if self.belly:
+                self.belly -= 1
             else:
                 self.body.pop(-1)
             # reset the move timer
@@ -127,14 +130,14 @@ class Snake:
         deflate = self.display_size[0] * -0.5
         head_mark.inflate_ip(deflate, deflate)
         pygame.draw.rect(
-            window, self.current_color, main_body, border_radius=6
+            window, self.current_color, main_body, border_radius=BORDER_RADIUS
         )
         pygame.draw.rect(
-            window, (230, 230, 230), head_mark, border_radius=6
+            window, (230, 230, 230), head_mark, border_radius=BORDER_RADIUS
         )
         for segment in self.body[1:]:
             pygame.draw.rect(
-                window, self.current_color, (segment, self.display_size), border_radius=6
+                window, self.current_color, (segment, self.display_size), border_radius=BORDER_RADIUS
             )
 
     def set_prev_move_time(self, time_now):
@@ -143,9 +146,14 @@ class Snake:
     def set_head_position(self, position):
         self.head_position = position
 
-    def eat(self):
+    def eat(self, qty):
         EAT_FRUIT_SFX.play()
-        self.has_eaten = True
+        self.belly += qty
+        self.increase_speed()
+    
+    def increase_speed(self):
+        self.speed *= 1 + self.acceleration / 100
+        self.move_timer = 1 / self.speed
 
     def die(self):
         COLLISION_SFX.play()

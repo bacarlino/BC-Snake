@@ -5,18 +5,24 @@ from src.input import Menu
 from src.game_states.run_one_player import RunOnePlayer
 from src.game_states.run_two_player import RunTwoPlayer
 from src.game_states.start import Start
-from src.game_states.level_select import LevelSelect
+import src.level_config as levels
+
 import src.ui_elements as ui
 
 
-class TitlePlayers(GameState):
+class LevelSelect(GameState):
 
     def __init__(self, game):
         super().__init__(game)
-        self.run_state_selection = None
-        self.menu = ui.players_menu
+        self.level_selection = None
+        self.menu = ui.level_menu
 
-        self.run_state_menu = (RunOnePlayer, RunTwoPlayer)
+        self.level_choices = (
+            levels.CLASSIC,
+            levels.BIG, 
+            levels.SUPER, 
+            levels.EXTREME
+        )
 
         self.inputs = {
             Menu.SELECT: False,
@@ -36,10 +42,10 @@ class TitlePlayers(GameState):
     def update(self):
 
         if self.inputs[Menu.SELECT] == True:
-            self.game.run_state = self.run_state_menu[self.menu.index]
+            self.game.load_level(self.level_choices[self.menu.index])
             self.game.game_state.pop()
-            # self.game.game_state.push(self.game.run_state(self.game))
-            self.game.game_state.push(LevelSelect(self.game))
+            self.game.game_state.push(self.game.run_state(self.game))
+            self.game.game_state.push(Start(self.game))
 
         if self.inputs[Menu.LEFT] == True:
             self.menu.down()

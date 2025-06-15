@@ -16,27 +16,37 @@ class RunTwoPlayer(GameState):
 
     def __init__(self, game):
         super().__init__(game)
-        # self.game_over = False
-        self.border = ui.create_border(self.game.cell_size)
+
+        # BORDER
+        if self.game.level_config.has_border:
+            self.border = ui.create_border(self.game.level_config.cell_size)
+        else:
+            self.border = []
+
+        # SNAKES
         self.snakes = [
             Snake(
-                self.game.window_size, self.game.cell_size, 
+                self.game.window_size, self.game.level_config.cell_size, 
                 ((self.game.window_w * .75), self.game.window_h // 2),           
-                (0, 1), color=cfg.PINK
+                (0, 1), color=cfg.PINK, initial_speed=self.game.level_config.speed,
+                acceleration = self.game.level_config.acceleration
             ),
             Snake(
-                self.game.window_size, self.game.cell_size, 
-                ((self.game.window_w * .25), (self.game.window_h // 2) - self.game.cell_size),
-                (0, -1), color=cfg.PURPLE
+                self.game.window_size, self.game.level_config.cell_size, 
+                ((self.game.window_w * .25), (self.game.window_h // 2) - self.game.level_config.cell_size),
+                (0, -1), color=cfg.PURPLE, initial_speed=self.game.level_config.speed,
+                acceleration = self.game.level_config.acceleration
             )
         ]
 
         for snake in self.snakes:
             snake.moving = True
-            
+        
+        # FRUIT
         self.fruits = []
-        self.add_fruit(3)
+        self.add_fruit(self.game.level_config.fruit_qty)
 
+        # AVAILABLE INPUTS
         self.inputs = {
             Play.SNAKE_ONE_UP: False,
             Play.SNAKE_ONE_DOWN: False,
@@ -127,7 +137,7 @@ class RunTwoPlayer(GameState):
         self.reset_inputs()
 
     def draw(self, window):
-        ui.draw_border(window, self.border, self.game.cell_size)
+        ui.draw_border(window, self.border, self.game.level_config.cell_size)
         
         score_surf, score_rect = ui.create_2player_score_banner(
             self.snakes[0].score, self.snakes[1].score
@@ -136,7 +146,7 @@ class RunTwoPlayer(GameState):
 
         for fruit in self.fruits:
             pygame.draw.rect(
-                window, cfg.GREEN, ((fruit), (self.game.display_size)), border_radius=6
+                window, cfg.GREEN, ((fruit), (self.game.display_size)), border_radius=cfg.BORDER_RADIUS
             )
         for snake in self.snakes:
             snake.draw(window)
@@ -144,7 +154,7 @@ class RunTwoPlayer(GameState):
     def handle_fruit_collision(self, snake):
         for fruit in self.fruits:
             if fruit == snake.head_position:
-                snake.eat()
+                snake.eat(self.game.level_config.growth_rate)
                 snake.score += (len(snake.body) * 10)
                 self.fruits.remove(fruit)
                 self.add_fruit()
@@ -153,7 +163,7 @@ class RunTwoPlayer(GameState):
         for _ in range(n):
             placed = False
             while not placed:
-                coord = get_rand_coord(self.game.window_size, self.game.cell_size)
+                coord = get_rand_coord(self.game.window_size, self.game.level_config.cell_size)
                 if self.border and coord in self.border: continue
                 if coord in self.snakes[0].body: continue
                 if coord in self.snakes[1].body: continue

@@ -22,14 +22,9 @@ def rand_rgb():
         random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
     )
 
-def flash(colors):
-    color = colors.pop(0)
-    colors.append(color)
-    return color
 
 menu_font = get_pixelfont(50)
 highlight_font = get_pixelfont(75)
-
 
 # 1 Player / 2 Player Menu
 players_menu_items = (
@@ -37,12 +32,26 @@ players_menu_items = (
     "2 Player"
 )
 
+
 players_menu = Menu(
     players_menu_items, 0, (cfg.CENTER[0], cfg.WINDOW_H * 0.75), (1000, 150), 
     menu_font, highlight_font,
     cfg.BLACK, cfg.PINK, cfg.WHITE
 )
 
+
+level_menu_items = (
+    "Classic",
+    "Big",
+    "Super",
+    "Extreme"
+)
+
+level_menu = Menu(
+    level_menu_items, 0, (cfg.CENTER[0], cfg.WINDOW_H * 0.75), (1000, 150), 
+    menu_font, highlight_font,
+    cfg.BLACK, cfg.PINK, cfg.WHITE
+)
 
 def create_border(cell_size):
     border = []
@@ -57,7 +66,7 @@ def create_border(cell_size):
 def draw_border(window, border, cell_size):
     for coordinate in border:
         pygame.draw.rect(
-            window, cfg.BLUE, ((coordinate), (cell_size - 4, cell_size - 4)), border_radius=6
+            window, cfg.BLUE, ((coordinate), (cell_size - 4, cell_size - 4)), border_radius=cfg.BORDER_RADIUS
         )
 
     
