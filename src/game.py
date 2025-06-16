@@ -6,7 +6,7 @@ import pygame
 import src.config as cfg
 from src.game_states.title import Title
 import src.level_config as levels
-from src.state_manager import StateManager
+from src.stack_manager import StackManager
 
 
 class Game:
@@ -20,7 +20,7 @@ class Game:
         self.display_size = None
         self.update_display_size()
         
-        self.game_state = StateManager()
+        self.game_state = StackManager()
         self.game_state.push(Title(self))
     
 

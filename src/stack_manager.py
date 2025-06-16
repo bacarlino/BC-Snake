@@ -1,4 +1,4 @@
-class StateManager:
+class StackManager:
 
     def __init__(self):
         self.stack = []

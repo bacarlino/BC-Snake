@@ -8,6 +8,7 @@ from src.game_states.run_two_player import RunTwoPlayer
 from src.game_states.level_select import LevelSelect
 from src.game_states.multiplayer_menu import MultiplayerMenu
 from src.menu import Menu, MenuItem
+from src.stack_manager import StackManager
 import src.ui_elements as ui
 
 
@@ -15,7 +16,7 @@ class TitlePlayers(GameState):
 
     def __init__(self, game):
         super().__init__(game)
-
+        self.menu_stack = StackManager()
         players_menu_items = [
             MenuItem("1 Player", self.select_one_player),
             MenuItem("2 Player", self.select_two_player)
