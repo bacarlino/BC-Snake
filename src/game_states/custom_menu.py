@@ -17,9 +17,10 @@ class MultiplayerMenu(GameState):
         super().__init__(game)
 
         self.multiplayer_menu_items = [
-            MenuItem("Death\nMatch", lambda: self.game.save_play_state(RunDeathMatch)),
-            MenuItem("Score\nBattle", lambda: self.game.save_play_state(RunScoreBattle)),
-            MenuItem("Co-Op", lambda: self.game.save_play_state(RunCoOp))
+            MenuItem("Perimeter\nWall", lambda: self.game.game_state.push(PerimeterWall)),
+            MenuItem("Board\nSize", lambda: self.game.save_play_state(RunScoreBattle)),
+            MenuItem("Speed\nIncrease", lambda: self.game.save_play_state(RunCoOp)),
+            MenuItem("Fruit\nQuantity", lambda: self.game.save_play_state(RunCoOp))
         ]
 
         self.multiplayer_menu = Menu(
@@ -54,7 +55,6 @@ class MultiplayerMenu(GameState):
         if self.inputs[MenuInput.SELECT] == True:
             self.multiplayer_menu.select()
             self.game.game_state.pop()
-            # self.game.game_state.push(self.game.saved_play_state(self.game))
             self.game.game_state.push(LevelSelect(self.game))
 
         if self.inputs[MenuInput.LEFT] == True:

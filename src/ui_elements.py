@@ -23,8 +23,8 @@ def rand_rgb():
     )
 
 
-MENU_FONT = get_pixelfont(50)
-HIGHTLIGHT_FONT = get_pixelfont(75)
+MENU_FONT = get_pixelfont(40)
+HIGHTLIGHT_FONT = get_pixelfont(60)
 
 
 def create_border(cell_size):
@@ -77,15 +77,15 @@ def create_match_over():
 
 def create_score_banner(score):
     score_banner = f"{score}"
-    surf = get_pixelfont(50).render(score_banner, True, cfg.ORANGE)
-    rect = surf.get_rect(center=(cfg.CENTER[0], cfg.WINDOW_H * .125))
+    surf = get_pixelfont(48).render(score_banner, True, cfg.ORANGE)
+    rect = surf.get_rect(center=(cfg.CENTER[0], cfg.WINDOW_H * .15))
     return surf, rect
 
 
 def create_2player_score_banner(p1_score, p2_score):
     score_banner = f"PURPLE: {p2_score}                                        PINK: {p1_score}"
-    surf = get_pixelfont(50).render(score_banner, True, cfg.ORANGE)
-    rect = surf.get_rect(center=(cfg.CENTER[0], cfg.WINDOW_W * .125))
+    surf = get_pixelfont(48).render(score_banner, True, cfg.ORANGE)
+    rect = surf.get_rect(center=(cfg.CENTER[0], cfg.WINDOW_W * .15))
     return surf, rect
 
 

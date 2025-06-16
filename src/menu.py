@@ -69,13 +69,11 @@ class Menu:
         multiplier = (self.width / segments) / self.width
 
         for i, item in enumerate(self.menu_items, start=1):
-            posx = self.width * (multiplier * i)
-            item.set_pos((posx, self.height / 2))
+
+            x = self.width * (multiplier * i)
+            item.set_pos((x, self.height / 2))
         
-    # def create_menu_items(self):
-    #     for str_item in self.str_items:
-    #         self.menu_items.append(MenuItem(str_item))
-        
+
 class MenuItem:
         
     def __init__(self, text="TEXT", callback=None, font=None, color=(255, 255, 255), size=12, pos=(0, 0)):    
@@ -86,7 +84,7 @@ class MenuItem:
         self.font = font
 
     def update(self):
-        self.surf = self.font.render(self.text, False, self.color)
+        self.surf = self.font.render(self.text, True, self.color)
         self.rect = self.surf.get_rect(center=self.pos)
 
     def make_color(self, color):
