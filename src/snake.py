@@ -200,20 +200,6 @@ class Snake:
             if not abs(self.direction[0]):
                 self.next_direction = (1, 0)
 
-    # def update_direction(self):
-    #     if self.next_direction == "up":
-    #         if not abs(self.direction[1]):
-    #             self.direction = (0, -1)
-    #     elif self.next_direction == "down":
-    #         if not abs(self.direction[1]):
-    #             self.direction = (0, 1)
-    #     elif self.next_direction == "left":
-    #         if not abs(self.direction[0]):
-    #             self.direction = (-1, 0)
-    #     elif self.next_direction == "right":
-    #         if not abs(self.direction[0]):
-    #             self.direction = (1, 0)
-
     def check_wrap(self, x, y):
         if self.head_position[0] >= self.window_w:
             return (0, y)

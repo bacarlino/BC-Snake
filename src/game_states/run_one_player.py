@@ -44,10 +44,6 @@ class RunOnePlayer(GameState):
 
         # AVAILABLE COMMANDS
         self.inputs = {
-            # Play.SNAKE_ONE_UP: False,
-            # Play.SNAKE_ONE_DOWN: False,
-            # Play.SNAKE_ONE_LEFT: False,
-            # Play.SNAKE_ONE_RIGHT: False,
             Play.START: False, 
             Play.PAUSE: False,
             Play.QUIT: False
@@ -65,23 +61,6 @@ class RunOnePlayer(GameState):
         
         for snake in self.snakes:
             snake.handle_keys(keys)
-        # if keys[pygame.K_UP]:
-        #     self.inputs[Play.SNAKE_ONE_UP] = True
-        # elif keys[pygame.K_DOWN]:
-        #     self.inputs[Play.SNAKE_ONE_DOWN] = True
-        # elif keys[pygame.K_LEFT]:
-        #     self.inputs[Play.SNAKE_ONE_LEFT] = True
-        # elif keys[pygame.K_RIGHT]:
-        #     self.inputs[Play.SNAKE_ONE_RIGHT] = True
-        # elif keys[pygame.K_w]:
-        #     self.inputs[Play.SNAKE_ONE_UP] = True
-        # elif keys[pygame.K_s]:
-        #     self.inputs[Play.SNAKE_ONE_DOWN] = True
-        # elif keys[pygame.K_a]:
-        #     self.inputs[Play.SNAKE_ONE_LEFT] = True
-        # elif keys[pygame.K_d]:
-        #     self.inputs[Play.SNAKE_ONE_RIGHT] = True
-
 
     def update(self):
 
@@ -91,15 +70,6 @@ class RunOnePlayer(GameState):
             self.game.reset_game()
             return
 
-        # if self.inputs[Play.SNAKE_ONE_UP]:
-        #     self.snakes[0].next_direction = "up"
-        # if self.inputs[Play.SNAKE_ONE_DOWN]:
-        #     self.snakes[0].next_direction = "down"
-        # if self.inputs[Play.SNAKE_ONE_LEFT]:
-        #     self.snakes[0].next_direction = "left"
-        # if self.inputs[Play.SNAKE_ONE_RIGHT]:
-        #     self.snakes[0].next_direction = "right"
-        
         time_now = time.perf_counter()
         for snake in self.snakes:
             snake.update(time_now, self.border)
