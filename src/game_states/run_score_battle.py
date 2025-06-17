@@ -3,7 +3,7 @@ import time
 import pygame
 
 import src.config as cfg
-from src.controls import Play
+from src.controls import Play, ARROW, WSAD
 from src.game_states.game_over import GameOver
 from src.game_states.game_state import GameState
 from src.game_states.pause import Pause
@@ -26,13 +26,17 @@ class RunScoreBattle(GameState):
         # SNAKES
         self.snakes = [
             Snake(
-                self.game.window_size, self.game.level_config.cell_size, 
+                self.game.window_size, 
+                [ARROW],
+                self.game.level_config.cell_size,
                 ((self.game.window_w * .75), self.game.window_h // 2),           
                 (0, 1), color=cfg.PINK, initial_speed=self.game.level_config.speed,
                 acceleration = self.game.level_config.acceleration
             ),
             Snake(
-                self.game.window_size, self.game.level_config.cell_size, 
+                self.game.window_size, 
+                [WSAD],
+                self.game.level_config.cell_size, 
                 ((self.game.window_w * .25), (self.game.window_h // 2) - self.game.level_config.cell_size),
                 (0, -1), color=cfg.PURPLE, initial_speed=self.game.level_config.speed,
                 acceleration = self.game.level_config.acceleration
@@ -48,14 +52,6 @@ class RunScoreBattle(GameState):
 
         # AVAILABLE INPUTS
         self.inputs = {
-            Play.SNAKE_ONE_UP: False,
-            Play.SNAKE_ONE_DOWN: False,
-            Play.SNAKE_ONE_LEFT: False,
-            Play.SNAKE_ONE_RIGHT: False,
-            Play.SNAKE_TWO_UP: False,
-            Play.SNAKE_TWO_DOWN: False,
-            Play.SNAKE_TWO_LEFT: False,
-            Play.SNAKE_TWO_RIGHT: False,
             Play.START: False, 
             Play.PAUSE: False,
             Play.QUIT: False
@@ -70,24 +66,8 @@ class RunScoreBattle(GameState):
                 self.inputs[Play.QUIT] = True
 
         keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_UP]:
-            self.inputs[Play.SNAKE_ONE_UP] = True
-        elif keys[pygame.K_DOWN]:
-            self.inputs[Play.SNAKE_ONE_DOWN] = True
-        elif keys[pygame.K_LEFT]:
-            self.inputs[Play.SNAKE_ONE_LEFT] = True
-        elif keys[pygame.K_RIGHT]:
-            self.inputs[Play.SNAKE_ONE_RIGHT] = True
-        elif keys[pygame.K_w]:
-            self.inputs[Play.SNAKE_TWO_UP] = True
-        elif keys[pygame.K_s]:
-            self.inputs[Play.SNAKE_TWO_DOWN] = True
-        elif keys[pygame.K_a]:
-            self.inputs[Play.SNAKE_TWO_LEFT] = True
-        elif keys[pygame.K_d]:
-            self.inputs[Play.SNAKE_TWO_RIGHT] = True
-
+        for snake in self.snakes:
+            snake.handle_keys(keys)
 
     def update(self):
 
@@ -96,23 +76,6 @@ class RunScoreBattle(GameState):
         if self.inputs[Play.QUIT] == True:
             self.game.reset_game()
             return
-
-        if self.inputs[Play.SNAKE_ONE_UP]:
-            self.snakes[0].next_direction = "up"
-        if self.inputs[Play.SNAKE_ONE_DOWN]:
-            self.snakes[0].next_direction = "down"
-        if self.inputs[Play.SNAKE_ONE_LEFT]:
-            self.snakes[0].next_direction = "left"
-        if self.inputs[Play.SNAKE_ONE_RIGHT]:
-            self.snakes[0].next_direction = "right"
-        if self.inputs[Play.SNAKE_TWO_UP]:
-            self.snakes[1].next_direction = "up"
-        if self.inputs[Play.SNAKE_TWO_DOWN]:
-            self.snakes[1].next_direction = "down"
-        if self.inputs[Play.SNAKE_TWO_LEFT]:
-            self.snakes[1].next_direction = "left"
-        if self.inputs[Play.SNAKE_TWO_RIGHT]:
-            self.snakes[1].next_direction = "right"
 
         time_now = time.perf_counter()
         game_over = False

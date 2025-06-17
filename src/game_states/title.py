@@ -2,7 +2,7 @@ import pygame
 
 from src.game_states.game_state import GameState
 from src.controls import MenuInput
-from src.game_states.title_players import TitlePlayers
+from src.game_states.title_menu import TitleMenu
 import src.ui_elements as ui
 
 
@@ -22,7 +22,7 @@ class Title(GameState):
     def update(self):
         if self.inputs[MenuInput.SELECT]:
             self.game.game_state.pop()
-            self.game.game_state.push(TitlePlayers(self.game))
+            self.game.game_state.push(TitleMenu(self.game))
 
         self.reset_inputs()
 

@@ -7,19 +7,25 @@ class StackManager:
         self.stack.append(item)
 
     def pop(self):
-        return self.stack.pop()
+        if self.stack:
+            return self.stack.pop()
 
     def peek(self):
-        return self.stack[-1]
+        if self.stack:
+            return self.stack[-1]
     
     def peek_below(self):
-        return self.stack[-2]
+        if self.stack:
+            return self.stack[-2]
     
     def handle_events(self, event):
-        self.peek().handle_events(event)
+        if self.stack:
+            self.peek().handle_events(event)
 
     def update(self):
-        self.peek().update()
+        if self.stack:
+            self.peek().update()
         
     def draw(self, window):
-        self.peek().draw(window)
+        if self.stack:
+            self.peek().draw(window)
