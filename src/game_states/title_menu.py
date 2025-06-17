@@ -108,7 +108,7 @@ class TitleMenu(GameState):
         self.menu.push(self.level_menu)
 
     def select_two_player(self):
-        self.game.game_state.push(MultiplayerMenu(self.game))
+        self.menu.push(self.multiplayer_menu)
 
     def select_level(self, level):
         self.game.load_level(level)
