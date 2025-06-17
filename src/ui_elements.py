@@ -4,11 +4,9 @@ import random
 import pygame
 
 import src.config as cfg
-from src.menu import Menu, MenuItem
 
 
 pygame.init()
-
 
 def get_pixelfont(size):
     base_path = Path(__file__).parent.parent
@@ -22,9 +20,15 @@ def rand_rgb():
         random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
     )
 
+menu_font = get_pixelfont(40)
+menu_font.align = pygame.FONT_CENTER
+MENU_FONT = menu_font
 
-MENU_FONT = get_pixelfont(40)
-HIGHTLIGHT_FONT = get_pixelfont(60)
+highlight_font = get_pixelfont(60)
+highlight_font.align = pygame.FONT_CENTER
+HIGHTLIGHT_FONT = highlight_font
+
+SUB_FONT = get_pixelfont(15)
 
 
 def create_border(cell_size):
@@ -58,8 +62,15 @@ def create_ping_pang():
 
 
 def create_press_space():     
-    surf = get_pixelfont(50).render("Press SPACE to begin", True, cfg.ORANGE)
-    rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.9))
+    surf = get_pixelfont(50).render("Press SPACE to start", True, cfg.ORANGE)
+    rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.85))
+    return surf, rect
+
+def create_press_space_enter():
+    surf = get_pixelfont(50).render(
+        "Press ENTER to select / SPACE to start", True, cfg.ORANGE
+    )
+    rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.85))
     return surf, rect
 
 

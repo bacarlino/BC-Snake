@@ -2,7 +2,7 @@ import pygame
 
 from src.input import MenuInput
 from src.sounds import MENU_SCROLL, MENU_SELECT
-
+from src.ui_elements import rand_rgb
 
 class Menu:
     
@@ -14,9 +14,10 @@ class Menu:
         size=(0, 0),
         main_font=None, 
         highlight_font=None,
-        background=None, 
+        sub_font=None,
         main_color=(255, 255, 255), 
-        highlight_color=(100, 100, 255)
+        highlight_color=(100, 100, 255),
+        background=None, 
     ):
         
         self.menu_items = items
@@ -24,6 +25,7 @@ class Menu:
 
         self.main_font = main_font
         self.highlight_font = highlight_font
+        self.sub_font = sub_font
 
         self.background = background
         self.main_color = main_color
@@ -107,8 +109,9 @@ class Menu:
 
 class MenuItem:
         
-    def __init__(self, text="TEXT", callback=None, font=None, color=(255, 255, 255), size=12, pos=(0, 0)):    
+    def __init__(self, text="TEXT", callback=None, subtext="SUBTEXT", font=None, color=(255, 255, 255), size=12, pos=(0, 0)):    
         self.text = text
+        self.subtext = subtext
         self.callback = callback
         self.color = color
         self.pos = pos
@@ -117,6 +120,8 @@ class MenuItem:
     def update(self):
         self.surf = self.font.render(self.text, True, self.color)
         self.rect = self.surf.get_rect(center=self.pos)
+        self.subsurf = None
+        self.subrect = None
 
     def make_color(self, color):
         self.color = color
