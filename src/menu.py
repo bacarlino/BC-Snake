@@ -1,5 +1,8 @@
 import pygame
 
+from src.input import MenuInput
+from src.sounds import MENU_SCROLL, MENU_SELECT
+
 
 class Menu:
     
@@ -31,18 +34,33 @@ class Menu:
         self.surf = pygame.Surface((self.width, self.height))
         self.rect = self.surf.get_rect(center=pos)
 
+        self.inputs = {
+            MenuInput.SELECT: False,
+            MenuInput.LEFT: False,
+            MenuInput.RIGHT: False,
+        }
         self.update()
         self.align_items()
 
+    def handle_event(self, event):
+        if event.key == pygame.K_SPACE:
+            self.inputs[MenuInput.SELECT] = True
+        if event.key == pygame.K_LEFT:
+            self.inputs[MenuInput.LEFT] = True
+        if event.key == pygame.K_RIGHT:
+            self.inputs[MenuInput.RIGHT] = True
+
     def update(self):
-        for item in self.menu_items:
-            if item == self.menu_items[self.index]:
-                item.make_color(self.highlight_color)
-                item.set_font(self.highlight_font)
-            else:
-                item.make_color(self.main_color)
-                item.set_font(self.main_font)
-            item.update()
+        if self.inputs[MenuInput.SELECT] == True:
+            self.select()
+        if self.inputs[MenuInput.LEFT] == True:
+            self.up()
+        if self.inputs[MenuInput.RIGHT] == True:
+            self.down()
+  
+        self.update_items()
+        for input in self.inputs:
+            self.inputs[input] = False
 
     def draw(self, surf):
         self.surf.fill(self.background)
@@ -51,17 +69,30 @@ class Menu:
         surf.blit(self.surf, self.rect)
 
     def up(self):
-        if self.index < len(self.menu_items) - 1:
-            self.index += 1
-            self.update()
-    
-    def down(self):
         if self.index > 0:
+            MENU_SCROLL.play()
             self.index -= 1
-            self.update()
+            self.update_items()
 
+    def down(self):
+        if self.index < len(self.menu_items) - 1:
+            MENU_SCROLL.play()
+            self.index += 1
+            self.update_items()
+    
     def select(self):
+        MENU_SELECT.play()
         self.menu_items[self.index].callback()
+
+    def update_items(self):
+        for item in self.menu_items:
+            if item == self.menu_items[self.index]:
+                item.make_color(self.highlight_color)
+                item.set_font(self.highlight_font)
+            else:
+                item.make_color(self.main_color)
+                item.set_font(self.main_font)
+            item.update()
 
     def align_items(self):
         

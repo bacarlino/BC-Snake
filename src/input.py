@@ -15,6 +15,7 @@ class MenuInput(Enum):
     LEFT = auto()
     RIGHT = auto()
     SELECT = auto()
+    BACK = auto()
 
 
 class Play(Enum):

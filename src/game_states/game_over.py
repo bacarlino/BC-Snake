@@ -3,7 +3,7 @@ import time
 import pygame
 
 from src.game_states.game_state import GameState
-from src.controls import Play
+from src.input import Play
 from src.game_states.start import Start
 import src.ui_elements as ui
 
@@ -12,7 +12,7 @@ class GameOver(GameState):
     def __init__(self, game):
         super().__init__(game)
 
-        self.inputs = {
+        self.commands = {
             Play.START: False,
             Play.QUIT: False
         }
@@ -20,18 +20,18 @@ class GameOver(GameState):
     def handle_events(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                self.inputs[Play.START] = True
+                self.commands[Play.START] = True
             if event.key == pygame.K_ESCAPE:
-                self.inputs[Play.QUIT] = True
+                self.commands[Play.QUIT] = True
 
     def update(self):
-        if self.inputs[Play.START] == True:
+        if self.commands[Play.START] == True:
             self.game.game_state.pop()
             self.game.game_state.pop()
             self.game.game_state.push(self.game.saved_play_state(self.game))
             self.game.game_state.push(Start(self.game))
             return
-        if self.inputs[Play.QUIT] == True:
+        if self.commands[Play.QUIT] == True:
             self.game.reset_game()
             return
 
@@ -40,7 +40,7 @@ class GameOver(GameState):
             if snake.dead:
                 snake.update(time_now)
 
-        self.reset_inputs()
+        self.reset_command_flags()
 
     def draw(self, window):
         self.game.game_state.peek_below().draw(window)

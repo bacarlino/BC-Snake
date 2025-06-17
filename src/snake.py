@@ -3,7 +3,7 @@ import time
 import pygame
 
 from src.config import BORDER_RADIUS
-from src.controls import Move, MoveControls
+from src.input import Move, MoveControls
 from src.sounds import EAT_FRUIT_SFX, COLLISION_SFX
 import src.ui_elements as ui
 
@@ -80,7 +80,6 @@ class Snake:
 
     
     def handle_keys(self, keys):
-        # Iterate through controls list
         for control in self.controls:
             if keys[control.up]:
                 self.commands[Move.UP] = True

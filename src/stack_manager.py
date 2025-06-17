@@ -4,13 +4,16 @@ class StackManager:
         self.stack = []
 
     def push(self, item):
+        print(f"Push to: {self.stack}")
         self.stack.append(item)
 
     def pop(self):
+        print(f"Pop from: {self.stack}")
         if self.stack:
             return self.stack.pop()
 
     def peek(self):
+        print(f"Peek from: {self.stack}")
         if self.stack:
             return self.stack[-1]
     

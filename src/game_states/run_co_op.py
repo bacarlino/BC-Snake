@@ -3,7 +3,7 @@ import time
 import pygame
 
 import src.config as cfg
-from src.controls import Play, ARROW, WSAD
+from src.input import Play, ARROW, WSAD
 from src.game_states.game_over import GameOver
 from src.game_states.game_state import GameState
 from src.game_states.pause import Pause
@@ -51,7 +51,7 @@ class RunCoOp(GameState):
         self.add_fruit(self.game.level_config.fruit_qty)
 
         # AVAILABLE INPUTS
-        self.inputs = {
+        self.commands = {
             Play.START: False, 
             Play.PAUSE: False,
             Play.QUIT: False
@@ -95,7 +95,7 @@ class RunCoOp(GameState):
             # snake.moving = False
             self.game.game_state.push(GameOver(self.game))
 
-        self.reset_inputs()
+        self.reset_command_flags()
 
     def draw(self, window):
         ui.draw_border(window, self.border, self.game.level_config.cell_size)

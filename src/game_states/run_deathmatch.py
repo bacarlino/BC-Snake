@@ -3,7 +3,7 @@ import time
 import pygame
 
 import src.config as cfg
-from src.controls import Play, ARROW, WSAD
+from src.input import Play, ARROW, WSAD
 from src.game_states.game_over import GameOver
 from src.game_states.game_state import GameState
 from src.game_states.match_over import MatchOver

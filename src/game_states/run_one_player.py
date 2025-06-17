@@ -3,7 +3,7 @@ import time
 import pygame
 
 import src.config as cfg
-from src.controls import Play, ARROW, WSAD
+from src.input import Play, ARROW, WSAD
 from src.game_states.game_over import GameOver
 from src.game_states.game_state import GameState
 from src.game_states.pause import Pause
@@ -43,7 +43,7 @@ class RunOnePlayer(GameState):
         self.add_fruit(self.game.level_config.fruit_qty)
 
         # AVAILABLE COMMANDS
-        self.inputs = {
+        self.commands = {
             Play.START: False, 
             Play.PAUSE: False,
             Play.QUIT: False
@@ -53,9 +53,9 @@ class RunOnePlayer(GameState):
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                self.inputs[Play.PAUSE] = True
+                self.commands[Play.PAUSE] = True
             if event.key == pygame.K_ESCAPE:
-                self.inputs[Play.QUIT] = True
+                self.commands[Play.QUIT] = True
 
         keys = pygame.key.get_pressed()
         
@@ -64,9 +64,9 @@ class RunOnePlayer(GameState):
 
     def update(self):
 
-        if self.inputs[Play.PAUSE] == True:
+        if self.commands[Play.PAUSE] == True:
             self.game.game_state.push(Pause(self.game))
-        if self.inputs[Play.QUIT] == True:
+        if self.commands[Play.QUIT] == True:
             self.game.reset_game()
             return
 
@@ -80,7 +80,7 @@ class RunOnePlayer(GameState):
                 snake.die()
                 self.game.game_state.push(GameOver(self.game))
 
-        self.reset_inputs()
+        self.reset_command_flags()
 
     def draw(self, window):
         if self.game.level_config.has_border:

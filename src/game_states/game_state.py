@@ -5,7 +5,7 @@ class GameState(ABC):
     
     def __init__(self, game):
         self.game = game
-        self.inputs = {}
+        self.commands = {}
 
     @abstractmethod
     def handle_events(self, event):
@@ -19,6 +19,6 @@ class GameState(ABC):
     def draw(self, window):
         pass
 
-    def reset_inputs(self):
-        for command in self.inputs:
-            self.inputs[command] = False
+    def reset_command_flags(self):
+        for command in self.commands:
+            self.commands[command] = False

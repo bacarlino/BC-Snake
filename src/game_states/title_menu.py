@@ -1,7 +1,7 @@
 import pygame
 
 import src.config as cfg
-from src.controls import MenuInput
+from src.input import MenuInput
 from src.game_states.game_state import GameState
 from src.game_states.run_one_player import RunOnePlayer
 from src.game_states.run_co_op import RunCoOp
@@ -45,10 +45,9 @@ class TitleMenu(GameState):
                 "Co-Op", 
                 lambda: self.select_multiplayer_mode(RunCoOp)
             )
-
         ]
 
-        menu_args = {
+        menu_config = {
             "index": 0, 
             "pos": (cfg.CENTER[0], cfg.WINDOW_H * 0.75), 
             "size": (1000, 150), 
@@ -59,42 +58,33 @@ class TitleMenu(GameState):
             "highlight_color": cfg.WHITE
         }
 
-        self.players_menu = Menu(players_menu_items, **menu_args)
-        self.level_menu = Menu(self.level_menu_items, **menu_args)
+        self.players_menu = Menu(players_menu_items, **menu_config)
+        self.level_menu = Menu(self.level_menu_items, **menu_config)
         self.multiplayer_menu = Menu(
-            self.multiplayer_menu_items, **menu_args
+            self.multiplayer_menu_items, **menu_config
         )
 
         self.menu = StackManager()
         self.menu.push(self.players_menu)
 
-        self.inputs = {
-            MenuInput.SELECT: False,
-            MenuInput.LEFT: False,
-            MenuInput.RIGHT: False
+        self.commands = {
+            MenuInput.BACK: False
         }
 
     def handle_events(self, event):
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                self.inputs[MenuInput.SELECT] = True
-            if event.key == pygame.K_LEFT:
-                self.inputs[MenuInput.LEFT] = True
-            if event.key == pygame.K_RIGHT:
-                self.inputs[MenuInput.RIGHT] = True
+            self.menu.peek().handle_event(event)
+            if event.key == pygame.K_ESCAPE:
+                self.commands[MenuInput.BACK] = True
                 
     def update(self):
+        if self.commands[MenuInput.BACK]:
+            print("Menu Back triggered")
+            if len(self.menu.stack) > 1:
+                self.menu.pop()
+        self.menu.peek().update()
 
-        if self.inputs[MenuInput.SELECT] == True:
-            self.menu.peek().select()
-
-        if self.inputs[MenuInput.LEFT] == True:
-            self.menu.peek().down()
-
-        if self.inputs[MenuInput.RIGHT] == True:
-            self.menu.peek().up()
-
-        self.reset_inputs()
+        self.reset_command_flags()
 
     def draw(self, window):
         window.blit(ui.PING_PANG_SURF, ui.PING_PANG_RECT)
