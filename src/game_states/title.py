@@ -1,16 +1,15 @@
 import pygame
 
 from src.game_states.game_state import GameState
-from src.input import MenuInput
+from src.controls import MenuInput
 from src.game_states.title_players import TitlePlayers
-from src.stack_manager import StackManager
 import src.ui_elements as ui
+
 
 class Title(GameState):
 
     def __init__(self, game):
         super().__init__(game)
-        self.menu_stack = StackManager()
         self.inputs = {
             MenuInput.SELECT: False
         }

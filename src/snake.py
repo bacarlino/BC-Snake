@@ -3,6 +3,7 @@ import time
 import pygame
 
 from src.config import BORDER_RADIUS
+from src.controls import Move, MoveControls
 from src.sounds import EAT_FRUIT_SFX, COLLISION_SFX
 import src.ui_elements as ui
 
@@ -10,10 +11,11 @@ import src.ui_elements as ui
 class Snake:
 
     def __init__(
-        self, window_size, cell_size=1, position=(0, 0), 
+        self, window_size, controls, cell_size=1, position=(0, 0), 
         direction=(1, 0), initial_speed=5, acceleration=0, color=ui.rand_rgb(),
-        length=5
+        length=5,
     ):
+        
         self.cell_size = cell_size
         self.display_size = (self.cell_size - 4, self.cell_size - 4)
         self.main_color = color
@@ -33,9 +35,7 @@ class Snake:
         self.moving = False
         self.initial_direction = direction
         self.direction = self.initial_direction
-        self.next_direction = None
-
-        self.initial_speed = initial_speed
+        self.next_direction = self.direction
         self.speed = initial_speed
         self.move_timer = 1 / self.speed
         self.acceleration = acceleration
@@ -44,6 +44,14 @@ class Snake:
         self.collision_detected = False
         self.dead = False
         self.prev_flash_time = self.prev_move_time
+        
+        self.controls = controls
+        self.commands = {
+            Move.UP: False,
+            Move.DOWN: False,
+            Move.LEFT: False,
+            Move.RIGHT: False
+        }
         
         self.fill_body(self.length)
 
@@ -69,19 +77,34 @@ class Snake:
         self.body = []
         # self.score = 0
         self.fill_body()
-    
 
-    def update(self, time_now, border=None, other_snakes=None):
+    
+    def handle_keys(self, keys):
+        # Iterate through controls list
+        for control in self.controls:
+            if keys[control.up]:
+                self.commands[Move.UP] = True
+            if keys[control.down]:
+                self.commands[Move.DOWN] = True
+            if keys[control.left]:
+                self.commands[Move.LEFT] = True
+            if keys[control.right]:
+                self.commands[Move.RIGHT] = True
+
+    def update(self, 
+    time_now, border=None, other_snakes=None):
         if self.dead:
             self.moving = False
             self.update_dead(time_now)
             return
 
+        self.update_next_direction()
+
         move_dt = time_now - self.prev_move_time
         if move_dt >= self.move_timer and self.moving:
             
             # updates self.direction using self.next_direction
-            self.update_direction()
+            self.direction = self.next_direction
 
             # calculate move
             new_x = self.head_position[0] + ((self.direction[0] * self.cell_size))
@@ -118,6 +141,8 @@ class Snake:
                 self.body.pop(-1)
             # reset the move timer
             self.set_prev_move_time(time_now)
+            for move in self.commands:
+                self.commands[move] = False
 
     def update_dead(self, time_now):
         flash_dt = time_now - self.prev_flash_time
@@ -161,19 +186,33 @@ class Snake:
         COLLISION_SFX.play()
         self.dead = True
 
-    def update_direction(self):
-        if self.next_direction == "up":
+    def update_next_direction(self):
+        if self.commands[Move.UP]:
             if not abs(self.direction[1]):
-                self.direction = (0, -1)
-        elif self.next_direction == "down":
+                self.next_direction = (0, -1)
+        elif self.commands[Move.DOWN]:
             if not abs(self.direction[1]):
-                self.direction = (0, 1)
-        elif self.next_direction == "left":
+                self.next_direction = (0, 1)
+        elif self.commands[Move.LEFT]:
             if not abs(self.direction[0]):
-                self.direction = (-1, 0)
-        elif self.next_direction == "right":
+                self.next_direction = (-1, 0)
+        elif self.commands[Move.RIGHT]:
             if not abs(self.direction[0]):
-                self.direction = (1, 0)
+                self.next_direction = (1, 0)
+
+    # def update_direction(self):
+    #     if self.next_direction == "up":
+    #         if not abs(self.direction[1]):
+    #             self.direction = (0, -1)
+    #     elif self.next_direction == "down":
+    #         if not abs(self.direction[1]):
+    #             self.direction = (0, 1)
+    #     elif self.next_direction == "left":
+    #         if not abs(self.direction[0]):
+    #             self.direction = (-1, 0)
+    #     elif self.next_direction == "right":
+    #         if not abs(self.direction[0]):
+    #             self.direction = (1, 0)
 
     def check_wrap(self, x, y):
         if self.head_position[0] >= self.window_w:

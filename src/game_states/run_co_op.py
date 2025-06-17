@@ -3,7 +3,7 @@ import time
 import pygame
 
 import src.config as cfg
-from src.input import Play
+from src.controls import Play
 from src.game_states.game_over import GameOver
 from src.game_states.game_state import GameState
 from src.game_states.pause import Pause

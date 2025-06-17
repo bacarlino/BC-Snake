@@ -3,7 +3,7 @@ import time
 import pygame
 
 from src.game_states.game_state import GameState
-from src.input import Play
+from src.controls import Play
 from src.game_states.start import Start
 import src.ui_elements as ui
 

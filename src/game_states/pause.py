@@ -1,7 +1,7 @@
 import pygame
 
 from src.game_states.game_state import GameState
-from src.input import Play
+from src.controls import Play
 import src.ui_elements as ui
 
 class Pause(GameState):

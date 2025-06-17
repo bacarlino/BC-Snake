@@ -2,7 +2,7 @@ import pygame
 
 import src.config as cfg
 from src.game_states.game_state import GameState
-from src.input import MenuInput
+from src.controls import MenuInput
 from src.game_states.level_select import LevelSelect
 from src.game_states.run_co_op import RunCoOp
 from src.game_states.run_deathmatch import RunDeathMatch
