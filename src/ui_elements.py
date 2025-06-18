@@ -24,12 +24,12 @@ menu_font = get_pixelfont(40)
 menu_font.align = pygame.FONT_CENTER
 MENU_FONT = menu_font
 
-highlight_font = get_pixelfont(60)
+highlight_font = get_pixelfont(50)
 highlight_font.align = pygame.FONT_CENTER
 HIGHTLIGHT_FONT = highlight_font
 
 
-sub_font = get_pixelfont(25)
+sub_font = get_pixelfont(30)
 sub_font.align = pygame.FONT_CENTER
 SUB_FONT = sub_font
 
@@ -53,19 +53,19 @@ def draw_border(window, border, cell_size):
 
     
 def create_title():
-    surf = get_pixelfont(450).render("SNAKE", True, cfg.PINK, bgcolor="blue")
+    surf = get_pixelfont(450).render("SNAKE", True, cfg.PINK)
     rect = surf.get_rect(center = (cfg.WINDOW_W / 2, cfg.WINDOW_H * .4))
     return surf, rect
     
 
 def create_ping_pang():
-    surf = get_pixelfont(50).render("Brandon Carlino's", True, cfg.BLUE, bgcolor="green")
+    surf = get_pixelfont(50).render("Brandon Carlino's", True, cfg.BLUE)
     rect = surf.get_rect(midbottom=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.15))
     return surf, rect
 
 
 def create_press_space():     
-    surf = get_pixelfont(50).render("Press SPACE to start", True, cfg.ORANGE, bgcolor="pink")
+    surf = get_pixelfont(50).render("Press SPACE to start", True, cfg.ORANGE)
     rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.85))
     return surf, rect
 

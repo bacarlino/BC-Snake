@@ -24,7 +24,6 @@ class TitleMenu(GameState):
         }
 
         menu_height = ui.PRESS_SPACE_RECT.top - ui.TITLE_RECT.bottom 
-
         self.menu = StackManager()
         menu_config = {
             "index": 0, 
@@ -35,7 +34,7 @@ class TitleMenu(GameState):
             "sub_font": ui.SUB_FONT,
             "main_color": cfg.PINK, 
             "highlight_color": cfg.WHITE,
-            "background": cfg.BLACK, 
+            "bg_color": cfg.BLACK, 
         }
 
         # PLAYER MENU
@@ -55,7 +54,7 @@ class TitleMenu(GameState):
             MenuItem(
                 "Big\nGrid",
                 lambda: self.select_level(levels.BIG),
-                "Small world with slight acceleration"
+                "Classic rules on a small map with a twist - acceleration"
             ),
             MenuItem(
                 "Super\nClassic",
@@ -65,7 +64,7 @@ class TitleMenu(GameState):
             MenuItem(
                 "Extreme",
                 lambda: self.select_level(levels.EXTREME), 
-                "Everything turned to 11 on a large map",
+                "Everything turned up to 11 on a large map",
             ),
         
             # MenuItem("Insane", lambda: self.select_level(levels.INSANE)),
