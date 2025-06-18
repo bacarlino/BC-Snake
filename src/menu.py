@@ -20,7 +20,7 @@ class Menu:
         background=None, 
     ):
         
-        self.menu_items = items
+        self.items = items
         self.index = index
 
         self.main_font = main_font
@@ -33,16 +33,20 @@ class Menu:
 
         self.width, self.height = size
 
+        item_width = self.width // len(self.items)
+        for number, item in enumerate(self.items):
+            item.initialize((item_width, self.height), (item_width * number, 0))
+    
         self.surf = pygame.Surface((self.width, self.height))
-        self.rect = self.surf.get_rect(center=pos)
+        self.rect = self.surf.get_rect(midtop=pos)
 
         self.inputs = {
             MenuInput.SELECT: False,
             MenuInput.LEFT: False,
             MenuInput.RIGHT: False,
         }
+
         self.update()
-        self.align_items()
 
     def handle_event(self, event):
         if event.key == pygame.K_SPACE:
@@ -64,11 +68,12 @@ class Menu:
         for input in self.inputs:
             self.inputs[input] = False
 
-    def draw(self, surf):
-        self.surf.fill(self.background)
-        for item in self.menu_items:
+    def draw(self, window):
+        # self.surf.fill(self.background)
+        self.surf.fill("white")
+        for item in self.items:
             item.draw(self.surf)
-        surf.blit(self.surf, self.rect)
+        window.blit(self.surf, self.rect)
 
     def up(self):
         if self.index > 0:
@@ -77,61 +82,76 @@ class Menu:
             self.update_items()
 
     def down(self):
-        if self.index < len(self.menu_items) - 1:
+        if self.index < len(self.items) - 1:
             MENU_SCROLL.play()
             self.index += 1
             self.update_items()
     
     def select(self):
         MENU_SELECT.play()
-        self.menu_items[self.index].callback()
+        self.items[self.index].callback()
 
     def update_items(self):
-        for item in self.menu_items:
-            if item == self.menu_items[self.index]:
-                item.make_color(self.highlight_color)
-                item.set_font(self.highlight_font)
+        for item in self.items:
+            if item == self.items[self.index]:
+                item.make_main_color(self.highlight_color)
+                item.set_main_font(self.highlight_font)
             else:
-                item.make_color(self.main_color)
-                item.set_font(self.main_font)
+                item.make_main_color(self.main_color)
+                item.set_main_font(self.main_font)
+            item.set_sub_font(self.sub_font)
+            item.make_sub_color(self.main_color)
             item.update()
 
-    def align_items(self):
-        
-        segments = len(self.menu_items) + 1
-        multiplier = (self.width / segments) / self.width
-
-        for i, item in enumerate(self.menu_items, start=1):
-
-            x = self.width * (multiplier * i)
-            item.set_pos((x, self.height / 2))
-        
 
 class MenuItem:
         
-    def __init__(self, text="TEXT", callback=None, subtext="SUBTEXT", font=None, color=(255, 255, 255), size=12, pos=(0, 0)):    
-        self.text = text
-        self.subtext = subtext
+    def __init__(self, main_text="TEXT", callback=None, sub_text="SUBTEXT"):
+        self.main_text = main_text
+        self.sub_text = sub_text
         self.callback = callback
-        self.color = color
-        self.pos = pos
-        self.font = font
+        self.main_color = None
+        self.sub_color = None
+        self.pos = None
+        self.sub_pos = None
+        self.main_font = None
+        self.sub_font = None
+
+        self.main_surf = None
+        self.main_rect = None
 
     def update(self):
-        self.surf = self.font.render(self.text, True, self.color)
-        self.rect = self.surf.get_rect(center=self.pos)
-        self.subsurf = None
-        self.subrect = None
+        self.main_text_surf = self.main_font.render(self.main_text, True, self.main_color, bgcolor="yellow")
+        self.main_text_rect = self.main_text_surf.get_rect(center=(self.main_rect.width // 2, self.main_rect.height // 2))
+        
+        self.sub_text_surf = self.sub_font.render(self.sub_text, True, self.sub_color, bgcolor="yellow", wraplength=self.main_rect.width)
+        self.sub_text_rect = self.sub_text_surf.get_rect(center=(self.main_rect.width // 2, self.main_rect.height // 2))
 
-    def make_color(self, color):
-        self.color = color
+    def initialize(self, size, pos):
+        centerline = size[1] // 2
+        self.main_surf = pygame.Surface((size[0], centerline))
+        self.main_surf.fill("brown")
+        self.main_rect = self.main_surf.get_rect(topleft=pos)
 
-    def set_font(self, font):
-        self.font = font
+        self.sub_surf = pygame.Surface((size[0], centerline))
+        self.sub_surf.fill("blueviolet")
+        self.sub_rect = self.sub_surf.get_rect(topleft=(pos[0], centerline))
+
+    def make_main_color(self, color):
+        self.main_color = color
+
+    def make_sub_color(self, color):
+        self.sub_color = color
+
+    def set_main_font(self, font):
+        self.main_font = font
+
+    def set_sub_font(self, sub_font):
+        self.sub_font = sub_font
 
     def draw(self, surf):
-        surf.blit(self.surf, self.rect)
+        self.main_surf.blit(self.main_text_surf, self.main_text_rect)
+        self.sub_surf.blit(self.sub_text_surf, self.sub_text_rect)
 
-    def set_pos(self, pos):
-        self.pos = pos
-        self.rect.center = pos
+        surf.blit(self.main_surf, self.main_rect)
+        surf.blit(self.sub_surf, self.sub_rect)

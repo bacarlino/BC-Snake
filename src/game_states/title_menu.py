@@ -23,11 +23,13 @@ class TitleMenu(GameState):
             MenuInput.BACK: False
         }
 
+        menu_height = ui.PRESS_SPACE_RECT.top - ui.TITLE_RECT.bottom 
+
         self.menu = StackManager()
         menu_config = {
             "index": 0, 
-            "pos": (cfg.CENTER[0], cfg.WINDOW_H * 0.75), 
-            "size": (1000, 150), 
+            "pos": (ui.TITLE_RECT.midbottom), 
+            "size": (cfg.WINDOW_W * 0.9, menu_height), 
             "main_font": ui.MENU_FONT, 
             "highlight_font": ui.HIGHTLIGHT_FONT,
             "sub_font": ui.SUB_FONT,
