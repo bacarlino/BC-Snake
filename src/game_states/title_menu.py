@@ -23,6 +23,15 @@ class TitleMenu(GameState):
             MenuInput.BACK: False
         }
 
+        # CUSTOM LEVEL OPTIONS
+        self.has_border = True
+        self.start_speed = 6
+        self.speed_up = 0
+        self.world_size = 32
+        self.fruit_qty = 5
+        self.growth_rate = 1 
+
+        # MENUS
         menu_height = ui.PRESS_SPACE_RECT.top - ui.TITLE_RECT.bottom 
         self.menu = StackManager()
         menu_config = {
@@ -103,18 +112,6 @@ class TitleMenu(GameState):
             multiplayer_menu_items, **menu_config
         )
 
-        # CUSTOM LEVEL SETTINGS
-  
-        self.has_border = True,
-        self.start_speed = 6,
-        self.acceleration = 0,
-        self.world_size = 32,
-        self.fruit_qty = 3,
-        self.growth_rate = 1 
-
-        
-        
-
         # CUSTOM LEVEL MENU
         custom_level_items = [
             MenuItem(
@@ -130,22 +127,22 @@ class TitleMenu(GameState):
             MenuItem(
                 "Start\nSpeed",
                 lambda: self.menu.push(self.start_speed_menu),
-                self.start_speed_sub_text()
+                f"{self.start_speed_sub_text()}"
             ),
             MenuItem(
                 "Speed\nUp", 
                 lambda: self.menu.push(self.speed_up_menu),
-                self.speed_up_sub_text()
+                f"{self.speed_up_sub_text()}"
             ),
             MenuItem(
                 "Fruit\nQuantity", 
                 lambda: self.menu.push(self.fruit_qty_menu),
-                self.fruit_qty_sub_text()
+                f"{self.fruit_qty_sub_text()}"
             ),
             MenuItem(
                 "Growth\nRate",
                 lambda: self.menu.push(self.growth_rate_menu),
-                self.growth_rate_sub_text()
+                f"{self.growth_rate_sub_text()}"
             ),
         ]
         self.custom_level_menu = Menu(custom_level_items, **menu_config)
@@ -171,9 +168,11 @@ class TitleMenu(GameState):
         self.start_speed_menu = Menu(start_speed_menu_items, **menu_config)
 
         speed_up_menu_items = [
-            MenuItem("On", self.speed_up_on, sub_text=None),
-            MenuItem("Off", self.speed_up_off, sub_text=None)
+            MenuItem("Off", self.speed_up_off, sub_text=None),
+            MenuItem("low", self.speed_up_low, sub_text=None),
+            MenuItem("high", self.speed_up_high, sub_text=None)
         ]
+        
         self.speed_up_menu = Menu(speed_up_menu_items, **menu_config)
 
         fruit_qty_menu_items = [
@@ -191,8 +190,6 @@ class TitleMenu(GameState):
         self.growth_rate_menu = Menu(growth_rate_menu_items, **menu_config)
 
         self.menu.push(self.players_menu)
-
-
 
     def handle_events(self, event):
         if event.type == pygame.KEYDOWN:
@@ -264,13 +261,17 @@ class TitleMenu(GameState):
         self.menu.pop()
         self.start_speed = 10
 
-    def speed_up_on(self):
-        self.menu.pop()
-        self.acceleration = True
-
     def speed_up_off(self):
         self.menu.pop()
-        self.acceleration = False
+        self.acceleration = 0
+
+    def speed_up_low(self):
+        self.menu.pop()
+        self.acceleration = 1.5
+
+    def speed_up_high(self):
+        self.menu.pop()
+        self.acceleration = 2.5
         
     def fruit_qty_low(self):
         self.menu.pop()
@@ -300,6 +301,7 @@ class TitleMenu(GameState):
         return "On" if self.has_border else "False"
     
     def world_size_sub_text(self):
+        print(f"World size: {self.world_size}")
         if self.world_size == 64:
             return "Small"
         elif self.world_size == 32:
@@ -308,40 +310,38 @@ class TitleMenu(GameState):
             return "Large"
         
     def start_speed_sub_text(self):
+        print(f"Start Speed: {self.start_speed}")
         if self.start_speed == 6:
             return "Slow"
-        if self.start_speed == 8:
+        elif self.start_speed == 8:
             return "Medium"
-        if self.start_speed == 10:
+        elif self.start_speed == 10:
             return "Fast"
 
     def speed_up_sub_text(self):
-        "On" if self.acceleration else "Off"
-     
-      
-    def fruit_qty_sub_text(self):
-        if self.fruit_qty == 1:
+        print("Speed up: ", self.speed_up)
+        if self.speed_up == 0:
+            return "Off"
+        elif self.speed_up == 1.5:
             return "Low"
-        elif self.fruit_qty == 3:
-            return "Medium"
-        elif self.fruit_qty == 25:
+        elif self.speed_up == 2:
             return "High"
         else:
             return "Error"
-
+     
+    def fruit_qty_sub_text(self):
+        print("Fruit qty: ", self.fruit_qty)
+        if self.fruit_qty == 1:
+            return "Low"
+        elif self.fruit_qty == 5:
+            return "Medium"
+        elif self.fruit_qty == 25:
+            return "High"
+        
     def growth_rate_sub_text(self):
         if self.growth_rate == 1:
             return "Low"
-        elif self.growth_rate == 5:
+        elif self.growth_rate == 3:
             return "Medium"
         elif self.growth_rate == 10:
             return "High"
-
-    """
-    self.has_border = True,
-    self.speed = 6,
-    self.acceleration = 0,
-    self.cell_size = 32,
-    self.fruit_qty = 3,
-    self.growth_rate = 1 
-    """
