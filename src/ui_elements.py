@@ -53,52 +53,53 @@ def draw_border(window, border, cell_size):
 
     
 def create_title():
-    surf = get_pixelfont(450).render("SNAKE", True, cfg.PINK)
-    rect = surf.get_rect(center = (cfg.WINDOW_W / 2, cfg.WINDOW_H * .4))
+    surf = get_pixelfont(400).render("SNAKE", True, cfg.PINK)
+    rect = surf.get_rect(center = (cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.4))
     return surf, rect
     
 
 def create_ping_pang():
-    surf = get_pixelfont(50).render("Brandon Carlino's", True, cfg.BLUE)
+    surf = get_pixelfont(50).render("Brandon Carlino's", True, cfg.LT_BLUE)
     rect = surf.get_rect(midbottom=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.15))
     return surf, rect
 
 
 def create_press_space():     
-    surf = get_pixelfont(50).render("Press SPACE to start", True, cfg.ORANGE)
+    surf = get_pixelfont(50).render("Press SPACE to start", True, cfg.AQUA)
     rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.85))
     return surf, rect
 
+
 def create_press_space_enter():
     surf = get_pixelfont(50).render(
-        "Press ENTER to select / SPACE to start", True, cfg.ORANGE
+        "Press ENTER to select / SPACE to start", True, cfg.AQUA
     )
-    rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.85))
+    rect = surf.get_rect(midbottom=(cfg.WINDOW_W / 2, cfg.WINDOW_H - 64))
     return surf, rect
 
 
 def create_game_over():     
-    surf = get_pixelfont(100).render("GAME OVER", True, cfg.ORANGE)
+    surf = get_pixelfont(100).render("GAME OVER", True, cfg.AQUA)
     rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
     return surf, rect
 
 
 def create_match_over():     
-    surf = get_pixelfont(100).render("MATCH OVER", True, cfg.ORANGE)
+    surf = get_pixelfont(100).render("MATCH OVER", True, cfg.AQUA)
     rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
     return surf, rect
 
 
 def create_score_banner(score):
     score_banner = f"{score}"
-    surf = get_pixelfont(48).render(score_banner, True, cfg.ORANGE)
+    surf = get_pixelfont(48).render(score_banner, True, cfg.AQUA)
     rect = surf.get_rect(center=(cfg.CENTER[0], cfg.WINDOW_H * .15))
     return surf, rect
 
 
 def create_2player_score_banner(p1_score, p2_score):
     score_banner = f"PURPLE: {p2_score}                                        PINK: {p1_score}"
-    surf = get_pixelfont(48).render(score_banner, True, cfg.ORANGE)
+    surf = get_pixelfont(48).render(score_banner, True, cfg.AQUA)
     rect = surf.get_rect(center=(cfg.CENTER[0], cfg.WINDOW_W * .15))
     return surf, rect
 

@@ -33,7 +33,9 @@ class Menu:
 
         self.width, self.height = size
 
-        item_width = self.width // len(self.items)
+        self.width = self.width * (0.3 + (0.12 * len(self.items)))
+
+        item_width = (self.width // len(self.items))
         for number, item in enumerate(self.items):
             item.initialize((item_width, self.height), (item_width * number, 0), self.bg_color)
     
@@ -124,20 +126,20 @@ class MenuItem:
         self.sub_surf.fill((self.bg_color))
     
         self.main_text_surf = self.main_font.render(self.main_text, True, self.main_color)
-        self.main_text_rect = self.main_text_surf.get_rect(center=(self.main_rect.width // 2, self.main_rect.height // 2))
+        self.main_text_rect = self.main_text_surf.get_rect(center=(self.main_rect.width // 2, self.main_rect.height * 0.4))
         
-        self.sub_text_surf = self.sub_font.render(self.sub_text, True, self.sub_color, wraplength=int(self.main_rect.width * .8))
+        self.sub_text_surf = self.sub_font.render(self.sub_text, True, self.sub_color, wraplength=int(self.sub_rect.width * .8))
         # self.sub_text_rect = self.sub_text_surf.get_rect(center=(self.sub_rect.width // 2, self.sub_rect.height // 2))
         self.sub_text_rect = self.sub_text_surf.get_rect(midtop=(self.sub_rect.width // 2, 0))
 
     def initialize(self, size, pos, bg_color):
         self.bg_color = bg_color
-        centerline = size[1] // 2
+        centerline = size[1] * 0.4
         self.main_surf = pygame.Surface((size[0], centerline))
         self.main_surf.fill("brown")
         self.main_rect = self.main_surf.get_rect(topleft=pos)
 
-        self.sub_surf = pygame.Surface((size[0], centerline))
+        self.sub_surf = pygame.Surface((size[0], size[1]-centerline))
         self.sub_surf.fill("blueviolet")
         self.sub_rect = self.sub_surf.get_rect(topleft=(pos[0], centerline))
 
