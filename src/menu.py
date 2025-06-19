@@ -103,6 +103,9 @@ class Menu:
             item.set_sub_font(self.sub_font)
             item.make_sub_color(self.main_color)
             item.update()
+        
+    def update_sub_text(self, text):
+        self.items[self.index].sub_text = text
 
 
 class MenuItem:
@@ -129,7 +132,6 @@ class MenuItem:
         self.main_text_rect = self.main_text_surf.get_rect(center=(self.main_rect.width // 2, self.main_rect.height * 0.4))
         
         self.sub_text_surf = self.sub_font.render(self.sub_text, True, self.sub_color, wraplength=int(self.sub_rect.width * .8))
-        # self.sub_text_rect = self.sub_text_surf.get_rect(center=(self.sub_rect.width // 2, self.sub_rect.height // 2))
         self.sub_text_rect = self.sub_text_surf.get_rect(midtop=(self.sub_rect.width // 2, 0))
 
     def initialize(self, size, pos, bg_color):

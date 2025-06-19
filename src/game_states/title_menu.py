@@ -26,7 +26,7 @@ class TitleMenu(GameState):
         # CUSTOM LEVEL OPTIONS
         self.has_border = True
         self.start_speed = 6
-        self.speed_up = 0
+        self.acceleration = 0
         self.world_size = 32
         self.fruit_qty = 5
         self.growth_rate = 1 
@@ -41,7 +41,7 @@ class TitleMenu(GameState):
             "main_font": ui.MENU_FONT, 
             "highlight_font": ui.HIGHTLIGHT_FONT,
             "sub_font": ui.SUB_FONT,
-            "main_color": cfg.PINK, 
+            "main_color": cfg.AQUA, 
             "highlight_color": cfg.WHITE,
             "bg_color": cfg.BLACK, 
         }
@@ -61,9 +61,9 @@ class TitleMenu(GameState):
                 "The classic snake experience",
             ),     
             MenuItem(
-                "Zoooomed",
+                "Zooomed",
                 lambda: self.select_level(levels.BIG),
-                "Zoooomed in. Classic with a twist - zoom zoom"
+                "Zooomed in. Classic with a twist - ZOOM"
             ),
             MenuItem(
                 "Super\nClassic",
@@ -131,8 +131,8 @@ class TitleMenu(GameState):
             ),
             MenuItem(
                 "Speed\nUp", 
-                lambda: self.menu.push(self.speed_up_menu),
-                f"{self.speed_up_sub_text()}"
+                lambda: self.menu.push(self.acceleration_menu),
+                f"{self.acceleration_sub_text()}"
             ),
             MenuItem(
                 "Fruit\nQuantity", 
@@ -167,13 +167,13 @@ class TitleMenu(GameState):
         ]
         self.start_speed_menu = Menu(start_speed_menu_items, **menu_config)
 
-        speed_up_menu_items = [
-            MenuItem("Off", self.speed_up_off, sub_text=None),
-            MenuItem("low", self.speed_up_low, sub_text=None),
-            MenuItem("high", self.speed_up_high, sub_text=None)
+        acceleration_menu_items = [
+            MenuItem("Off", self.acceleration_off, sub_text=None),
+            MenuItem("Low", self.acceleration_low, sub_text=None),
+            MenuItem("High", self.acceleration_high, sub_text=None)
         ]
         
-        self.speed_up_menu = Menu(speed_up_menu_items, **menu_config)
+        self.acceleration_menu = Menu(acceleration_menu_items, **menu_config)
 
         fruit_qty_menu_items = [
             MenuItem("Low", self.fruit_qty_low, sub_text=None),
@@ -232,73 +232,90 @@ class TitleMenu(GameState):
     def perimeter_on(self):
         self.menu.pop()
         self.has_border = True
+        self.menu.peek().update_sub_text(self.has_border_sub_text())
 
     def perimeter_off(self):
         self.menu.pop()
         self.has_border = False
+        self.menu.peek().update_sub_text(self.has_border_sub_text())
 
     def world_size_small(self):
         self.menu.pop()
         self.world_size = 64
+        self.menu.peek().update_sub_text(self.world_size_sub_text())
 
     def world_size_medium(self):
         self.menu.pop()
         self.world_size = 32
+        self.menu.peek().update_sub_text(self.world_size_sub_text())
 
     def world_size_large(self):
         self.menu.pop()
-        self.world_size = 64
+        self.world_size = 16
+        self.menu.peek().update_sub_text(self.world_size_sub_text())
 
     def start_speed_slow(self):
         self.menu.pop()
         self.start_speed = 6
+        self.menu.peek().update_sub_text(self.start_speed_sub_text())
 
     def start_speed_medium(self):
         self.menu.pop()
         self.start_speed = 8
+        self.menu.peek().update_sub_text(self.start_speed_sub_text())
     
     def start_speed_fast(self):
         self.menu.pop()
         self.start_speed = 10
+        self.menu.peek().update_sub_text(self.start_speed_sub_text())
 
-    def speed_up_off(self):
+    def acceleration_off(self):
         self.menu.pop()
         self.acceleration = 0
+        self.menu.peek().update_sub_text(self.acceleration_sub_text())
 
-    def speed_up_low(self):
+    def acceleration_low(self):
         self.menu.pop()
         self.acceleration = 1.5
+        self.menu.peek().update_sub_text(self.acceleration_sub_text())
 
-    def speed_up_high(self):
+    def acceleration_high(self):
         self.menu.pop()
         self.acceleration = 2.5
+        self.menu.peek().update_sub_text(self.acceleration_sub_text())
         
     def fruit_qty_low(self):
         self.menu.pop()
         self.fruit_qty = 1
+        self.menu.peek().update_sub_text(self.fruit_qty_sub_text())
 
     def fruit_qty_medium(self):
         self.menu.pop()
         self.fruit_qty = 5
+        self.menu.peek().update_sub_text(self.fruit_qty_sub_text())
 
     def fruit_qty_high(self):
         self.menu.pop()
         self.fruit_qty = 25
+        self.menu.peek().update_sub_text(self.fruit_qty_sub_text())
     
     def growth_rate_low(self):
         self.menu.pop()
         self.growth_rate = 1
+        self.menu.peek().update_sub_text(self.growth_rate_sub_text())
 
     def growth_rate_medium(self):
         self.menu.pop()
         self.growth_rate = 3
+        self.menu.peek().update_sub_text(self.growth_rate_sub_text())
 
     def growth_rate_high(self):
         self.menu.pop()
         self.growth_rate = 10
+        self.menu.peek().update_sub_text(self.growth_rate_sub_text())
 
     def has_border_sub_text(self):
-        return "On" if self.has_border else "False"
+        return "On" if self.has_border else "Off"
     
     def world_size_sub_text(self):
         print(f"World size: {self.world_size}")
@@ -318,13 +335,13 @@ class TitleMenu(GameState):
         elif self.start_speed == 10:
             return "Fast"
 
-    def speed_up_sub_text(self):
-        print("Speed up: ", self.speed_up)
-        if self.speed_up == 0:
+    def acceleration_sub_text(self):
+        print("Speed up: ", self.acceleration)
+        if self.acceleration == 0:
             return "Off"
-        elif self.speed_up == 1.5:
+        elif self.acceleration == 1.5:
             return "Low"
-        elif self.speed_up == 2:
+        elif self.acceleration == 2.5:
             return "High"
         else:
             return "Error"

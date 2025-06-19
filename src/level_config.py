@@ -5,18 +5,15 @@ from dataclasses import dataclass
 class LevelConfig:
     has_border: bool
     speed: int
-    speed_up: float
+    acceleration: float
     cell_size: int
     fruit_qty: int
     growth_rate: int
 
-
-
-
 CLASSIC = LevelConfig(
     has_border=True, 
     speed=6, 
-    speed_up=0, 
+    acceleration=0, 
     cell_size=32, 
     fruit_qty=1,
     growth_rate=1
@@ -25,7 +22,7 @@ CLASSIC = LevelConfig(
 BIG = LevelConfig(
     has_border=True, 
     speed=6, 
-    speed_up=1.5, 
+    acceleration=1.5, 
     cell_size=64, 
     fruit_qty=1,
     growth_rate=1
@@ -34,7 +31,7 @@ BIG = LevelConfig(
 SUPER = LevelConfig(
     has_border=True, 
     speed=8, 
-    speed_up=1.5, 
+    acceleration=1.5, 
     cell_size=32, 
     fruit_qty=5,
     growth_rate=2
@@ -43,7 +40,7 @@ SUPER = LevelConfig(
 EXTREME = LevelConfig(
     has_border=True, 
     speed=10, 
-    speed_up=2, 
+    acceleration=2, 
     cell_size=16, 
     fruit_qty=25,
     growth_rate=5
@@ -52,7 +49,7 @@ EXTREME = LevelConfig(
 INSANE = LevelConfig(
     has_border=False, 
     speed=12, 
-    speed_up=3, 
+    acceleration=3, 
     cell_size=8, 
     fruit_qty=150,
     growth_rate=15
@@ -61,7 +58,7 @@ INSANE = LevelConfig(
 def create_custom_level(
     has_border=True,
     speed=6,
-    speed_up=0,
+    acceleration=0,
     cell_size=32,
     fruit_qty=3,
     growth_rate=1      
@@ -69,7 +66,7 @@ def create_custom_level(
     return LevelConfig(
         has_border=has_border,
         speed=speed,
-        speed_up=speed_up,
+        acceleration=acceleration,
         cell_size=cell_size,
         fruit_qty=fruit_qty,
         growth_rate=growth_rate

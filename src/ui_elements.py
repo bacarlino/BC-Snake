@@ -65,14 +65,14 @@ def create_ping_pang():
 
 
 def create_press_space():     
-    surf = get_pixelfont(50).render("Press SPACE to start", True, cfg.AQUA)
+    surf = get_pixelfont(50).render("Press SPACE to start", True, cfg.LT_BLUE)
     rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.85))
     return surf, rect
 
 
 def create_press_space_enter():
     surf = get_pixelfont(50).render(
-        "Press ENTER to select / SPACE to start", True, cfg.AQUA
+        "Press ENTER to select / SPACE to start", True, cfg.LT_BLUE
     )
     rect = surf.get_rect(midbottom=(cfg.WINDOW_W / 2, cfg.WINDOW_H - 64))
     return surf, rect
