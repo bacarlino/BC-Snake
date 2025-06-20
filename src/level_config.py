@@ -55,12 +55,12 @@ INSANE = LevelConfig(
     growth_rate=15
 )
 
-def create_custom_level(
+def create_level_config(
     has_border=True,
     speed=6,
     acceleration=0,
     cell_size=32,
-    fruit_qty=3,
+    fruit_qty=1,
     growth_rate=1      
 ):
     return LevelConfig(

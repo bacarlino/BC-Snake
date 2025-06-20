@@ -12,11 +12,14 @@ class Menu:
         index=0, 
         pos=(0, 0), 
         size=(0, 0),
+
         main_font=None, 
         highlight_font=None,
         sub_font=None,
+
         main_color=(255, 255, 255), 
         highlight_color=(100, 100, 255),
+        sub_color = None,
         bg_color=None, 
     ):
         
@@ -27,9 +30,10 @@ class Menu:
         self.highlight_font = highlight_font
         self.sub_font = sub_font
 
-        self.bg_color = bg_color
         self.main_color = main_color
         self.highlight_color = highlight_color
+        self.sub_color = sub_color
+        self.bg_color = bg_color
 
         self.width, self.height = size
 
@@ -101,7 +105,7 @@ class Menu:
                 item.make_main_color(self.main_color)
                 item.set_main_font(self.main_font)
             item.set_sub_font(self.sub_font)
-            item.make_sub_color(self.main_color)
+            item.make_sub_color(self.sub_color)
             item.update()
         
     def update_sub_text(self, text):
@@ -138,11 +142,9 @@ class MenuItem:
         self.bg_color = bg_color
         centerline = size[1] * 0.4
         self.main_surf = pygame.Surface((size[0], centerline))
-        self.main_surf.fill("brown")
         self.main_rect = self.main_surf.get_rect(topleft=pos)
 
         self.sub_surf = pygame.Surface((size[0], size[1]-centerline))
-        self.sub_surf.fill("blueviolet")
         self.sub_rect = self.sub_surf.get_rect(topleft=(pos[0], centerline))
 
     def make_main_color(self, color):

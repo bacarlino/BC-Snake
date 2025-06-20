@@ -27,9 +27,10 @@ class TitleMenu(GameState):
         self.has_border = True
         self.start_speed = 6
         self.acceleration = 0
-        self.world_size = 32
-        self.fruit_qty = 5
+        self.cell_size = 32
+        self.fruit_qty = 1
         self.growth_rate = 1 
+
 
         # MENUS
         menu_height = ui.PRESS_SPACE_RECT.top - ui.TITLE_RECT.bottom 
@@ -41,8 +42,9 @@ class TitleMenu(GameState):
             "main_font": ui.MENU_FONT, 
             "highlight_font": ui.HIGHTLIGHT_FONT,
             "sub_font": ui.SUB_FONT,
-            "main_color": cfg.AQUA, 
+            "main_color": cfg.PINK, 
             "highlight_color": cfg.WHITE,
+            "sub_color": cfg.AQUA,
             "bg_color": cfg.BLACK, 
         }
 
@@ -121,8 +123,8 @@ class TitleMenu(GameState):
             ),
             MenuItem(
                 "World\nSize",
-                lambda: self.menu.push(self.world_size_menu),
-                f"{self.world_size_sub_text()}"
+                lambda: self.menu.push(self.cell_size_menu),
+                f"{self.cell_size_sub_text()}"
             ),
             MenuItem(
                 "Start\nSpeed",
@@ -144,6 +146,12 @@ class TitleMenu(GameState):
                 lambda: self.menu.push(self.growth_rate_menu),
                 f"{self.growth_rate_sub_text()}"
             ),
+            MenuItem(
+                "Start\nGame",
+                self.start_custom_game,
+                "Confirm Settings"
+            ),
+            
         ]
         self.custom_level_menu = Menu(custom_level_items, **menu_config)
 
@@ -153,12 +161,12 @@ class TitleMenu(GameState):
         ]
         self.perimeter_menu = Menu(perimeter_menu_items, **menu_config)
 
-        world_size_menu_items = [
-            MenuItem("Small", self.world_size_small, sub_text=None),
-            MenuItem("Medium", self.world_size_medium, sub_text=None),
-            MenuItem("Large", self.world_size_large, sub_text=None)
+        cell_size_menu_items = [
+            MenuItem("Big", self.cell_size_large, sub_text=None),
+            MenuItem("Medium", self.cell_size_medium, sub_text=None),
+            MenuItem("Small", self.cell_size_small, sub_text=None),
         ]
-        self.world_size_menu = Menu(world_size_menu_items, **menu_config)
+        self.cell_size_menu = Menu(cell_size_menu_items, **menu_config)
 
         start_speed_menu_items = [
             MenuItem("Slow", self.start_speed_slow, sub_text=None),
@@ -239,20 +247,20 @@ class TitleMenu(GameState):
         self.has_border = False
         self.menu.peek().update_sub_text(self.has_border_sub_text())
 
-    def world_size_small(self):
+    def cell_size_small(self):
         self.menu.pop()
-        self.world_size = 64
-        self.menu.peek().update_sub_text(self.world_size_sub_text())
+        self.cell_size = 16
+        self.menu.peek().update_sub_text(self.cell_size_sub_text())
 
-    def world_size_medium(self):
+    def cell_size_medium(self):
         self.menu.pop()
-        self.world_size = 32
-        self.menu.peek().update_sub_text(self.world_size_sub_text())
+        self.cell_size = 32
+        self.menu.peek().update_sub_text(self.cell_size_sub_text())
 
-    def world_size_large(self):
+    def cell_size_large(self):
         self.menu.pop()
-        self.world_size = 16
-        self.menu.peek().update_sub_text(self.world_size_sub_text())
+        self.cell_size = 64
+        self.menu.peek().update_sub_text(self.cell_size_sub_text())
 
     def start_speed_slow(self):
         self.menu.pop()
@@ -314,16 +322,30 @@ class TitleMenu(GameState):
         self.growth_rate = 10
         self.menu.peek().update_sub_text(self.growth_rate_sub_text())
 
+    def start_custom_game(self):
+        level_params = levels.create_level_config(
+            self.has_border,
+            self.start_speed,
+            self.acceleration,
+            self.cell_size,
+            self.fruit_qty,
+            self.growth_rate
+        )
+        self.game.load_level(level_params)
+        self.game.game_state.pop()
+        self.game.game_state.push(self.game.saved_play_state(self.game))
+        self.game.game_state.push(Start(self.game))
+
     def has_border_sub_text(self):
         return "On" if self.has_border else "Off"
     
-    def world_size_sub_text(self):
-        print(f"World size: {self.world_size}")
-        if self.world_size == 64:
+    def cell_size_sub_text(self):
+        print(f"Cell Size: {self.cell_size}")
+        if self.cell_size == 16:
             return "Small"
-        elif self.world_size == 32:
+        elif self.cell_size == 32:
             return "Medium"
-        elif self.world_size == 16:
+        elif self.cell_size == 64:
             return "Large"
         
     def start_speed_sub_text(self):
