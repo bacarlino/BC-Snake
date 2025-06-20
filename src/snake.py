@@ -78,7 +78,17 @@ class Snake:
         # self.score = 0
         self.fill_body()
 
-    
+    def handle_event_keydown(self, event):
+        for control in self.controls:
+            if event.key == control.up:
+                self.commands[Move.UP] = True
+            if event.key == control.down:
+                self.commands[Move.DOWN] = True
+            if event.key == control.left:
+                self.commands[Move.LEFT] = True
+            if event.key == control.right:
+                self.commands[Move.RIGHT] = True
+
     def handle_keys(self, keys):
         for control in self.controls:
             if keys[control.up]:

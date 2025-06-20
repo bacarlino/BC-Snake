@@ -57,10 +57,13 @@ class RunOnePlayer(GameState):
             if event.key == pygame.K_ESCAPE:
                 self.commands[Play.QUIT] = True
 
+            for snake in self.snakes:
+                snake.handle_event_keydown(event)
+
         keys = pygame.key.get_pressed()
         
-        for snake in self.snakes:
-            snake.handle_keys(keys)
+        # for snake in self.snakes:
+        #     snake.handle_keys(keys)
 
     def update(self):
 
