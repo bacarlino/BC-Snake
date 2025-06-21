@@ -12,6 +12,8 @@ class Move(Enum):
 
 
 class MenuInput(Enum):
+    UP = auto()
+    DOWN = auto()
     LEFT = auto()
     RIGHT = auto()
     SELECT = auto()

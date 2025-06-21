@@ -4,15 +4,78 @@ from src.input import MenuInput
 from src.sounds import MENU_SCROLL, MENU_SELECT
 from src.ui_elements import rand_rgb
 
+
+class MenuGrid:
+
+    def __init__(self, item_grid, size, pos, colors):
+        self.size = size
+        self.pos = pos
+        self.colors = colors
+        self.item_grid = self.check_list_format(item_grid)
+        self.menu_list = []
+        self.focus_index = 0
+        self.focused = self.menu_list[self.focus_index]
+        self.row_height = size[1] // len(item_grid)
+
+        self.inputs = {
+            MenuInput.UP: False,
+            MenuInput.DOWN: False
+        }
+
+    def check_list_format(self, item_grid):
+        return [list] if not isinstance(item_grid[0], list) else list
+        
+    def create_menu_list(self):
+        track_pos = self.pos
+        for item_list in self.item_grid:
+            self.menu_list.append(
+                Menu(item_list, track_pos, self.size, self.colors)
+            )
+        track_pos += (self.pos[0], self.pos[1] + self.size[1])
+
+    def handle_event(self, event):
+        if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+            self.inputs[MenuInput.UP] == True
+        if event.key == pygame.K_UP or event.key == pygame.K_w:
+            self.inputs[MenuInput.DOWN] == True
+
+        self.focused.handle_event(event)
+
+    def update(self):
+        if self.inputs[MenuInput.UP]:
+            self.up()
+        if self.inputs[MenuInput.DOWN]:
+            self.down()
+        self.focused.update()
+        
+        for input in self.inputs:
+            self.inputs[input] = False
+
+    def draw(self, window):
+        self.focused.draw(window)
+
+    def up(self):
+        if self.focus_index > 0:
+            MENU_SCROLL.play()
+            self.focus_index -= 1
+            self.focused = self.menu_list[self.focus_index]
+
+    def down(self):
+        if self.focus_index < len(self.items) - 1:
+            MENU_SCROLL.play()
+            self.focus_index += 1
+            self.focused = self.menu_list[self.focus_index]
+
+
 class Menu:
     
     def __init__(
         self, 
         items=[], 
-        index=0, 
         pos=(0, 0), 
         size=(0, 0),
 
+        index=0, 
         main_font=None, 
         highlight_font=None,
         sub_font=None,

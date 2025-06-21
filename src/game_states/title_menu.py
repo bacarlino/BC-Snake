@@ -35,10 +35,9 @@ class TitleMenu(GameState):
         # MENUS
         menu_height = ui.PRESS_SPACE_RECT.top - ui.TITLE_RECT.bottom 
         self.menu = StackManager()
-        menu_config = {
-            "index": 0, 
-            "pos": (ui.TITLE_RECT.midbottom), 
-            "size": (cfg.WINDOW_W * 0.9, menu_height), 
+        menu_pos = (ui.TITLE_RECT.midbottom)
+        menu_size = (cfg.WINDOW_W * 0.9, menu_height)
+        menu_colors = {            
             "main_font": ui.MENU_FONT, 
             "highlight_font": ui.HIGHTLIGHT_FONT,
             "sub_font": ui.SUB_FONT,
@@ -53,7 +52,7 @@ class TitleMenu(GameState):
             MenuItem("1 Player", self.select_one_player, sub_text=None),
             MenuItem("2 Player", self.select_two_player, sub_text=None)
         ]
-        self.players_menu = Menu(players_menu_items, **menu_config)
+        self.players_menu = Menu(players_menu_items, menu_pos, menu_size, **menu_colors)
 
         # LEVEL SELECT MENU
         level_menu_items = [
@@ -90,7 +89,7 @@ class TitleMenu(GameState):
                 "Create your own game",
             )
         ]
-        self.level_menu = Menu(level_menu_items, **menu_config)
+        self.level_menu = Menu(level_menu_items, menu_pos, menu_size, **menu_colors)
 
         # MULTIPLAYER MENU
         multiplayer_menu_items = [
@@ -111,7 +110,7 @@ class TitleMenu(GameState):
             )
         ]
         self.multiplayer_menu = Menu(
-            multiplayer_menu_items, **menu_config
+            multiplayer_menu_items, menu_pos, menu_size, **menu_colors
         )
 
         # CUSTOM LEVEL MENU
@@ -153,27 +152,27 @@ class TitleMenu(GameState):
             ),
             
         ]
-        self.custom_level_menu = Menu(custom_level_items, **menu_config)
-
+        self.custom_level_menu = Menu(custom_level_items, menu_pos, menu_size, **menu_colors)
+       
         perimeter_menu_items = [
             MenuItem("On", self.perimeter_on, sub_text=None),
             MenuItem("Off", self.perimeter_off, sub_text=None)
         ]
-        self.perimeter_menu = Menu(perimeter_menu_items, **menu_config)
+        self.perimeter_menu = Menu(perimeter_menu_items, menu_pos, menu_size, **menu_colors)
 
         cell_size_menu_items = [
             MenuItem("Big", self.cell_size_large, sub_text=None),
             MenuItem("Medium", self.cell_size_medium, sub_text=None),
             MenuItem("Small", self.cell_size_small, sub_text=None),
         ]
-        self.cell_size_menu = Menu(cell_size_menu_items, **menu_config)
+        self.cell_size_menu = Menu(cell_size_menu_items, menu_pos, menu_size, **menu_colors)
 
         start_speed_menu_items = [
             MenuItem("Slow", self.start_speed_slow, sub_text=None),
             MenuItem("Medium", self.start_speed_medium, sub_text=None),
             MenuItem("Fast", self.start_speed_fast, sub_text=None)
         ]
-        self.start_speed_menu = Menu(start_speed_menu_items, **menu_config)
+        self.start_speed_menu = Menu(start_speed_menu_items, menu_pos, menu_size, **menu_colors)
 
         acceleration_menu_items = [
             MenuItem("Off", self.acceleration_off, sub_text=None),
@@ -181,21 +180,21 @@ class TitleMenu(GameState):
             MenuItem("High", self.acceleration_high, sub_text=None)
         ]
         
-        self.acceleration_menu = Menu(acceleration_menu_items, **menu_config)
+        self.acceleration_menu = Menu(acceleration_menu_items, menu_pos, menu_size, **menu_colors)
 
         fruit_qty_menu_items = [
             MenuItem("Low", self.fruit_qty_low, sub_text=None),
             MenuItem("Medium", self.fruit_qty_medium, sub_text=None),
             MenuItem("High", self.fruit_qty_high, sub_text=None)
         ]
-        self.fruit_qty_menu = Menu(fruit_qty_menu_items, **menu_config)
+        self.fruit_qty_menu = Menu(fruit_qty_menu_items, menu_pos, menu_size, **menu_colors)
 
         growth_rate_menu_items = [
             MenuItem("Low", self.growth_rate_low, sub_text=None),
             MenuItem("Medium", self.growth_rate_medium, sub_text=None),
             MenuItem("High", self.growth_rate_high, sub_text=None)
         ]
-        self.growth_rate_menu = Menu(growth_rate_menu_items, **menu_config)
+        self.growth_rate_menu = Menu(growth_rate_menu_items, menu_pos, menu_size, **menu_colors)
 
         self.menu.push(self.players_menu)
 

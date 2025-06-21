@@ -69,12 +69,10 @@ def create_press_space():
     rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.85))
     return surf, rect
 
-def create_press_enter():     
-    surf = get_pixelfont(40).render("ENTER: Start Game", True, cfg.LT_BLUE)
+def menu_commands():     
+    surf = get_pixelfont(40).render("SPACE: Select -- ESC: Back", True, cfg.LT_BLUE)
     rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.85))
     return surf, rect
-
-
 
 def create_press_space_enter():
     surf = get_pixelfont(50).render(
