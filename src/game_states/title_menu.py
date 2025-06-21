@@ -131,7 +131,7 @@ class TitleMenu(GameState):
                     f"{self.has_border_sub_text()}"
                 ),
                 MenuItem(
-                    "World\nSize",
+                    "Cell\nSize",
                     lambda: self.menu.push(self.cell_size_menu),
                     f"{self.cell_size_sub_text()}"
                 ),

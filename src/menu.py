@@ -16,7 +16,8 @@ class MenuGrid:
         self.row_size = (size[0], size[1] // len(item_grid))
         self.create_menu_list()
         self.focus_index = 0
-        self.focused = self.menu_list[self.focus_index]
+        self.focused_menu = self.menu_list[self.focus_index]
+        self.set_focus(self.focused_menu)
     
 
         self.inputs = {
@@ -37,18 +38,18 @@ class MenuGrid:
 
     def handle_event(self, event):
         if event.key == pygame.K_DOWN or event.key == pygame.K_s:
-            self.inputs[MenuInput.UP] == True
+            self.inputs[MenuInput.DOWN] = True
         if event.key == pygame.K_UP or event.key == pygame.K_w:
-            self.inputs[MenuInput.DOWN] == True
+            self.inputs[MenuInput.UP] = True
 
-        self.focused.handle_event(event)
+        self.focused_menu.handle_event(event)
 
     def update(self):
         if self.inputs[MenuInput.UP]:
             self.up()
         if self.inputs[MenuInput.DOWN]:
             self.down()
-        self.focused.update()
+        self.focused_menu.update()
         
         for input in self.inputs:
             self.inputs[input] = False
@@ -58,16 +59,49 @@ class MenuGrid:
             menu.draw(window)
 
     def up(self):
+        print("up() called")
         if self.focus_index > 0:
             MENU_SCROLL.play()
+            old_menu = self.focused_menu
             self.focus_index -= 1
-            self.focused = self.menu_list[self.focus_index]
+            # self.focused_menu = self.menu_list[self.focus_index]
+            self.set_focus(old_menu)
 
     def down(self):
-        if self.focus_index < len(self.items) - 1:
+        print("down() called")
+        if self.focus_index < len(self.menu_list) - 1:
             MENU_SCROLL.play()
+            old_menu = self.focused_menu
             self.focus_index += 1
-            self.focused = self.menu_list[self.focus_index]
+            self.set_focus(old_menu)
+            # self.focused_menu = self.menu_list[self.focus_index]
+    
+    def set_focus(self, old_menu):
+        self.clear_is_focused()
+        self.focused_menu = self.menu_list[self.focus_index]
+        self.focused_menu.is_focused = True
+        self.focused_menu.index = self.change_focus_index(old_menu, self.focused_menu)
+        self.update_items()
+
+    def change_focus_index(self, old_menu, new_menu):
+        old_index = old_menu.index
+        if old_index <= len(new_menu.items) - 1:
+            return old_index
+        else:
+            return len(new_menu.items) - 1
+    
+    def clear_is_focused(self):
+        for menu in self.menu_list:
+            menu.is_focused = False
+    
+    def update_items(self):
+        for menu in self.menu_list:
+            menu.update_items()
+
+    def update_sub_text(self, text):
+        self.focused_menu.update_sub_text(text)
+        self.update_items()
+
 
 
 class Menu:
@@ -77,7 +111,6 @@ class Menu:
         items=[], 
         pos=(0, 0), 
         size=(0, 0),
-
         index=0, 
         main_font=None, 
         highlight_font=None,
@@ -91,6 +124,8 @@ class Menu:
         
         self.items = items
         self.index = index
+        
+        self.is_focused = True
 
         self.main_font = main_font
         self.highlight_font = highlight_font
@@ -102,10 +137,9 @@ class Menu:
         self.bg_color = bg_color
 
         self.width, self.height = size
-
         self.width = self.width * (0.3 + (0.12 * len(self.items)))
-
         item_width = (self.width // len(self.items))
+        
         for number, item in enumerate(self.items):
             item.initialize((item_width, self.height), (item_width * number, 0), self.bg_color)
     
@@ -119,6 +153,7 @@ class Menu:
         }
 
         self.update()
+        self.update_items()
 
     def handle_event(self, event):
         if event.key == pygame.K_SPACE:
@@ -129,6 +164,8 @@ class Menu:
             self.inputs[MenuInput.RIGHT] = True
 
     def update(self):
+        if not self.is_focused:
+            return
         if self.inputs[MenuInput.SELECT] == True:
             self.select()
         if self.inputs[MenuInput.LEFT] == True:
@@ -136,7 +173,9 @@ class Menu:
         if self.inputs[MenuInput.RIGHT] == True:
             self.down()
   
-        self.update_items()
+        # update items here and in up() down()? doesn't seem necessary
+        # self.update_items()
+        
         for input in self.inputs:
             self.inputs[input] = False
 
@@ -150,13 +189,14 @@ class Menu:
         if self.index > 0:
             MENU_SCROLL.play()
             self.index -= 1
-            self.update_items()
+            
+            self.update_items() # here and update? update seems wrong
 
     def down(self):
         if self.index < len(self.items) - 1:
             MENU_SCROLL.play()
             self.index += 1
-            self.update_items()
+            self.update_items() # here and update? update seems wrong
     
     def select(self):
         MENU_SELECT.play()
@@ -164,7 +204,7 @@ class Menu:
 
     def update_items(self):
         for item in self.items:
-            if item == self.items[self.index]:
+            if self.is_focused and item == self.items[self.index]:
                 item.make_main_color(self.highlight_color)
                 item.set_main_font(self.highlight_font)
             else:
