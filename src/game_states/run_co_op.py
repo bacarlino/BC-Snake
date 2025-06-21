@@ -51,7 +51,7 @@ class RunCoOp(GameState):
         self.add_fruit(self.game.level_config.fruit_qty)
 
         # AVAILABLE INPUTS
-        self.inputs = {
+        self.commands = {
             Play.START: False, 
             Play.PAUSE: False,
             Play.QUIT: False
@@ -61,9 +61,9 @@ class RunCoOp(GameState):
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                self.inputs[Play.PAUSE] = True
+                self.commands[Play.PAUSE] = True
             if event.key == pygame.K_ESCAPE:
-                self.inputs[Play.QUIT] = True
+                self.commands[Play.QUIT] = True
 
         keys = pygame.key.get_pressed()
 
