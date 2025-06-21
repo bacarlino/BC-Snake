@@ -173,7 +173,7 @@ class TitleMenu(GameState):
             MenuItem("On", self.perimeter_on, sub_text=None),
             MenuItem("Off", self.perimeter_off, sub_text=None)
         ]
-        self.perimeter_menu = Menu(perimeter_menu_items, menu_pos, menu_size, **menu_colors)
+        self.perimeter_menu = MenuGrid(perimeter_menu_items, menu_grid_pos, menu_grid_size, menu_colors)
 
         cell_size_menu_items = [
             MenuItem("Big", self.cell_size_large, sub_text=None),
@@ -229,9 +229,11 @@ class TitleMenu(GameState):
         self.reset_command_flags()
 
     def draw(self, window):
-        window.blit(ui.PING_PANG_SURF, ui.PING_PANG_RECT)
         if not any([isinstance(menu, MenuGrid) for menu in self.menu.stack]):
-            window.blit(ui.TITLE_SURF, ui.TITLE_RECT) 
+            window.blit(ui.PING_PANG_SURF, ui.PING_PANG_RECT)
+            window.blit(ui.TITLE_SURF, ui.TITLE_RECT)
+        else:
+            window.blit(*ui.create_menu_title())
         if self.menu.peek():
             self.menu.peek().draw(window)
         window.blit(ui.PRESS_SPACE_SURF, ui.PRESS_SPACE_RECT)

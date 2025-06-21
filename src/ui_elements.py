@@ -56,7 +56,11 @@ def create_title():
     surf = get_pixelfont(400).render("SNAKE", True, cfg.PINK)
     rect = surf.get_rect(center = (cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.4))
     return surf, rect
-    
+
+def create_menu_title():
+    surf = get_pixelfont(150).render("SNAKE", True, cfg.PINK)
+    rect = surf.get_rect(center = (cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.15))
+    return surf, rect
 
 def create_ping_pang():
     surf = get_pixelfont(50).render("Brandon Carlino's", True, cfg.LT_BLUE)
