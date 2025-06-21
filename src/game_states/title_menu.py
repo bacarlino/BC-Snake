@@ -8,7 +8,7 @@ from src.game_states.run_co_op import RunCoOp
 from src.game_states.run_deathmatch import RunDeathMatch
 from src.game_states.run_score_battle import RunScoreBattle
 import src.level_config as levels
-from src.menu import Menu, MenuItem
+from src.menu import Menu, MenuGrid, MenuItem
 from src.stack_manager import StackManager
 from src.game_states.start import Start
 import src.ui_elements as ui
@@ -18,6 +18,8 @@ class TitleMenu(GameState):
 
     def __init__(self, game):
         super().__init__(game)
+
+        self.title_hidden = False
 
         self.commands = {
             MenuInput.BACK: False
@@ -33,10 +35,16 @@ class TitleMenu(GameState):
 
 
         # MENUS
-        menu_height = ui.PRESS_SPACE_RECT.top - ui.TITLE_RECT.bottom 
         self.menu = StackManager()
+
+        menu_height = ui.PRESS_SPACE_RECT.top - ui.TITLE_RECT.bottom 
         menu_pos = (ui.TITLE_RECT.midbottom)
         menu_size = (cfg.WINDOW_W * 0.9, menu_height)
+        
+        menu_grid_height = ui.PRESS_SPACE_RECT.top - ui.PING_PANG_RECT.bottom
+        menu_grid_pos = (ui.PING_PANG_RECT.midbottom[0], ui.PING_PANG_RECT.midbottom[1] + menu_grid_height * .15)
+        menu_grid_size = (cfg.WINDOW_W * 0.9, menu_grid_height)
+        
         menu_colors = {            
             "main_font": ui.MENU_FONT, 
             "highlight_font": ui.HIGHTLIGHT_FONT,
@@ -85,7 +93,8 @@ class TitleMenu(GameState):
            
             MenuItem(
                 "Custom",
-                lambda: self.menu.push(self.custom_level_menu),
+                # lambda: self.menu.push(self.custom_level_menu_grid),
+                self.custom_level_menu,
                 "Create your own game",
             )
         ]
@@ -115,44 +124,50 @@ class TitleMenu(GameState):
 
         # CUSTOM LEVEL MENU
         custom_level_items = [
-            MenuItem(
-                "Perimeter\nWall", 
-                lambda: self.menu.push(self.perimeter_menu),
-                f"{self.has_border_sub_text()}"
-            ),
-            MenuItem(
-                "World\nSize",
-                lambda: self.menu.push(self.cell_size_menu),
-                f"{self.cell_size_sub_text()}"
-            ),
-            MenuItem(
-                "Start\nSpeed",
-                lambda: self.menu.push(self.start_speed_menu),
-                f"{self.start_speed_sub_text()}"
-            ),
-            MenuItem(
-                "Speed\nUp", 
-                lambda: self.menu.push(self.acceleration_menu),
-                f"{self.acceleration_sub_text()}"
-            ),
-            MenuItem(
-                "Fruit\nQuantity", 
-                lambda: self.menu.push(self.fruit_qty_menu),
-                f"{self.fruit_qty_sub_text()}"
-            ),
-            MenuItem(
-                "Growth\nRate",
-                lambda: self.menu.push(self.growth_rate_menu),
-                f"{self.growth_rate_sub_text()}"
-            ),
-            MenuItem(
-                "Start\nGame",
-                self.start_custom_game,
-                "Confirm Settings"
-            ),
-            
+            [
+                MenuItem(
+                    "Perimeter\nWall", 
+                    lambda: self.menu.push(self.perimeter_menu),
+                    f"{self.has_border_sub_text()}"
+                ),
+                MenuItem(
+                    "World\nSize",
+                    lambda: self.menu.push(self.cell_size_menu),
+                    f"{self.cell_size_sub_text()}"
+                ),
+                MenuItem(
+                    "Start\nSpeed",
+                    lambda: self.menu.push(self.start_speed_menu),
+                    f"{self.start_speed_sub_text()}"
+                ),
+                MenuItem(
+                    "Speed\nUp", 
+                    lambda: self.menu.push(self.acceleration_menu),
+                    f"{self.acceleration_sub_text()}"
+                ),
+            ],
+            [
+                MenuItem(
+                    "Fruit\nQuantity", 
+                    lambda: self.menu.push(self.fruit_qty_menu),
+                    f"{self.fruit_qty_sub_text()}"
+                ),
+                MenuItem(
+                    "Start\nGame",
+                    self.start_custom_game,
+                    "Confirm Settings"
+                ),  
+                MenuItem(
+                    "Growth\nRate",
+                    lambda: self.menu.push(self.growth_rate_menu),
+                    f"{self.growth_rate_sub_text()}"
+                ),
+ 
+            ]
         ]
-        self.custom_level_menu = Menu(custom_level_items, menu_pos, menu_size, **menu_colors)
+        
+        # self.custom_level_menu = Menu(custom_level_items, menu_pos, menu_size, **menu_colors)
+        self.custom_level_menu_grid = MenuGrid(custom_level_items, menu_grid_pos, menu_grid_size, menu_colors)
        
         perimeter_menu_items = [
             MenuItem("On", self.perimeter_on, sub_text=None),
@@ -208,13 +223,15 @@ class TitleMenu(GameState):
         if self.commands[MenuInput.BACK]:
             if len(self.menu.stack) > 1:
                 self.menu.pop()
+        
         self.menu.peek().update()
 
         self.reset_command_flags()
 
     def draw(self, window):
         window.blit(ui.PING_PANG_SURF, ui.PING_PANG_RECT)
-        window.blit(ui.TITLE_SURF, ui.TITLE_RECT) 
+        if not any([isinstance(menu, MenuGrid) for menu in self.menu.stack]):
+            window.blit(ui.TITLE_SURF, ui.TITLE_RECT) 
         if self.menu.peek():
             self.menu.peek().draw(window)
         window.blit(ui.PRESS_SPACE_SURF, ui.PRESS_SPACE_RECT)
@@ -235,6 +252,13 @@ class TitleMenu(GameState):
     def select_multiplayer_mode(self, mode):
         self.game.save_play_state(mode)
         self.menu.push(self.level_menu)
+
+    def level_menu(self):
+        self.title_hidden = False
+
+    def custom_level_menu(self):
+        self.menu.push(self.custom_level_menu_grid)
+        self.title_hidden = True
 
     def perimeter_on(self):
         self.menu.pop()

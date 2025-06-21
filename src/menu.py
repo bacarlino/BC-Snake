@@ -7,15 +7,17 @@ from src.ui_elements import rand_rgb
 
 class MenuGrid:
 
-    def __init__(self, item_grid, size, pos, colors):
-        self.size = size
+    def __init__(self, item_grid, pos, size, colors):
         self.pos = pos
+        self.size = size
         self.colors = colors
         self.item_grid = self.check_list_format(item_grid)
         self.menu_list = []
+        self.row_size = (size[0], size[1] // len(item_grid))
+        self.create_menu_list()
         self.focus_index = 0
         self.focused = self.menu_list[self.focus_index]
-        self.row_height = size[1] // len(item_grid)
+    
 
         self.inputs = {
             MenuInput.UP: False,
@@ -23,15 +25,15 @@ class MenuGrid:
         }
 
     def check_list_format(self, item_grid):
-        return [list] if not isinstance(item_grid[0], list) else list
+        return [item_grid] if not isinstance(item_grid[0], list) else item_grid
         
     def create_menu_list(self):
         track_pos = self.pos
         for item_list in self.item_grid:
             self.menu_list.append(
-                Menu(item_list, track_pos, self.size, self.colors)
+                Menu(item_list, track_pos, self.row_size, **self.colors)
             )
-        track_pos += (self.pos[0], self.pos[1] + self.size[1])
+            track_pos = (self.pos[0], self.pos[1] + self.row_size[1])
 
     def handle_event(self, event):
         if event.key == pygame.K_DOWN or event.key == pygame.K_s:
@@ -52,7 +54,8 @@ class MenuGrid:
             self.inputs[input] = False
 
     def draw(self, window):
-        self.focused.draw(window)
+        for menu in self.menu_list:
+            menu.draw(window)
 
     def up(self):
         if self.focus_index > 0:
