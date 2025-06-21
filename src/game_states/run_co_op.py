@@ -51,7 +51,7 @@ class RunCoOp(GameState):
         self.add_fruit(self.game.level_config.fruit_qty)
 
         # AVAILABLE INPUTS
-        self.commands = {
+        self.inputs = {
             Play.START: False, 
             Play.PAUSE: False,
             Play.QUIT: False

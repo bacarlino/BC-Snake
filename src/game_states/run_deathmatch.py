@@ -104,7 +104,7 @@ class RunDeathMatch(GameState):
                     return
             self.game.game_state.push(MatchOver(self.game))
 
-        self.reset_inputs()
+        self.reset_command_flags()
 
     def draw(self, window):
         ui.draw_border(window, self.border, self.game.level_config.cell_size)

@@ -36,6 +36,7 @@ class Snake:
         self.initial_direction = direction
         self.direction = self.initial_direction
         self.next_direction = self.direction
+        self.initial_speed = initial_speed
         self.speed = initial_speed
         self.move_timer = 1 / self.speed
         self.acceleration = acceleration
