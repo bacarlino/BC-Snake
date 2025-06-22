@@ -16,18 +16,18 @@ class Pause(GameState):
     def handle_events(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
-                self.comands[Play.PAUSE] = True
+                self.commands[Play.PAUSE] = True
             if event.key == pygame.K_ESCAPE:
-                self.comands[Play.QUIT] = True
+                self.commands[Play.QUIT] = True
                 
     def update(self):
-        if self.comands[Play.PAUSE] == True:
+        if self.commands[Play.PAUSE] == True:
             self.game.game_state.pop()
-        if self.comands[Play.QUIT] == True:
+        if self.commands[Play.QUIT] == True:
             self.game.reset_game()
             return
 
-        self.reset_comand_flags()
+        self.reset_command_flags()
 
     def draw(self, window):
         self.game.game_state.peek_below().draw(window)

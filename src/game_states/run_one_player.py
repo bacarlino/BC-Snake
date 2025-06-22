@@ -112,7 +112,9 @@ class RunOnePlayer(GameState):
         for _ in range(n):
             placed = False
             while not placed:
-                coord = get_rand_coord(self.game.window_size, self.game.level_config.cell_size)
+                coord = get_rand_coord(
+                    self.game.window_size, self.game.level_config.cell_size
+                )
                 if self.border and coord in self.border: continue
                 if coord in self.snakes[0].body: continue
                 placed = True
