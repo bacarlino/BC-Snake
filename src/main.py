@@ -1,6 +1,6 @@
 import pygame
 
-import src.config as cfg
+import src.app_config as cfg
 from src.game import Game
 
 

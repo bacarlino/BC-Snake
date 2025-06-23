@@ -3,7 +3,7 @@ import random
 
 import pygame
 
-import src.config as cfg
+import src.app_config as cfg
 
 
 pygame.init()

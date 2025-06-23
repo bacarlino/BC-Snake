@@ -2,7 +2,6 @@ import pygame
 
 from src.input import MenuInput
 from src.sounds import MENU_SCROLL, MENU_SELECT
-from src.ui_elements import rand_rgb
 
 
 class MenuGrid:
@@ -220,7 +219,7 @@ class Menu:
 
 class MenuItem:
         
-    def __init__(self, main_text="TEXT", callback=None, sub_text="SUBTEXT"):
+    def __init__(self, main_text="MAIN TEXT", callback=None, sub_text="SUB TEXT"):
         self.main_text = main_text
         self.sub_text = sub_text
         self.callback = callback
@@ -271,3 +270,9 @@ class MenuItem:
 
         surf.blit(self.main_surf, self.main_rect)
         surf.blit(self.sub_surf, self.sub_rect)
+
+    def get_sub_text(self):
+        if callable(self.sub_text):
+            return self.sub_text_update_func()
+        else:
+            return self.sub_text

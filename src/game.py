@@ -1,11 +1,8 @@
-import random
-import time
-
 import pygame
 
-import src.config as cfg
+import src.app_config as cfg
 from src.game_states.title import Title
-import src.level_config as levels
+import src.level_config.level_config as levels
 from src.stack_manager import StackManager
 
 

@@ -2,7 +2,7 @@ import time
 
 import pygame
 
-import src.config as cfg
+import src.app_config as cfg
 from src.input import Play, ARROW, WSAD
 from src.game_states.game_over import GameOver
 from src.game_states.game_state import GameState

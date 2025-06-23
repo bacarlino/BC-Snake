@@ -2,8 +2,8 @@ import time
 
 import pygame
 
-from src.config import BORDER_RADIUS
-from src.input import Move, MoveControls
+from src.app_config import BORDER_RADIUS
+from src.input import Move
 from src.sounds import EAT_FRUIT_SFX, COLLISION_SFX
 import src.ui_elements as ui
 
