@@ -6,7 +6,7 @@ import pygame
 import src.app_config as cfg
 
 
-pygame.init()
+pygame.font.init()
 
 def get_pixelfont(size):
     base_path = Path(__file__).parent.parent
@@ -56,7 +56,56 @@ def create_title():
     surf = get_pixelfont(400).render("SNAKE", True, cfg.PINK)
     rect = surf.get_rect(center = (cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.4))
     return surf, rect
+
+
+class TitleBanner:
+    def __init__(self):
+        self.surf = get_pixelfont(400).render("SNAKE", True, cfg.PINK)
+        self.rect = self.surf.get_rect(center = (cfg.WINDOW_W // 2, cfg.WINDOW_H * 0.4))
+
+    def draw(self, window):
+        window.blit(self.surf, self.rect)
     
+
+class NameBanner:
+    def __init__(self):
+        self.surf = get_pixelfont(50).render("Brandon Carlino's", False, cfg.LT_BLUE)
+        self.rect = self.surf.get_rect(midbottom=(cfg.WINDOW_W // 2, cfg.WINDOW_H * 0.15))
+
+    def draw(self, window):
+        window.blit(self.surf, self.rect)
+
+
+class PressSpaceBanner:
+    def __init__(self):
+        self.surf = get_pixelfont(50).render("Press SPACE to confirm", False, cfg.LT_BLUE)
+        self.rect = self.surf.get_rect(midbottom=(cfg.WINDOW_W // 2, cfg.WINDOW_H * 0.85))
+
+    def draw(self, window):
+        window.blit(self.surf, self.rect)
+
+
+class WordBanner:
+    def __init__(self, text, color, antialias, pos):
+        self.surf = get_pixelfont(50).render(text, antialias, color)
+        self.rect = self.surf.get_rect(midbottom=(cfg.WINDOW_W // 2, cfg.WINDOW_H * 0.15))
+    
+    def draw(self, window):
+        window.blit(self.surf, self.rect)
+
+
+class TitleUI:
+    
+    def __init__(self):
+        self.name_banner = NameBanner()
+        self.title_banner = TitleBanner()
+        self.press_space_banner = PressSpaceBanner()
+
+    def draw(self, window):
+        self.name_banner.draw(window)
+        self.title_banner.draw(window)
+        self.press_space_banner.draw(window)
+
 
 def create_ping_pang():
     surf = get_pixelfont(50).render("Brandon Carlino's", True, cfg.LT_BLUE)

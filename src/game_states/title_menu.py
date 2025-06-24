@@ -55,7 +55,7 @@ class TitleMenu(GameState):
 
     def draw(self, window):
         window.blit(ui.PING_PANG_SURF, ui.PING_PANG_RECT)
-        if not any([isinstance(menu, MenuGrid) for menu in self.menu.stack]):
+        if self.menu.peek().show_title():
             window.blit(ui.TITLE_SURF, ui.TITLE_RECT) 
         if self.menu.peek():
             self.menu.peek().draw(window)
