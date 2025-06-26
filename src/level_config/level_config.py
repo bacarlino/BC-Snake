@@ -14,7 +14,7 @@ CLASSIC = LevelConfig(
     has_border=True, 
     speed=6, 
     acceleration=0, 
-    cell_size=40, 
+    cell_size=40,
     fruit_qty=1,
     growth_rate=1
 )

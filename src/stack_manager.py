@@ -33,3 +33,6 @@ class StackManager:
     def transition_to(self, state):
         self.pop()
         self.push(state)
+
+    def has_items(self):
+        return True if self.stack else False

@@ -24,7 +24,7 @@ class MenuGrid:
             MenuInput.DOWN: False
         }
 
-    def show_title(self):
+    def displays_title(self):
         return False
 
     def check_list_format(self, item_grid):
@@ -216,7 +216,7 @@ class Menu:
             item.make_sub_color(self.sub_color)
             item.update()
 
-    def show_title(self):
+    def displays_title(self):
         return True
         
     def update_sub_text(self, text):
