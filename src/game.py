@@ -62,3 +62,6 @@ class Game:
 
     def load_level_config(self, level_config):
         self.level_config = level_config
+
+    def pop_game_state(self):
+        self.game_state.pop()

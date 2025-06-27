@@ -174,9 +174,6 @@ class Menu:
             self.up()
         if self.inputs[MenuInput.RIGHT] == True:
             self.down()
-  
-        # update items here and in up() down()? doesn't seem necessary
-        # self.update_items()
         
         for input in self.inputs:
             self.inputs[input] = False
@@ -192,13 +189,13 @@ class Menu:
             MENU_SCROLL.play()
             self.index -= 1
             
-            self.update_items() # here and update? update seems wrong
+            self.update_items()
 
     def down(self):
         if self.index < len(self.items) - 1:
             MENU_SCROLL.play()
             self.index += 1
-            self.update_items() # here and update? update seems wrong
+            self.update_items()
     
     def select(self):
         MENU_SELECT.play()

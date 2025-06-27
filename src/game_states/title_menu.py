@@ -28,7 +28,14 @@ class TitleMenu(GameState):
                 
     def update(self):
         if self.commands[MenuInput.BACK]:
-            self.menu_controller.nav_up()
+            if self.menu_controller.menu_stack_has_items():
+                self.menu_controller.close_top_menu()
+                if not self.menu_controller.menu_stack_has_items():
+                    self.game.reset_game()
+                    return
+            else:
+                self.game.reset_game()
+                return
 
         self.menu_controller.update()
 

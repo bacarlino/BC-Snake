@@ -3,8 +3,6 @@ from src.game_states.run_co_op import RunCoOp
 from src.game_states.run_deathmatch import RunDeathMatch
 from src.game_states.start import Start
 from src.menus.title_menus import build_title_menus
-import src.level_config.level_config as levels
-# from src.level_config.level_config import create_level_config
 from src.level_config.level_config_controller import LevelConfigController
 from src.stack_manager import StackManager
 
@@ -33,9 +31,13 @@ class TitleMenuController:
         if self.current():
             self.current().draw(window)
 
-    def nav_up(self):
-        if self.stack.has_items() > 1:
+    def close_top_menu(self):
+        if self.stack.has_items():
             self.stack.pop()
+    
+    def menu_stack_has_items(self):
+        if self.stack.has_items():
+            return True
 
     def displays_title(self):
         return self.current().displays_title()
@@ -150,15 +152,7 @@ class TitleMenuController:
         self.stack.peek().update_sub_text(self.level_config.growth_rate_sub_text())
 
     def start_custom_game(self):
-        level_params = create_level_config(
-            self.level_config.has_border,
-            self.start_speed,
-            self.acceleration,
-            self.cell_size,
-            self.fruit_qty,
-            self.growth_rate
-        )
-        self.game.load_level(level_params)
+        self.game.load_level(self.level_config.get_level_config())
         self.game.game_state.pop()
         self.game.game_state.push(self.game.saved_play_state(self.game))
         self.game.game_state.push(Start(self.game))
