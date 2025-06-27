@@ -9,7 +9,7 @@ from src.game_states.game_state import GameState
 from src.game_states.pause import Pause
 from src.snake import Snake
 import src.ui_elements as ui
-from src.utils import get_rand_coord
+from src.utils import align_center_to_grid, get_rand_coord
 
 
 class RunOnePlayer(GameState):
@@ -29,8 +29,8 @@ class RunOnePlayer(GameState):
                 self.game.window_size, 
                 [WSAD, ARROW],
                 self.game.level_config.cell_size, 
-                (self.game.window_w // 2, self.game.window_h // 2),           
-                color=cfg.PINK, initial_speed=self.game.level_config.speed,
+                align_center_to_grid(self.game.window_size, self.game.level_config.cell_size),           
+                color=cfg.PINK, initial_speed=self.game.level_config.start_speed,
                 acceleration=self.game.level_config.acceleration
             )
         ]

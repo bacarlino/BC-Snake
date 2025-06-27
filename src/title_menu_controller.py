@@ -4,7 +4,7 @@ from src.game_states.run_deathmatch import RunDeathMatch
 from src.game_states.start import Start
 from src.menus.title_menus import build_title_menus
 import src.level_config.level_config as levels
-from src.level_config.level_config import create_level_config
+# from src.level_config.level_config import create_level_config
 from src.level_config.level_config_controller import LevelConfigController
 from src.stack_manager import StackManager
 
@@ -65,7 +65,7 @@ class TitleMenuController:
         self.title_hidden = True
 
     def perimeter_on(self):
-        self.menu.pop()
+        self.stack.pop()
         self.level_config.has_border = True
         self.stack.peek().update_sub_text(self.level_config.has_border_sub_text())
 
@@ -76,78 +76,78 @@ class TitleMenuController:
 
     def cell_size_small(self):
         self.stack.pop()
-        self.cell_size = 16
-        self.stack.peek().update_sub_text(self.cell_size_sub_text())
+        self.level_config.cell_size = 16
+        self.stack.peek().update_sub_text(self.level_config.cell_size_sub_text())
 
     def cell_size_medium(self):
         self.stack.pop()
-        self.cell_size = 32
-        self.stack.peek().update_sub_text(self.cell_size_sub_text())
+        self.level_config.cell_size = 32
+        self.stack.peek().update_sub_text(self.level_config.cell_size_sub_text())
 
     def cell_size_large(self):
         self.stack.pop()
-        self.cell_size = 64
-        self.stack.peek().update_sub_text(self.cell_size_sub_text())
+        self.level_config.cell_size = 64
+        self.stack.peek().update_sub_text(self.level_config.cell_size_sub_text())
 
     def start_speed_slow(self):
         self.stack.pop()
-        self.start_speed = 6
-        self.stack.peek().update_sub_text(self.start_speed_sub_text())
+        self.level_config.start_speed = 6
+        self.stack.peek().update_sub_text(self.level_config.start_speed_sub_text())
 
     def start_speed_medium(self):
         self.stack.pop()
-        self.start_speed = 8
-        self.stack.peek().update_sub_text(self.start_speed_sub_text())
+        self.level_config.start_speed = 8
+        self.stack.peek().update_sub_text(self.level_config.start_speed_sub_text())
     
     def start_speed_fast(self):
         self.stack.pop()
-        self.start_speed = 10
-        self.stack.peek().update_sub_text(self.start_speed_sub_text())
+        self.level_config.start_speed = 10
+        self.stack.peek().update_sub_text(self.level_config.start_speed_sub_text())
 
     def acceleration_off(self):
         self.stack.pop()
-        self.acceleration = 0
-        self.stack.peek().update_sub_text(self.acceleration_sub_text())
+        self.level_config.acceleration = 0
+        self.stack.peek().update_sub_text(self.level_config.acceleration_sub_text())
 
     def acceleration_low(self):
         self.stack.pop()
         self.acceleration = 1.5
-        self.stack.peek().update_sub_text(self.acceleration_sub_text())
+        self.stack.peek().update_sub_text(self.level_config.acceleration_sub_text())
 
     def acceleration_high(self):
         self.stack.pop()
-        self.acceleration = 2.5
-        self.stack.peek().update_sub_text(self.acceleration_sub_text())
+        self.level_config.acceleration = 2.5
+        self.stack.peek().update_sub_text(self.level_config.acceleration_sub_text())
         
     def fruit_qty_low(self):
         self.stack.pop()
-        self.fruit_qty = 1
-        self.stack.peek().update_sub_text(self.fruit_qty_sub_text())
+        self.level_config.fruit_qty = 1
+        self.stack.peek().update_sub_text(self.level_config.fruit_qty_sub_text())
 
     def fruit_qty_medium(self):
         self.stack.pop()
-        self.fruit_qty = 5
-        self.stack.peek().update_sub_text(self.fruit_qty_sub_text())
+        self.level_config.fruit_qty = 5
+        self.stack.peek().update_sub_text(self.level_config.fruit_qty_sub_text())
 
     def fruit_qty_high(self):
         self.stack.pop()
-        self.fruit_qty = 25
-        self.stack.peek().update_sub_text(self.fruit_qty_sub_text())
+        self.level_config.fruit_qty = 25
+        self.stack.peek().update_sub_text(self.level_config.fruit_qty_sub_text())
     
     def growth_rate_low(self):
         self.stack.pop()
-        self.growth_rate = 1
-        self.stack.peek().update_sub_text(self.growth_rate_sub_text())
+        self.level_config.growth_rate = 1
+        self.stack.peek().update_sub_text(self.level_config.growth_rate_sub_text())
 
     def growth_rate_medium(self):
         self.stack.pop()
-        self.growth_rate = 3
-        self.stack.peek().update_sub_text(self.growth_rate_sub_text())
+        self.level_config.growth_rate = 3
+        self.stack.peek().update_sub_text(self.level_config.growth_rate_sub_text())
 
     def growth_rate_high(self):
         self.stack.pop()
-        self.growth_rate = 10
-        self.stack.peek().update_sub_text(self.growth_rate_sub_text())
+        self.level_config.growth_rate = 10
+        self.stack.peek().update_sub_text(self.level_config.growth_rate_sub_text())
 
     def start_custom_game(self):
         level_params = create_level_config(

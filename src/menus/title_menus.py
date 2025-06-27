@@ -116,29 +116,29 @@ def build_custom_menu(controller):
         [
             MenuItem(
                 "Perimeter\nWall", 
-                lambda: controller.menu.push(controller.menus["perimeter"]),
+                lambda: controller.stack.push(controller.menus["perimeter"]),
                 f"{controller.level_config.has_border_sub_text()}"
             ),
             MenuItem(
                 "Cell\nSize",
-                lambda: controller.menu.push(controller.menus["cell_size"]),
+                lambda: controller.stack.push(controller.menus["cell_size"]),
                 f"{controller.level_config.cell_size_sub_text()}"
             ),
             MenuItem(
                 "Start\nSpeed",
-                lambda: controller.menu.push(controller.menus["start_speed"]),
+                lambda: controller.stack.push(controller.menus["start_speed"]),
                 f"{controller.level_config.start_speed_sub_text()}"
             ),
             MenuItem(
                 "Speed\nUp", 
-                lambda: controller.menu.push(controller.menus["acceleration"]),
+                lambda: controller.stack.push(controller.menus["acceleration"]),
                 f"{controller.level_config.acceleration_sub_text()}"
             ),
         ],
         [
             MenuItem(
                 "Fruit\nQuantity", 
-                lambda: controller.menu.push(controller.menus["fruit_qty"]),
+                lambda: controller.stack.push(controller.menus["fruit_qty"]),
                 f"{controller.level_config.fruit_qty_sub_text()}"
             ),
             MenuItem(
@@ -148,7 +148,7 @@ def build_custom_menu(controller):
             ),  
             MenuItem(
                 "Growth\nRate",
-                lambda: controller.menu.push(controller.menus["growth_rate"]),
+                lambda: controller.stack.push(controller.menus["growth_rate"]),
                 f"{controller.level_config.growth_rate_sub_text()}"
             ),
 

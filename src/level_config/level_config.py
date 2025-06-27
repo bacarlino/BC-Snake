@@ -4,7 +4,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class LevelConfig:
     has_border: bool
-    speed: int
+    start_speed: int
     acceleration: float
     cell_size: int
     fruit_qty: int
@@ -12,7 +12,7 @@ class LevelConfig:
 
 CLASSIC = LevelConfig(
     has_border=True, 
-    speed=6, 
+    start_speed=6, 
     acceleration=0, 
     cell_size=40,
     fruit_qty=1,
@@ -21,7 +21,7 @@ CLASSIC = LevelConfig(
 
 BIG = LevelConfig(
     has_border=True, 
-    speed=6, 
+    start_speed=6, 
     acceleration=1.5, 
     cell_size=80, 
     fruit_qty=1,
@@ -30,7 +30,7 @@ BIG = LevelConfig(
 
 SUPER = LevelConfig(
     has_border=True, 
-    speed=8, 
+    start_speed=8, 
     acceleration=1.5, 
     cell_size=40, 
     fruit_qty=5,
@@ -39,7 +39,7 @@ SUPER = LevelConfig(
 
 EXTREME = LevelConfig(
     has_border=True, 
-    speed=10, 
+    start_speed=10, 
     acceleration=2, 
     cell_size=20, 
     fruit_qty=25,
@@ -48,26 +48,26 @@ EXTREME = LevelConfig(
 
 INSANE = LevelConfig(
     has_border=False, 
-    speed=12, 
+    start_speed=12, 
     acceleration=3, 
     cell_size=10, 
-    fruit_qty=150,
-    growth_rate=15
+    fruit_qty=500,
+    growth_rate=50
 )
 
-def create_level_config(
-    has_border=True,
-    speed=6,
-    acceleration=0,
-    cell_size=40,
-    fruit_qty=1,
-    growth_rate=1      
-):
-    return LevelConfig(
-        has_border=has_border,
-        speed=speed,
-        acceleration=acceleration,
-        cell_size=cell_size,
-        fruit_qty=fruit_qty,
-        growth_rate=growth_rate
-    )
+# def create_level_config(
+#     has_border=True,
+#     speed=6,
+#     acceleration=0,
+#     cell_size=40,
+#     fruit_qty=1,
+#     growth_rate=1      
+# ):
+#     return LevelConfig(
+#         has_border=has_border,
+#         speed=speed,
+#         acceleration=acceleration,
+#         cell_size=cell_size,
+#         fruit_qty=fruit_qty,
+#         growth_rate=growth_rate
+#     )
