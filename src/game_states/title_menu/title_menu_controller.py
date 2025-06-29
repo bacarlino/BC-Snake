@@ -2,7 +2,7 @@ from src.game_states.run_one_player import RunOnePlayer
 from src.game_states.run_co_op import RunCoOp
 from src.game_states.run_deathmatch import RunDeathMatch
 from src.game_states.start import Start
-from src.menus.title_menus import build_title_menus
+from src.game_states.title_menu.title_menus import build_title_menus
 from src.level_config.level_config_controller import LevelConfigController
 from src.stack_manager import StackManager
 
@@ -32,11 +32,10 @@ class TitleMenuController:
             self.current().draw(window)
 
     def close_top_menu(self):
-        if self.stack.has_items():
-            self.stack.pop()
+        self.stack.pop()
     
-    def menu_stack_has_items(self):
-        if self.stack.has_items():
+    def stack_has_one_item(self):
+        if self.stack.has_one_item():
             return True
 
     def displays_title(self):

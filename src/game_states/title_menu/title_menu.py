@@ -3,7 +3,7 @@ import pygame
 from src.input import MenuInput
 from src.game_states.game_state import GameState
 
-from src.title_menu_controller import TitleMenuController
+from src.game_states.title_menu.title_menu_controller import TitleMenuController
 import src.ui_elements as ui
 
 
@@ -12,11 +12,7 @@ class TitleMenu(GameState):
     def __init__(self, game):
         super().__init__(game)
 
-        self.title_hidden = False
-
-        self.commands = {
-            MenuInput.BACK: False
-        }
+        self.commands = {MenuInput.BACK: False}
 
         self.menu_controller = TitleMenuController(self, self.game)
 
@@ -28,14 +24,13 @@ class TitleMenu(GameState):
                 
     def update(self):
         if self.commands[MenuInput.BACK]:
-            if self.menu_controller.menu_stack_has_items():
-                self.menu_controller.close_top_menu()
-                if not self.menu_controller.menu_stack_has_items():
-                    self.game.reset_game()
-                    return
-            else:
+            if self.menu_controller.stack_has_one_item():
+                
+                #GAME
                 self.game.reset_game()
                 return
+            else:
+                self.menu_controller.close_top_menu()
 
         self.menu_controller.update()
 

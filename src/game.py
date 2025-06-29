@@ -17,6 +17,7 @@ class Game:
         self.display_size = None
         self.update_display_size()
         
+        # CONFUSING NAMING
         self.game_state = StackManager()
         self.game_state.push(Title(self))
     

@@ -21,18 +21,18 @@ class StackManager:
     def pop(self):
         if self.stack:
             return self.stack.pop()
-
+    
     def peek(self):
         if self.stack:
             return self.stack[-1]
     
     def peek_below(self):
         if self.stack:
-            return self.stack[-2]
+            return self.stack[-2]   
     
     def transition_to(self, state):
         self.pop()
         self.push(state)
 
-    def has_items(self):
-        return True if self.stack else False
+    def has_one_item(self):
+        return True if len(self.stack) == 1 else False  

@@ -1,6 +1,6 @@
 import src.app_config as cfg
 import src.level_config.level_config as levels
-from src.menus.menu import Menu, MenuGrid, MenuItem
+from src.menu import Menu, MenuGrid, MenuItem
 from src.game_states.run_co_op import RunCoOp
 from src.game_states.run_deathmatch import RunDeathMatch
 from src.game_states.run_score_battle import RunScoreBattle

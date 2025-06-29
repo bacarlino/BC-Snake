@@ -2,7 +2,7 @@ import pygame
 
 from src.game_states.game_state import GameState
 from src.input import MenuInput
-from src.game_states.title_menu import TitleMenu
+from src.game_states.title_menu.title_menu import TitleMenu
 from src.sounds import MENU_SELECT
 from src.ui_elements import TitleUI
 
@@ -25,6 +25,8 @@ class Title(GameState):
     def update(self):
         if self.commands[MenuInput.SELECT]:
             MENU_SELECT.play()
+
+            # GAME
             self.game.game_state.transition_to(TitleMenu(self.game))
 
         self.reset_command_flags()
