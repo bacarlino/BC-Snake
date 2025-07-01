@@ -26,10 +26,7 @@ class GameOver(GameState):
 
     def update(self):
         if self.commands[Play.START] == True:
-            self.game.game_state.pop()
-            self.game.game_state.pop()
-            self.game.game_state.push(self.game.saved_play_state(self.game))
-            self.game.game_state.push(Start(self.game))
+            self.game.restart_game()
             return
         if self.commands[Play.QUIT] == True:
             self.game.reset_game()

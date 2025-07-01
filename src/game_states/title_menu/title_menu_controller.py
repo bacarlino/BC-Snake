@@ -50,9 +50,6 @@ class TitleMenuController:
 
     def select_level(self, level):
         self.game.load_level(level)
-        self.game.game_state.pop()
-        self.game.game_state.push(self.game.saved_play_state(self.game))
-        self.game.game_state.push(Start(self.game))
 
     def select_multiplayer_mode(self, mode):
         self.game.save_play_state(mode)
@@ -151,7 +148,4 @@ class TitleMenuController:
         self.stack.peek().update_sub_text(self.level_config.growth_rate_sub_text())
 
     def start_custom_game(self):
-        self.game.load_level(self.level_config.get_level_config())
-        self.game.game_state.pop()
-        self.game.game_state.push(self.game.saved_play_state(self.game))
-        self.game.game_state.push(Start(self.game))
+        self.game.start_custom_game()

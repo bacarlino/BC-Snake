@@ -2,6 +2,7 @@ import pygame
 
 import src.app_config as cfg
 from src.game_states.title import Title
+from src.game_states.start import Start
 import src.level_config.level_config as levels
 from src.stack_manager import StackManager
 
@@ -13,9 +14,8 @@ class Game:
         self.running = True
         self.saved_play_state = None
 
-        self.level_config = levels.CLASSIC
+        self.level_config = None
         self.display_size = None
-        self.update_display_size()
         
         # CONFUSING NAMING
         self.game_state = StackManager()
@@ -25,11 +25,9 @@ class Game:
     def run(self, window):
         clock = pygame.time.Clock()
         while self.running:
-            window.fill(cfg.BLACK)
             self.handle_events()
             self.update()
             self.draw(window)
-            pygame.display.flip()
             clock.tick(120)
 
     def handle_events(self):
@@ -42,11 +40,21 @@ class Game:
         self.game_state.update()
           
     def draw(self, window):
+        window.fill(cfg.BLACK)
         self.game_state.draw(window)
+        pygame.display.flip()
 
+    def transition_to(self, state):
+        self.game_state.transition_to(state)
+
+
+    # Play States Only
     def load_level(self, level):
         self.level_config = level
         self.update_display_size()
+        self.game_state.pop()
+        self.game_state.push(self.saved_play_state(self))
+        self.game_state.push(Start(self))
 
     def save_play_state(self, play_state):
         self.saved_play_state = play_state
@@ -66,3 +74,21 @@ class Game:
 
     def pop_game_state(self):
         self.game_state.pop()
+
+    def restart_game(self):
+        self.dub_pop()
+        self.game_state.push(self.saved_play_state(self))
+        self.game_state.push(Start(self))
+
+    def select_level(self):
+        pass
+
+    def dub_pop(self):
+        self.game_state.pop()
+        self.game_state.pop()
+
+    def start_custom_game(self):
+        self.load_level(self.level_config.get_level_config())
+        self.game_state.pop()
+        self.game_state.push(self.saved_play_state(self))
+        self.game_state.push(Start(self))
