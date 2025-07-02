@@ -3,9 +3,9 @@ class StackManager:
     def __init__(self):
         self.stack = []
 
-    def handle_events(self, event):
+    def handle_event(self, event):
         if self.stack:
-            self.peek().handle_events(event)
+            self.peek().handle_event(event)
 
     def update(self):
         if self.stack:
@@ -17,10 +17,16 @@ class StackManager:
 
     def push(self, item):
         self.stack.append(item)
+        print(f"Pushed: {item}")
+        print("Stack: ", self.stack)
 
     def pop(self):
         if self.stack:
+            print("Popping: ", self.stack[-1])
             return self.stack.pop()
+        
+    def clear(self):
+        self.stack = []
     
     def peek(self):
         if self.stack:

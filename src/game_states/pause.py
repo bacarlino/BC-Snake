@@ -13,7 +13,7 @@ class Pause(GameState):
             Play.QUIT: False
         }
 
-    def handle_events(self, event):
+    def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 self.commands[Play.PAUSE] = True
@@ -22,7 +22,7 @@ class Pause(GameState):
                 
     def update(self):
         if self.commands[Play.PAUSE] == True:
-            self.game.game_state.pop()
+            self.game.pop_game_state()
         if self.commands[Play.QUIT] == True:
             self.game.reset_game()
             return
@@ -30,5 +30,4 @@ class Pause(GameState):
         self.reset_command_flags()
 
     def draw(self, window):
-        self.game.game_state.peek_below().draw(window)
         window.blit(ui.PRESS_SPACE_SURF, ui.PRESS_SPACE_RECT)

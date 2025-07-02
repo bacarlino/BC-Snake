@@ -4,9 +4,7 @@ import pygame
 
 import src.app_config as cfg
 from src.input import Play, ARROW, WSAD
-from src.game_states.game_over import GameOver
 from src.game_states.game_state import GameState
-from src.game_states.pause import Pause
 from src.snake import Snake
 import src.ui_elements as ui
 from src.utils import align_center_to_grid, get_rand_coord
@@ -14,12 +12,13 @@ from src.utils import align_center_to_grid, get_rand_coord
 
 class RunOnePlayer(GameState):
 
-    def __init__(self, game):
+    def __init__(self, game, level_config):
         super().__init__(game)
-
+        self.level_config = level_config
+        
         # SETUP BORDER
-        if self.game.level_config.has_border:
-            self.border = ui.create_border(self.game.level_config.cell_size)
+        if self.level_config.has_border:
+            self.border = ui.create_border(self.level_config.cell_size)
         else:
             self.border = None
 
@@ -28,10 +27,10 @@ class RunOnePlayer(GameState):
             Snake(
                 self.game.window_size, 
                 [WSAD, ARROW],
-                self.game.level_config.cell_size, 
-                align_center_to_grid(self.game.window_size, self.game.level_config.cell_size),           
-                color=cfg.PINK, initial_speed=self.game.level_config.start_speed,
-                acceleration=self.game.level_config.acceleration
+                self.level_config.cell_size, 
+                align_center_to_grid(self.game.window_size, self.level_config.cell_size),           
+                color=cfg.PINK, initial_speed=self.level_config.start_speed,
+                acceleration=self.level_config.acceleration
             )
         ]
 
@@ -40,7 +39,7 @@ class RunOnePlayer(GameState):
 
         # SETUP FRUIT
         self.fruits = []
-        self.add_fruit(self.game.level_config.fruit_qty)
+        self.add_fruit(self.level_config.fruit_qty)
 
         # AVAILABLE COMMANDS
         self.commands = {
@@ -49,7 +48,7 @@ class RunOnePlayer(GameState):
             Play.QUIT: False
         }
 
-    def handle_events(self, event):
+    def handle_event(self, event):
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
@@ -61,14 +60,11 @@ class RunOnePlayer(GameState):
                 snake.handle_event_keydown(event)
 
         keys = pygame.key.get_pressed()
-        
-        # for snake in self.snakes:
-        #     snake.handle_keys(keys)
 
     def update(self):
 
         if self.commands[Play.PAUSE] == True:
-            self.game.game_state.push(Pause(self.game))
+            self.game.push_pause()
         if self.commands[Play.QUIT] == True:
             self.game.reset_game()
             return
@@ -81,13 +77,13 @@ class RunOnePlayer(GameState):
 
             if snake.collision_detected:
                 snake.die()
-                self.game.game_state.push(GameOver(self.game))
+                self.game.push_game_over()
 
         self.reset_command_flags()
 
     def draw(self, window):
-        if self.game.level_config.has_border:
-            ui.draw_border(window, self.border, self.game.level_config.cell_size)
+        if self.level_config.has_border:
+            ui.draw_border(window, self.border, self.level_config.cell_size)
         
         score_surf, score_rect = ui.create_score_banner(
             self.snakes[0].score
@@ -103,7 +99,7 @@ class RunOnePlayer(GameState):
     def handle_fruit_collision(self, snake):
         for fruit in self.fruits:
             if fruit == snake.head_position:
-                snake.eat(self.game.level_config.growth_rate)
+                snake.eat(self.level_config.growth_rate)
                 snake.score += (len(snake.body) * 10)
                 self.fruits.remove(fruit)
                 self.add_fruit()
@@ -113,7 +109,7 @@ class RunOnePlayer(GameState):
             placed = False
             while not placed:
                 coord = get_rand_coord(
-                    self.game.window_size, self.game.level_config.cell_size
+                    self.game.window_size, self.level_config.cell_size
                 )
                 if self.border and coord in self.border: continue
                 if coord in self.snakes[0].body: continue

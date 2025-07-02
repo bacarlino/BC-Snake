@@ -13,7 +13,7 @@ class Start(GameState):
             Play.QUIT: False
         }
 
-    def handle_events(self, event):
+    def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 self.commands[Play.START] = True
@@ -29,5 +29,5 @@ class Start(GameState):
         self.reset_command_flags()
 
     def draw(self, window):
-        self.game.game_state.peek_below().draw(window)
+        # self.game.game_state.peek_below().draw(window)
         window.blit(ui.PRESS_SPACE_SURF, ui.PRESS_SPACE_RECT)

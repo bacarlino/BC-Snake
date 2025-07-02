@@ -16,9 +16,9 @@ class TitleMenu(GameState):
 
         self.menu_controller = TitleMenuController(self, self.game)
 
-    def handle_events(self, event):
+    def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
-            self.menu_controller.current().handle_event(event)
+            self.menu_controller.handle_event(event)
             if event.key == pygame.K_ESCAPE:
                 self.commands[MenuInput.BACK] = True
                 

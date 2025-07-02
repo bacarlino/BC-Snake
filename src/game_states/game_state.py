@@ -8,7 +8,7 @@ class GameState(ABC):
         self.commands = {}
 
     @abstractmethod
-    def handle_events(self, event):
+    def handle_event(self, event):
         pass
 
     @abstractmethod

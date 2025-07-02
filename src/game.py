@@ -1,6 +1,8 @@
 import pygame
 
 import src.app_config as cfg
+from src.game_states.game_over import GameOver
+from src.game_states.pause import Pause
 from src.game_states.title import Title
 from src.game_states.start import Start
 import src.level_config.level_config as levels
@@ -25,35 +27,47 @@ class Game:
     def run(self, window):
         clock = pygame.time.Clock()
         while self.running:
-            self.handle_events()
+            self.handle_event()
             self.update()
             self.draw(window)
             clock.tick(120)
 
-    def handle_events(self):
+    def handle_event(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-            self.game_state.handle_events(event)
+            self.game_state.handle_event(event)
 
     def update(self):
         self.game_state.update()
           
     def draw(self, window):
         window.fill(cfg.BLACK)
-        self.game_state.draw(window)
+        
+        for game_state in self.game_state.stack:
+            game_state.draw(window)
+
+        # self.game_state.draw(window)
         pygame.display.flip()
 
     def transition_to(self, state):
         self.game_state.transition_to(state)
 
+    def push_game_state(self, state):
+        self.game_state.push(state)
+
+    def push_game_over(self):
+        self.game_state.push(GameOver(self))
+
+    def push_pause(self):
+        self.game_state.push(Pause(self))
 
     # Play States Only
     def load_level(self, level):
         self.level_config = level
         self.update_display_size()
         self.game_state.pop()
-        self.game_state.push(self.saved_play_state(self))
+        self.game_state.push(self.saved_play_state(self, self.level_config))
         self.game_state.push(Start(self))
 
     def save_play_state(self, play_state):
@@ -67,6 +81,7 @@ class Game:
             self.level_config.cell_size = size
 
     def reset_game(self):
+        self.game_state.clear()
         self.game_state.push(Title(self))
 
     def load_level_config(self, level_config):
@@ -76,19 +91,12 @@ class Game:
         self.game_state.pop()
 
     def restart_game(self):
-        self.dub_pop()
-        self.game_state.push(self.saved_play_state(self))
+        self.game_state.clear()
+        self.game_state.push(self.saved_play_state(self, self.level_config))
         self.game_state.push(Start(self))
-
-    def select_level(self):
-        pass
-
-    def dub_pop(self):
-        self.game_state.pop()
-        self.game_state.pop()
 
     def start_custom_game(self):
         self.load_level(self.level_config.get_level_config())
         self.game_state.pop()
-        self.game_state.push(self.saved_play_state(self))
+        self.game_state.push(self.saved_play_state(self, self.level_config))
         self.game_state.push(Start(self))

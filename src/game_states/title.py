@@ -17,7 +17,7 @@ class Title(GameState):
             MenuInput.SELECT: False
         }
 
-    def handle_events(self, event):
+    def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                self.commands[MenuInput.SELECT] = True
