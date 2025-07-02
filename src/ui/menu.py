@@ -1,6 +1,6 @@
 import pygame
 
-from src.input import MenuInput
+from src.input_definitions import MenuInput
 from src.sounds import MENU_SCROLL, MENU_SELECT
 
 

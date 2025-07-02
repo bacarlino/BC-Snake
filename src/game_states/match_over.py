@@ -3,9 +3,9 @@ import time
 import pygame
 
 from src.game_states.game_state import GameState
-from src.input import Play
+from src.input_definitions import Play
 from src.game_states.start import Start
-import src.ui_elements as ui
+import src.ui.ui_elements as ui
 
 class MatchOver(GameState):
 

@@ -1,10 +1,10 @@
 import src.app_config as cfg
 import src.level_config.level_config as levels
-from src.menu import Menu, MenuGrid, MenuItem
+from src.ui.menu import Menu, MenuGrid, MenuItem
 from src.game_states.run_co_op import RunCoOp
 from src.game_states.run_deathmatch import RunDeathMatch
 from src.game_states.run_score_battle import RunScoreBattle
-import src.ui_elements as ui
+import src.ui.ui_elements as ui
 
 
 MENU_HEIGHT = ui.PRESS_SPACE_RECT.top - ui.TITLE_RECT.bottom 

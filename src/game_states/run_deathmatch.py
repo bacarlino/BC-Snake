@@ -3,14 +3,14 @@ import time
 import pygame
 
 import src.app_config as cfg
-from src.input import Play, ARROW, WSAD
+from src.input_definitions import Play, ARROW, WSAD
 from src.game_states.game_over import GameOver
 from src.game_states.game_state import GameState
 from src.game_states.match_over import MatchOver
 from src.game_states.pause import Pause
 from src.game_states.start import Start
 from src.snake import Snake
-import src.ui_elements as ui
+import src.ui.ui_elements as ui
 from src.utils import get_rand_coord
 
 

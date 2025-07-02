@@ -1,10 +1,10 @@
 import pygame
 
-from src.input import MenuInput
+from src.input_definitions import MenuInput
 from src.game_states.game_state import GameState
 
 from src.game_states.title_menu.title_menu_controller import TitleMenuController
-import src.ui_elements as ui
+import src.ui.ui_elements as ui
 
 
 class TitleMenu(GameState):

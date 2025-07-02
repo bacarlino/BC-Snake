@@ -9,7 +9,7 @@ import src.app_config as cfg
 pygame.font.init()
 
 def get_pixelfont(size):
-    base_path = Path(__file__).parent.parent
+    base_path = Path(__file__).parent.parent.parent
     font_path = base_path / "assets" / "fonts" / "Pixeltype.ttf"
 
     return pygame.font.Font(str(font_path), size)
@@ -20,9 +20,11 @@ def rand_rgb():
         random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
     )
 
+
 menu_font = get_pixelfont(40)
 menu_font.align = pygame.FONT_CENTER
 MENU_FONT = menu_font
+
 
 highlight_font = get_pixelfont(50)
 highlight_font.align = pygame.FONT_CENTER
@@ -92,19 +94,6 @@ class WordBanner:
     
     def draw(self, window):
         window.blit(self.surf, self.rect)
-
-
-class TitleUI:
-    
-    def __init__(self):
-        self.name_banner = NameBanner()
-        self.title_banner = TitleBanner()
-        self.press_space_banner = PressSpaceBanner()
-
-    def draw(self, window):
-        self.name_banner.draw(window)
-        self.title_banner.draw(window)
-        self.press_space_banner.draw(window)
 
 
 def create_ping_pang():
