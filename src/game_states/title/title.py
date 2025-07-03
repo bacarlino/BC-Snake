@@ -26,7 +26,6 @@ class Title(GameState):
         if self.commands[MenuInput.SELECT]:
             MENU_SELECT.play()
 
-            # GAME
             self.game.transition_to(TitleMenu(self.game))
 
         self.reset_command_flags()

@@ -66,7 +66,9 @@ class Game:
     def load_level(self, level):
         self.level_config = level
         self.update_display_size()
-        self.game_state.pop()
+    
+    def start_game(self):
+        self.game_state.clear()
         self.game_state.push(self.saved_play_state(self, self.level_config))
         self.game_state.push(Start(self))
 
@@ -84,19 +86,9 @@ class Game:
         self.game_state.clear()
         self.game_state.push(Title(self))
 
-    def load_level_config(self, level_config):
-        self.level_config = level_config
-
     def pop_game_state(self):
         self.game_state.pop()
 
-    def restart_game(self):
-        self.game_state.clear()
-        self.game_state.push(self.saved_play_state(self, self.level_config))
-        self.game_state.push(Start(self))
-
     def start_custom_game(self):
         self.load_level(self.level_config.get_level_config())
-        self.game_state.pop()
-        self.game_state.push(self.saved_play_state(self, self.level_config))
-        self.game_state.push(Start(self))
+        self.start_game()

@@ -147,6 +147,7 @@ class Menu:
     
         self.surf = pygame.Surface((self.width, self.height))
         self.rect = self.surf.get_rect(midtop=pos)
+        self.bg_rect = self.rect.copy()
 
         self.inputs = {
             MenuInput.SELECT: False,
@@ -160,9 +161,9 @@ class Menu:
     def handle_event(self, event):
         if event.key == pygame.K_SPACE:
             self.inputs[MenuInput.SELECT] = True
-        if event.key == pygame.K_LEFT:
+        if event.key == pygame.K_LEFT or event.key == pygame.K_a:
             self.inputs[MenuInput.LEFT] = True
-        if event.key == pygame.K_RIGHT:
+        if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
             self.inputs[MenuInput.RIGHT] = True
 
     def update(self):
@@ -237,8 +238,7 @@ class MenuItem:
         self.main_rect = None
 
     def update(self):
-        self.main_surf.fill((self.bg_color))
-        self.sub_surf.fill((self.bg_color))
+       
     
         self.main_text_surf = self.main_font.render(self.main_text, True, self.main_color)
         self.main_text_rect = self.main_text_surf.get_rect(center=(self.main_rect.width // 2, self.main_rect.height * 0.4))
@@ -268,6 +268,8 @@ class MenuItem:
         self.sub_font = sub_font
 
     def draw(self, surf):
+        self.main_surf.fill((self.bg_color))
+        self.sub_surf.fill((self.bg_color))
         self.main_surf.blit(self.main_text_surf, self.main_text_rect)
         self.sub_surf.blit(self.sub_text_surf, self.sub_text_rect)
 

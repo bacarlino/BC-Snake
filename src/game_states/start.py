@@ -22,7 +22,7 @@ class Start(GameState):
 
     def update(self):
         if self.commands[Play.START] == True:
-            self.game.game_state.pop()
+            self.game.pop_game_state()
         if self.commands[Play.QUIT] == True:
             self.game.reset_game()
 

@@ -5,6 +5,7 @@ from src.game_states.game_state import GameState
 
 from src.game_states.title_menu.title_menu_controller import TitleMenuController
 import src.ui.ui_elements as ui
+from src.ui.ui_elements import NameBanner, TitleBanner, PressSpaceBanner
 
 
 class TitleMenu(GameState):
@@ -25,8 +26,6 @@ class TitleMenu(GameState):
     def update(self):
         if self.commands[MenuInput.BACK]:
             if self.menu_controller.stack_has_one_item():
-                
-                #GAME
                 self.game.reset_game()
                 return
             else:
@@ -37,8 +36,8 @@ class TitleMenu(GameState):
         self.reset_command_flags()
 
     def draw(self, window):
-        window.blit(ui.PING_PANG_SURF, ui.PING_PANG_RECT)
         if self.menu_controller.displays_title():
+            window.blit(ui.PING_PANG_SURF, ui.PING_PANG_RECT)
             window.blit(ui.TITLE_SURF, ui.TITLE_RECT) 
         self.menu_controller.draw(window)
 

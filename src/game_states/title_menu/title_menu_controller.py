@@ -54,6 +54,7 @@ class TitleMenuController:
 
     def select_level(self, level):
         self.game.load_level(level)
+        self.game.start_game()
 
     def select_multiplayer_mode(self, mode):
         self.game.save_play_state(mode)

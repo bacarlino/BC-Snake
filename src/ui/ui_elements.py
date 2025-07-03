@@ -20,6 +20,9 @@ def rand_rgb():
         random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
     )
 
+def make_see_thru(rgb_color):
+    return ((r, g, b, 125) for r, g, b in rgb_color)
+
 
 menu_font = get_pixelfont(40)
 menu_font.align = pygame.FONT_CENTER
