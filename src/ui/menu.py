@@ -1,6 +1,6 @@
 import pygame
 
-from src.input_definitions import MenuInput
+from src.enums import MenuInput
 from src.sounds import MENU_SCROLL, MENU_SELECT
 
 
@@ -57,11 +57,11 @@ class MenuGrid:
             self.inputs[input] = False
 
     def draw(self, window):
+        window.fill(self.colors["bg_color"])
         for menu in self.menu_list:
             menu.draw(window)
 
     def up(self):
-        print("up() called")
         if self.focus_index > 0:
             MENU_SCROLL.play()
             old_menu = self.focused_menu
@@ -70,7 +70,6 @@ class MenuGrid:
             self.set_focus(old_menu)
 
     def down(self):
-        print("down() called")
         if self.focus_index < len(self.menu_list) - 1:
             MENU_SCROLL.play()
             old_menu = self.focused_menu
@@ -139,6 +138,8 @@ class Menu:
         self.bg_color = bg_color
 
         self.width, self.height = size
+
+        # self.width * (minimum width percentage + (adjustable multiplier * number of items))
         self.width = self.width * (0.3 + (0.12 * len(self.items)))
         item_width = (self.width // len(self.items))
         
@@ -223,7 +224,7 @@ class Menu:
 
 class MenuItem:
         
-    def __init__(self, main_text="MAIN TEXT", callback=None, sub_text="SUB TEXT"):
+    def __init__(self, main_text="MenuItem", callback=None, sub_text=None):
         self.main_text = main_text
         self.sub_text = sub_text
         self.callback = callback
@@ -248,12 +249,16 @@ class MenuItem:
 
     def initialize(self, size, pos, bg_color):
         self.bg_color = bg_color
-        centerline = size[1] * 0.4
-        self.main_surf = pygame.Surface((size[0], centerline))
+
+        if self.sub_text:
+            divide = size[1] * 0.4
+        else:
+            divide = size[1]
+        self.main_surf = pygame.Surface((size[0], divide))
         self.main_rect = self.main_surf.get_rect(topleft=pos)
 
-        self.sub_surf = pygame.Surface((size[0], size[1]-centerline))
-        self.sub_rect = self.sub_surf.get_rect(topleft=(pos[0], centerline))
+        self.sub_surf = pygame.Surface((size[0], size[1] - divide))
+        self.sub_rect = self.sub_surf.get_rect(topleft=(pos[0], divide))
 
     def make_main_color(self, color):
         self.main_color = color

@@ -3,7 +3,8 @@ import time
 import pygame
 
 import src.app_config as cfg
-from src.input_definitions import Play, ARROW, WSAD
+from src.enums import Play
+from src.controls import ARROW, WSAD
 from src.game_states.game_over import GameOver
 from src.game_states.game_state import GameState
 from src.game_states.pause import Pause

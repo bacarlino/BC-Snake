@@ -1,4 +1,5 @@
 import src.app_config as cfg
+from src.enums import MenuTypes
 import src.level_config.level_config as levels
 from src.ui.menu import Menu, MenuGrid, MenuItem
 from src.game_states.run_co_op import RunCoOp
@@ -12,11 +13,13 @@ MENU_POS = (ui.TITLE_RECT.midbottom)
 MENU_SIZE = (cfg.WINDOW_W * 0.9, MENU_HEIGHT)
 
 MENU_GRID_HEIGHT = ui.PRESS_SPACE_RECT.top - ui.PING_PANG_RECT.bottom
-MENU_GRID_POS = (ui.PING_PANG_RECT.midbottom[0], ui.PING_PANG_RECT.midbottom[1] + MENU_GRID_HEIGHT * .15)
+MENU_GRID_POS = (ui.PING_PANG_RECT.midbottom[0], ui.PING_PANG_RECT.midbottom[1] + MENU_GRID_HEIGHT * .1)
 MENU_GRID_SIZE = (cfg.WINDOW_W * 0.9, MENU_GRID_HEIGHT)
 
+CENTER = (cfg.WINDOW_W // 2, cfg.WINDOW_H // 2)
 
-MENU_COLORS = {            
+
+MENU_FONT_CONFIG = {            
     "main_font": ui.MENU_FONT, 
     "highlight_font": ui.HIGHTLIGHT_FONT,
     "sub_font": ui.SUB_FONT,
@@ -28,16 +31,16 @@ MENU_COLORS = {
 
 def build_title_menus(controller):
     return {
-        "players": build_players_menu(controller),
-        "level": build_level_menu(controller),
-        "multiplayer": build_multiplayer_menu(controller),
-        "custom": build_custom_menu(controller),
-        "perimeter": build_perimeter_menu(controller),
-        "cell_size": build_cell_size_menu(controller),
-        "start_speed": build_start_speed_menu(controller),
-        "acceleration": build_acceleration_menu(controller),
-        "fruit_qty": build_fruit_qty_menu(controller),
-        "growth_rate": build_growth_rate_menu(controller)
+        MenuTypes.PLAYERS: build_players_menu(controller),
+        MenuTypes.LEVEL: build_level_menu(controller),
+        MenuTypes.MULTIPLAYER: build_multiplayer_menu(controller),
+        MenuTypes.CUSTOM: build_custom_menu(controller),
+        MenuTypes.PERIMETER: build_perimeter_menu(controller),
+        MenuTypes.CELL_SIZE: build_cell_size_menu(controller),
+        MenuTypes.START_SPEED: build_start_speed_menu(controller),
+        MenuTypes.ACCELERATION: build_acceleration_menu(controller),
+        MenuTypes.FRUIT_QTY: build_fruit_qty_menu(controller),
+        MenuTypes.GROWTH_RATE: build_growth_rate_menu(controller)
     }
 
 
@@ -46,7 +49,7 @@ def build_players_menu(controller):
         MenuItem("1 Player", controller.select_one_player, sub_text=None),
         MenuItem("2 Player", controller.select_two_player, sub_text=None)
     ]
-    return Menu(players_menu_items, MENU_POS, MENU_SIZE, **MENU_COLORS)
+    return Menu(players_menu_items, MENU_POS, MENU_SIZE, **MENU_FONT_CONFIG)
 
 
 def build_level_menu(controller):
@@ -85,7 +88,7 @@ def build_level_menu(controller):
             "Create your own game",
         )
     ]
-    return Menu(level_menu_items, MENU_POS, MENU_SIZE, **MENU_COLORS)
+    return Menu(level_menu_items, MENU_POS, MENU_SIZE, **MENU_FONT_CONFIG)
 
 
 def build_multiplayer_menu(controller):
@@ -107,7 +110,7 @@ def build_multiplayer_menu(controller):
         )
     ]
     return Menu(
-        multiplayer_menu_items, MENU_POS, MENU_SIZE, **MENU_COLORS
+        multiplayer_menu_items, MENU_POS, MENU_SIZE, **MENU_FONT_CONFIG
     )
 
 
@@ -116,29 +119,29 @@ def build_custom_menu(controller):
         [
             MenuItem(
                 "Perimeter\nWall", 
-                lambda: controller.stack.push(controller.menus["perimeter"]),
+                lambda: controller.stack.push(controller.menus[MenuTypes.PERIMETER]),
                 f"{controller.level_config.has_border_sub_text()}"
             ),
             MenuItem(
                 "Cell\nSize",
-                lambda: controller.stack.push(controller.menus["cell_size"]),
+                lambda: controller.stack.push(controller.menus[MenuTypes.CELL_SIZE]),
                 f"{controller.level_config.cell_size_sub_text()}"
             ),
             MenuItem(
                 "Start\nSpeed",
-                lambda: controller.stack.push(controller.menus["start_speed"]),
+                lambda: controller.stack.push(controller.menus[MenuTypes.START_SPEED]),
                 f"{controller.level_config.start_speed_sub_text()}"
             ),
             MenuItem(
                 "Speed\nUp", 
-                lambda: controller.stack.push(controller.menus["acceleration"]),
+                lambda: controller.stack.push(controller.menus[MenuTypes.ACCELERATION]),
                 f"{controller.level_config.acceleration_sub_text()}"
             ),
         ],
         [
             MenuItem(
                 "Fruit\nQuantity", 
-                lambda: controller.stack.push(controller.menus["fruit_qty"]),
+                lambda: controller.stack.push(controller.menus[MenuTypes.FRUIT_QTY]),
                 f"{controller.level_config.fruit_qty_sub_text()}"
             ),
             MenuItem(
@@ -148,13 +151,13 @@ def build_custom_menu(controller):
             ),  
             MenuItem(
                 "Growth\nRate",
-                lambda: controller.stack.push(controller.menus["growth_rate"]),
+                lambda: controller.stack.push(controller.menus[MenuTypes.GROWTH_RATE]),
                 f"{controller.level_config.growth_rate_sub_text()}"
             ),
 
         ]
     ]
-    return MenuGrid(custom_level_items, MENU_GRID_POS, MENU_GRID_SIZE, MENU_COLORS)
+    return MenuGrid(custom_level_items, MENU_GRID_POS, MENU_GRID_SIZE, MENU_FONT_CONFIG)
     
     
 def build_perimeter_menu(controller):
@@ -162,7 +165,7 @@ def build_perimeter_menu(controller):
         MenuItem("On", controller.perimeter_on, sub_text=None),
         MenuItem("Off", controller.perimeter_off, sub_text=None)
     ]
-    return Menu(perimeter_menu_items, MENU_POS, MENU_SIZE, **MENU_COLORS)
+    return MenuGrid(perimeter_menu_items, CENTER, MENU_SIZE, MENU_FONT_CONFIG)
 
 
 def build_cell_size_menu(controller):
@@ -171,7 +174,7 @@ def build_cell_size_menu(controller):
         MenuItem("Medium", controller.cell_size_medium, sub_text=None),
         MenuItem("Small", controller.cell_size_small, sub_text=None),
     ]
-    return Menu(cell_size_menu_items, MENU_POS, MENU_SIZE, **MENU_COLORS)
+    return MenuGrid(cell_size_menu_items, CENTER, MENU_SIZE, MENU_FONT_CONFIG)
 
 
 def build_start_speed_menu(controller):
@@ -180,7 +183,7 @@ def build_start_speed_menu(controller):
         MenuItem("Medium", controller.start_speed_medium, sub_text=None),
         MenuItem("Fast", controller.start_speed_fast, sub_text=None)
     ]
-    return Menu(start_speed_menu_items, MENU_POS, MENU_SIZE, **MENU_COLORS)
+    return MenuGrid(start_speed_menu_items, CENTER, MENU_SIZE, MENU_FONT_CONFIG)
 
 
 def build_acceleration_menu(controller):
@@ -190,7 +193,7 @@ def build_acceleration_menu(controller):
         MenuItem("High", controller.acceleration_high, sub_text=None)
     ]
     
-    return Menu(acceleration_menu_items, MENU_POS, MENU_SIZE, **MENU_COLORS)
+    return MenuGrid(acceleration_menu_items, CENTER, MENU_SIZE, MENU_FONT_CONFIG)
 
 
 def build_fruit_qty_menu(controller):
@@ -199,7 +202,7 @@ def build_fruit_qty_menu(controller):
         MenuItem("Medium", controller.fruit_qty_medium, sub_text=None),
         MenuItem("High", controller.fruit_qty_high, sub_text=None)
     ]
-    return Menu(fruit_qty_menu_items, MENU_POS, MENU_SIZE, **MENU_COLORS)
+    return MenuGrid(fruit_qty_menu_items, CENTER, MENU_SIZE, MENU_FONT_CONFIG)
 
 
 def build_growth_rate_menu(controller):
@@ -208,4 +211,4 @@ def build_growth_rate_menu(controller):
         MenuItem("Medium", controller.growth_rate_medium, sub_text=None),
         MenuItem("High", controller.growth_rate_high, sub_text=None)
     ]
-    return Menu(growth_rate_menu_items, MENU_POS, MENU_SIZE, **MENU_COLORS)
+    return MenuGrid(growth_rate_menu_items, CENTER, MENU_SIZE, MENU_FONT_CONFIG)

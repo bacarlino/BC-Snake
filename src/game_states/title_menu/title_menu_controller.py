@@ -1,3 +1,4 @@
+from src.enums import MenuTypes
 from src.game_states.run_one_player import RunOnePlayer
 from src.game_states.run_co_op import RunCoOp
 from src.game_states.run_deathmatch import RunDeathMatch
@@ -18,7 +19,7 @@ class TitleMenuController:
 
         self.stack = StackManager()
         self.menus = build_title_menus(self)
-        self.stack.push(self.menus["players"])
+        self.stack.push(self.menus[MenuTypes.PLAYERS])
 
     def current(self):
         return self.stack.peek()
@@ -47,10 +48,10 @@ class TitleMenuController:
     
     def select_one_player(self):
         self.game.save_play_state(RunOnePlayer)
-        self.stack.push(self.menus["level"])
+        self.stack.push(self.menus[MenuTypes.LEVEL])
 
     def select_two_player(self):
-        self.stack.push(self.menus["multiplayer"])
+        self.stack.push(self.menus[MenuTypes.MULTIPLAYER])
 
     def select_level(self, level):
         self.game.load_level(level)
@@ -58,13 +59,13 @@ class TitleMenuController:
 
     def select_multiplayer_mode(self, mode):
         self.game.save_play_state(mode)
-        self.stack.push(self.menus["level"])
+        self.stack.push(self.menus[MenuTypes.LEVEL])
 
     def level_menu(self):
         self.title_hidden = False
 
     def custom_level_menu(self):
-        self.stack.push(self.menus["custom"])
+        self.stack.push(self.menus[MenuTypes.CUSTOM])
         self.title_hidden = True
 
     def perimeter_on(self):
