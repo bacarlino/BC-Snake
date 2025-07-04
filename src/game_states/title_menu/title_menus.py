@@ -191,6 +191,10 @@ def build_cell_size_menu(controller):
             options.CELL_SIZE_SMALL.name, 
             partial(controller.set_cell_size, options.CELL_SIZE_SMALL)
         ),
+        MenuItem(
+            options.CELL_SIZE_TINY.name, 
+            partial(controller.set_cell_size, options.CELL_SIZE_TINY)
+        )
     ]
     return MenuGrid(cell_size_menu_items, CENTER, MENU_SIZE, MENU_FONT_CONFIG)
 

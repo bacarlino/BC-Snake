@@ -70,32 +70,32 @@ class TitleMenuController:
 
     def set_border(self, attribute):
         self.stack.pop()
-        self.level_config.has_border = attribute.value
+        self.level_config.has_border = attribute
         self.current().update_sub_text(attribute.name)
 
     def set_cell_size(self, attribute):
         self.stack.pop()
-        self.level_config.cell_size = attribute.value
+        self.level_config.cell_size = attribute
         self.current().update_sub_text(attribute.name)
 
     def set_start_speed(self, attribute):
         self.stack.pop()
-        self.level_config.start_speed = attribute.value
+        self.level_config.start_speed = attribute
         self.current().update_sub_text(attribute.name)
 
     def set_acceleration(self, attribute):
         self.stack.pop()
-        self.level_config.acceleration = attribute.value
+        self.level_config.acceleration = attribute
         self.current().update_sub_text(attribute.name)
 
     def set_fruit_qty(self, attribute):
         self.stack.pop()
-        self.level_config.fruit_qty = attribute.value
+        self.level_config.fruit_qty = attribute
         self.current().update_sub_text(attribute.name)
     
     def set_growth_rate(self, attribute):
         self.stack.pop()
-        self.level_config.growth_rate = attribute.value
+        self.level_config.growth_rate = attribute
         self.current().update_sub_text(attribute.name)
 
     def start_custom_game(self):

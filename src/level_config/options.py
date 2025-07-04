@@ -6,9 +6,11 @@ class LevelAttribute:
     name: str
     value: int | bool
 
+
 BORDER_ON = LevelAttribute("On", True)
 BORDER_OFF = LevelAttribute("Off", False)
 
+CELL_SIZE_TINY = LevelAttribute("Tiny", 10)
 CELL_SIZE_SMALL = LevelAttribute("Small", 20)
 CELL_SIZE_MEDIUM = LevelAttribute("Medium", 40)
 CELL_SIZE_LARGE = LevelAttribute("Large", 80)

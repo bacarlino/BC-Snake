@@ -83,7 +83,7 @@ class NameBanner:
 
 class PressSpaceBanner:
     def __init__(self):
-        self.surf = get_pixelfont(35).render("SPACE: Start", False, cfg.LT_BLUE)
+        self.surf = get_pixelfont(40).render("SPACE: Start", False, cfg.LT_BLUE)
         self.rect = self.surf.get_rect(midbottom=(cfg.WINDOW_W // 2, cfg.WINDOW_H - 80))
 
     def draw(self, window):
@@ -91,7 +91,7 @@ class PressSpaceBanner:
 
 class PressSpaceEscBanner:
     def __init__(self):
-        self.surf = get_pixelfont(35).render("SPACE: Confirm" + " " * 15 + "ESC: Back", False, cfg.LT_BLUE)
+        self.surf = get_pixelfont(40).render("SPACE: Confirm" + " " * 15 + "ESC: Back", False, cfg.LT_BLUE)
         self.rect = self.surf.get_rect(midbottom=(cfg.WINDOW_W // 2, cfg.WINDOW_H - 80))
 
     def draw(self, window):
