@@ -28,7 +28,7 @@ class MenuTypes(Enum):
     LEVEL = auto()
     MULTIPLAYER = auto()
     CUSTOM = auto()
-    PERIMETER = auto()
+    BORDER = auto()
     CELL_SIZE = auto()
     START_SPEED = auto()
     ACCELERATION = auto()

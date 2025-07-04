@@ -219,6 +219,7 @@ class Menu:
         return True
         
     def update_sub_text(self, text):
+        print("update_sub_text called", text)
         self.items[self.index].sub_text = text
 
 
@@ -239,8 +240,6 @@ class MenuItem:
         self.main_rect = None
 
     def update(self):
-       
-    
         self.main_text_surf = self.main_font.render(self.main_text, True, self.main_color)
         self.main_text_rect = self.main_text_surf.get_rect(center=(self.main_rect.width // 2, self.main_rect.height * 0.4))
         
@@ -280,9 +279,3 @@ class MenuItem:
 
         surf.blit(self.main_surf, self.main_rect)
         surf.blit(self.sub_surf, self.sub_rect)
-
-    def get_sub_text(self):
-        if callable(self.sub_text):
-            return self.sub_text_update_func()
-        else:
-            return self.sub_text

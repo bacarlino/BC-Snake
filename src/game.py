@@ -89,6 +89,6 @@ class Game:
     def pop_game_state(self):
         self.game_state.pop()
 
-    def start_custom_game(self):
-        self.load_level(self.level_config.get_level_config())
+    def start_custom_game(self, level_config):
+        self.load_level(level_config)
         self.start_game()

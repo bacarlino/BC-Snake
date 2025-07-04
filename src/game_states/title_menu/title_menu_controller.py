@@ -68,95 +68,35 @@ class TitleMenuController:
         self.stack.push(self.menus[MenuTypes.CUSTOM])
         self.title_hidden = True
 
-    def perimeter_on(self):
+    def set_border(self, attribute):
         self.stack.pop()
-        self.level_config.has_border = True
-        self.current().update_sub_text(self.level_config.has_border_sub_text())
+        self.level_config.has_border = attribute.value
+        self.current().update_sub_text(attribute.name)
 
-    def perimeter_off(self):
+    def set_cell_size(self, attribute):
         self.stack.pop()
-        self.level_config.has_border = False
-        self.current().update_sub_text(self.level_config.has_border_sub_text())
+        self.level_config.cell_size = attribute.value
+        self.current().update_sub_text(attribute.name)
 
-    def set_cell_size(self, size):
+    def set_start_speed(self, attribute):
         self.stack.pop()
-        self.level_config.cell_size = size
-        self.top_menu.update_sub_text(self.level_config.cell_size_sub_text)
+        self.level_config.start_speed = attribute.value
+        self.current().update_sub_text(attribute.name)
 
-    def cell_size_small(self):
+    def set_acceleration(self, attribute):
         self.stack.pop()
-        self.level_config.cell_size = 16
-        self.current().update_sub_text(self.level_config.cell_size_sub_text())
+        self.level_config.acceleration = attribute.value
+        self.current().update_sub_text(attribute.name)
 
-    def cell_size_medium(self):
+    def set_fruit_qty(self, attribute):
         self.stack.pop()
-        self.level_config.cell_size = 32
-        self.current().update_sub_text(self.level_config.cell_size_sub_text())
-
-    def cell_size_large(self):
-        self.stack.pop()
-        self.level_config.cell_size = 64
-        self.current().update_sub_text(self.level_config.cell_size_sub_text())
-
-    def start_speed_slow(self):
-        self.stack.pop()
-        self.level_config.start_speed = 6
-        self.current().update_sub_text(self.level_config.start_speed_sub_text())
-
-    def start_speed_medium(self):
-        self.stack.pop()
-        self.level_config.start_speed = 8
-        self.current().update_sub_text(self.level_config.start_speed_sub_text())
+        self.level_config.fruit_qty = attribute.value
+        self.current().update_sub_text(attribute.name)
     
-    def start_speed_fast(self):
+    def set_growth_rate(self, attribute):
         self.stack.pop()
-        self.level_config.start_speed = 10
-        self.current().update_sub_text(self.level_config.start_speed_sub_text())
-
-    def acceleration_off(self):
-        self.stack.pop()
-        self.level_config.acceleration = 0
-        self.current().update_sub_text(self.level_config.acceleration_sub_text())
-
-    def acceleration_low(self):
-        self.stack.pop()
-        self.acceleration = 1.5
-        self.current().update_sub_text(self.level_config.acceleration_sub_text())
-
-    def acceleration_high(self):
-        self.stack.pop()
-        self.level_config.acceleration = 2.5
-        self.current().update_sub_text(self.level_config.acceleration_sub_text())
-        
-    def fruit_qty_low(self):
-        self.stack.pop()
-        self.level_config.fruit_qty = 1
-        self.current().update_sub_text(self.level_config.fruit_qty_sub_text())
-
-    def fruit_qty_medium(self):
-        self.stack.pop()
-        self.level_config.fruit_qty = 5
-        self.current().update_sub_text(self.level_config.fruit_qty_sub_text())
-
-    def fruit_qty_high(self):
-        self.stack.pop()
-        self.level_config.fruit_qty = 25
-        self.current().update_sub_text(self.level_config.fruit_qty_sub_text())
-    
-    def growth_rate_low(self):
-        self.stack.pop()
-        self.level_config.growth_rate = 1
-        self.current().update_sub_text(self.level_config.growth_rate_sub_text())
-
-    def growth_rate_medium(self):
-        self.stack.pop()
-        self.level_config.growth_rate = 3
-        self.current().update_sub_text(self.level_config.growth_rate_sub_text())
-
-    def growth_rate_high(self):
-        self.stack.pop()
-        self.level_config.growth_rate = 10
-        self.current().update_sub_text(self.level_config.growth_rate_sub_text())
+        self.level_config.growth_rate = attribute.value
+        self.current().update_sub_text(attribute.name)
 
     def start_custom_game(self):
-        self.game.start_custom_game()
+        self.game.start_custom_game(self.level_config.get_level_config())

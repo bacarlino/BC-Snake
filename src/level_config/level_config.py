@@ -12,7 +12,7 @@ class LevelConfig:
 
 CLASSIC = LevelConfig(
     has_border=True, 
-    start_speed=6, 
+    start_speed=5, 
     acceleration=0, 
     cell_size=40,
     fruit_qty=1,
@@ -21,8 +21,8 @@ CLASSIC = LevelConfig(
 
 BIG = LevelConfig(
     has_border=True, 
-    start_speed=6, 
-    acceleration=1.5, 
+    start_speed=5, 
+    acceleration=1.25, 
     cell_size=80, 
     fruit_qty=1,
     growth_rate=1
@@ -30,44 +30,28 @@ BIG = LevelConfig(
 
 SUPER = LevelConfig(
     has_border=True, 
-    start_speed=8, 
-    acceleration=1.5, 
+    start_speed=6, 
+    acceleration=1.25, 
     cell_size=40, 
-    fruit_qty=5,
+    fruit_qty=3,
     growth_rate=2
 )
 
 EXTREME = LevelConfig(
     has_border=True, 
-    start_speed=10, 
+    start_speed=8, 
     acceleration=2, 
     cell_size=20, 
-    fruit_qty=25,
+    fruit_qty=8,
     growth_rate=5
 )
 
 INSANE = LevelConfig(
     has_border=False, 
     start_speed=12, 
-    acceleration=3, 
+    acceleration=2.5, 
     cell_size=10, 
     fruit_qty=500,
-    growth_rate=50
+    growth_rate=20
 )
 
-# def create_level_config(
-#     has_border=True,
-#     speed=6,
-#     acceleration=0,
-#     cell_size=40,
-#     fruit_qty=1,
-#     growth_rate=1      
-# ):
-#     return LevelConfig(
-#         has_border=has_border,
-#         speed=speed,
-#         acceleration=acceleration,
-#         cell_size=cell_size,
-#         fruit_qty=fruit_qty,
-#         growth_rate=growth_rate
-#     )
