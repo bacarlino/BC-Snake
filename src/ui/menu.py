@@ -2,6 +2,7 @@ import pygame
 
 from src.enums import MenuInput
 from src.sounds import MENU_SCROLL, MENU_SELECT
+from src.app_config import WINDOW_H
 
 
 class MenuGrid:
@@ -12,7 +13,7 @@ class MenuGrid:
         self.colors = colors
         self.item_grid = self.check_list_format(item_grid)
         self.menu_list = []
-        self.row_size = (size[0], size[1] // len(item_grid))
+        self.row_size = (size[0], size[1] // (len(item_grid)))
         self.create_menu_list()
         self.focus_index = 0
         self.focused_menu = self.menu_list[self.focus_index]
@@ -31,12 +32,22 @@ class MenuGrid:
         return [item_grid] if not isinstance(item_grid[0], list) else item_grid
         
     def create_menu_list(self):
-        track_pos = self.pos
+        next_pos = self.pos
+        track_delta_y = 0
+
         for item_list in self.item_grid:
+            print("LOOP")
+            print("next_pos, track_delta_y: ", next_pos, track_delta_y)
+            print()
+            print("Appending, item_list, next_pos, self.row_size)")
+            print(item_list, next_pos, self.row_size)
+            print()
             self.menu_list.append(
-                Menu(item_list, track_pos, self.row_size, **self.colors)
+                Menu(item_list, next_pos, self.row_size, **self.colors)
             )
-            track_pos = (self.pos[0], self.pos[1] + self.row_size[1])
+            
+            track_delta_y += self.row_size[1]
+            next_pos = (self.pos[0], self.pos[1] + track_delta_y)
 
     def handle_event(self, event):
         if event.key == pygame.K_DOWN or event.key == pygame.K_s:
@@ -144,7 +155,7 @@ class Menu:
         item_width = (self.width // len(self.items))
         
         for number, item in enumerate(self.items):
-            item.initialize((item_width, self.height), (item_width * number, 0), self.bg_color)
+            item.configure((item_width, self.height * 1.1), (item_width * number, 0), self.bg_color)
     
         self.surf = pygame.Surface((self.width, self.height))
         self.rect = self.surf.get_rect(midtop=pos)
@@ -246,13 +257,14 @@ class MenuItem:
         self.sub_text_surf = self.sub_font.render(self.sub_text, True, self.sub_color, wraplength=int(self.sub_rect.width * .8))
         self.sub_text_rect = self.sub_text_surf.get_rect(midtop=(self.sub_rect.width // 2, 0))
 
-    def initialize(self, size, pos, bg_color):
+    def configure(self, size, pos, bg_color):
         self.bg_color = bg_color
 
         if self.sub_text:
             divide = size[1] * 0.4
         else:
             divide = size[1]
+
         self.main_surf = pygame.Surface((size[0], divide))
         self.main_rect = self.main_surf.get_rect(topleft=pos)
 
