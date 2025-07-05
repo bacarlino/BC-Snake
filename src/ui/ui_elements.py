@@ -99,12 +99,15 @@ class PressSpaceEscBanner:
 
 
 class WordBanner:
-    def __init__(self, text, color, antialias, pos):
-        self.surf = get_pixelfont(50).render(text, antialias, color)
-        self.rect = self.surf.get_rect(midbottom=(cfg.WINDOW_W // 2, cfg.WINDOW_H * 0.15))
+    def __init__(self, text="WordBanner", antialias=False, color=None, size=50, kw_pos={"topleft": (0, 0)}):
+        self.surf = get_pixelfont(size).render(text, antialias, color)
+        self.rect = self.surf.get_rect(**kw_pos)
     
     def draw(self, window):
         window.blit(self.surf, self.rect)
+
+    def move_to(self, kw_pos):
+        self.rect = self.rect.move_to(**kw_pos)
 
 
 def create_ping_pang():

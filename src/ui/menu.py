@@ -7,7 +7,8 @@ from src.app_config import WINDOW_H
 
 class MenuGrid:
 
-    def __init__(self, item_grid, pos, size, colors):
+    def __init__(self, item_grid, pos, size, colors, title=None):
+        self.title = title
         self.pos = pos
         self.size = size
         self.colors = colors
@@ -15,6 +16,7 @@ class MenuGrid:
         self.menu_list = []
         self.row_size = (size[0], size[1] // (len(item_grid)))
         self.create_menu_list()
+        self.align_title()
         self.focus_index = 0
         self.focused_menu = self.menu_list[self.focus_index]
         self.set_focus(self.focused_menu)
@@ -25,8 +27,8 @@ class MenuGrid:
             MenuInput.DOWN: False
         }
 
-    def displays_title(self):
-        return False
+    # def displays_title(self):
+    #     return False
 
     def check_list_format(self, item_grid):
         return [item_grid] if not isinstance(item_grid[0], list) else item_grid
@@ -36,12 +38,6 @@ class MenuGrid:
         track_delta_y = 0
 
         for item_list in self.item_grid:
-            print("LOOP")
-            print("next_pos, track_delta_y: ", next_pos, track_delta_y)
-            print()
-            print("Appending, item_list, next_pos, self.row_size)")
-            print(item_list, next_pos, self.row_size)
-            print()
             self.menu_list.append(
                 Menu(item_list, next_pos, self.row_size, **self.colors)
             )
@@ -67,8 +63,14 @@ class MenuGrid:
         for input in self.inputs:
             self.inputs[input] = False
 
+    def align_title(self):
+        if self.title:
+            self.title.move_to({"midbottom": self.menu_list[0].rect.midtop})
+
     def draw(self, window):
         window.fill(self.colors["bg_color"])
+        if self.title:
+            self.title.draw(window)
         for menu in self.menu_list:
             menu.draw(window)
 
@@ -77,7 +79,6 @@ class MenuGrid:
             MENU_SCROLL.play()
             old_menu = self.focused_menu
             self.focus_index -= 1
-            # self.focused_menu = self.menu_list[self.focus_index]
             self.set_focus(old_menu)
 
     def down(self):
@@ -86,7 +87,6 @@ class MenuGrid:
             old_menu = self.focused_menu
             self.focus_index += 1
             self.set_focus(old_menu)
-            # self.focused_menu = self.menu_list[self.focus_index]
     
     def set_focus(self, old_menu):
         self.clear_is_focused()
@@ -113,7 +113,6 @@ class MenuGrid:
     def update_sub_text(self, text):
         self.focused_menu.update_sub_text(text)
         self.update_items()
-
 
 
 class Menu:
@@ -151,7 +150,7 @@ class Menu:
         self.width, self.height = size
 
         # self.width * (minimum width percentage + (adjustable multiplier * number of items))
-        self.width = self.width * (0.3 + (0.12 * len(self.items)))
+        self.width = self.width * (0.2 + (0.12 * len(self.items)))
         item_width = (self.width // len(self.items))
         
         for number, item in enumerate(self.items):
@@ -159,7 +158,6 @@ class Menu:
     
         self.surf = pygame.Surface((self.width, self.height))
         self.rect = self.surf.get_rect(midtop=pos)
-        self.bg_rect = self.rect.copy()
 
         self.inputs = {
             MenuInput.SELECT: False,
