@@ -20,3 +20,6 @@ def align_center_to_grid(dimensions, cell_size):
     vertical = ((dimensions[1] // cell_size) // 2) * cell_size
 
     return (horizontal, vertical)
+
+def grid_snap(dimension, cell_size):
+    return ((dimension // cell_size) // 2) * cell_size

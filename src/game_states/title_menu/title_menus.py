@@ -1,7 +1,7 @@
 from functools import partial
 
 import src.app_config as cfg
-from src.enums import MenuType, LvlAttrEnum
+from src.enums import MenuType
 from src.level_config import pre_made
 from src.level_config import level_attributes as lvl_attr
 from src.ui.menu import Menu, MenuGrid, MenuItem

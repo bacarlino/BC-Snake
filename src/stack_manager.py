@@ -26,7 +26,7 @@ class StackManager:
             return self.stack.pop()
         
     def clear(self):
-        self.stack = []
+        self.stack.clear()
     
     def peek(self):
         if self.stack:
