@@ -5,7 +5,6 @@ from src.game_states.game_over import GameOver
 from src.game_states.pause import Pause
 from src.game_states.title.title import Title
 from src.game_states.start import Start
-import src.level_config.level_config as levels
 from src.stack_manager import StackManager
 
 
@@ -19,7 +18,6 @@ class Game:
         self.level_config = None
         self.display_size = None
         
-        # CONFUSING NAMING
         self.game_state = StackManager()
         self.game_state.push(Title(self))
     

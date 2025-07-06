@@ -77,7 +77,7 @@ class Snake:
         self.move_timer = 1 / self.speed
         self.body = []
         # self.score = 0
-        self.fill_body()
+        self.fill_body(self.initial_length)
 
     def handle_event_keydown(self, event):
         for control in self.controls:
