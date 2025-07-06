@@ -59,7 +59,6 @@ class Game:
     def push_pause(self):
         self.game_state.push(Pause(self))
 
-    # Play States Only
     def load_level(self, level):
         self.level_config = level
         self.update_display_size()
@@ -68,6 +67,10 @@ class Game:
         self.game_state.clear()
         self.game_state.push(self.saved_play_state(self, self.level_config))
         self.game_state.push(Start(self))
+
+    def next_round(self):
+        self.pop_game_state()
+        self.push_game_state(Start(self))
 
     def save_play_state(self, play_state):
         self.saved_play_state = play_state

@@ -19,17 +19,11 @@ class RunDeathMatch(PlayState):
     def __init__(self, game, level_config):
         super().__init__(game, level_config)
 
-        self.inputs = {
-            Play.START: False, 
-            Play.PAUSE: False,
-            Play.QUIT: False
-        }
-
     def update(self):
 
-        if self.inputs[Play.PAUSE] == True:
+        if self.commands[Play.PAUSE] == True:
             self.game.push_game_state(Pause(self.game))
-        if self.inputs[Play.QUIT] == True:
+        if self.commands[Play.QUIT] == True:
             self.game.reset_game()
             return
 
@@ -41,10 +35,12 @@ class RunDeathMatch(PlayState):
             other_snakes.remove(snake)
             snake.update(time_now, self.border, other_snakes)
 
+            self.handle_fruit_collision(snake)
+
+        for snake in self.snakes:
             if snake.collision_detected:
                 snake.die()
                 match_over = True
-            self.handle_fruit_collision(snake)
 
         if match_over:
             for snake in self.snakes:

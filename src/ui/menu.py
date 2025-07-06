@@ -228,7 +228,6 @@ class Menu:
         return True
         
     def update_sub_text(self, text):
-        print("update_sub_text called", text)
         self.items[self.index].sub_text = text
 
 

@@ -66,7 +66,6 @@ class TitleMenuController:
         self.title_hidden = True
 
     def set_lvl_attr(self, lvl_attr_cfg):
-        print("NEW set_lvl_attr METHOD CALLED")
         self.menu_stack.pop()
         setattr(self, lvl_attr_cfg.attr, lvl_attr_cfg)
         self.current().update_sub_text(lvl_attr_cfg.name)

@@ -17,7 +17,6 @@ class RunCoOp(PlayState):
     def __init__(self, game, level_config):
         super().__init__(game, level_config)
 
-
     def update(self):
 
         if self.commands[Play.PAUSE] == True:

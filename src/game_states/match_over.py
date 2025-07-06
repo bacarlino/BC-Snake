@@ -28,7 +28,7 @@ class MatchOver(GameState):
         if self.commands[Play.START] == True:
             for snake in self.game.game_state.peek_below().snakes:
                 snake.reset()
-            self.game.pop_game_state()
+            self.game.next_round()
             return
         if self.commands[Play.QUIT] == True:
             self.game.reset_game()

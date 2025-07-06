@@ -70,9 +70,10 @@ class Snake:
         self.moving = True
         self.collision_detected = False
         self.dead = False
+        self.direction = self.initial_direction
         self.current_color = self.main_color
         self.head_position = self.initial_position
-        self.direction = self.initial_direction
+        self.next_direction = self.direction = self.initial_direction
         self.speed = self.initial_speed
         self.move_timer = 1 / self.speed
         self.body = []
@@ -101,8 +102,7 @@ class Snake:
             if keys[control.right]:
                 self.commands[Move.RIGHT] = True
 
-    def update(self, 
-    time_now, border=None, other_snakes=None):
+    def update(self, time_now, border=None, other_snakes=None):
         if self.dead:
             self.moving = False
             self.update_dead(time_now)

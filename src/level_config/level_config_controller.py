@@ -11,7 +11,7 @@ class LevelConfigController:
         self.cell_size = lvl_attr.CELL_SIZE_MEDIUM
         self.fruit_qty = lvl_attr.FRUIT_QTY_LOW
         self.growth_rate = lvl_attr.GROWTH_RATE_LOW
-        print(self.has_border.value)
+        (self.has_border.value)
 
 
     def get_level_config(self):

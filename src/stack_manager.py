@@ -17,12 +17,9 @@ class StackManager:
 
     def push(self, item):
         self.stack.append(item)
-        print(f"Pushed: {item}")
-        print("Stack: ", self.stack)
-
+   
     def pop(self):
         if self.stack:
-            print("Popping: ", self.stack[-1])
             return self.stack.pop()
         
     def clear(self):
