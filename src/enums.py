@@ -1,4 +1,4 @@
-from enum import Enum, auto
+from enum import Enum, StrEnum, auto
 
 
 class Move(Enum):
@@ -23,7 +23,7 @@ class Play(Enum):
     QUIT = auto()
 
 
-class MenuTypes(Enum):
+class MenuType(Enum):
     PLAYERS = auto()
     LEVEL = auto()
     MULTIPLAYER = auto()
@@ -34,3 +34,12 @@ class MenuTypes(Enum):
     ACCELERATION = auto()
     FRUIT_QTY = auto()
     GROWTH_RATE = auto()
+
+
+class LvlAttrEnum(StrEnum):
+    HAS_BORDER = "has_border"
+    CELL_SIZE = "cell_size"
+    START_SPEED = "start_speed"
+    ACCELERATION = "acceleration"
+    FRUIT_QTY = "fruit_qty"
+    GROWTH_RATE = "growth_rate"

@@ -36,3 +36,12 @@ EXTREME = LevelConfig(
     fruit_qty=8,
     growth_rate=5
 )
+
+INSANE = LevelConfig(
+    has_border=False, 
+    start_speed=12, 
+    acceleration=2.5, 
+    cell_size=10, 
+    fruit_qty=500,
+    growth_rate=20
+)

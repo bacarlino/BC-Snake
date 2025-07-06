@@ -1,8 +1,8 @@
 from functools import partial
 
 import src.app_config as cfg
-from src.enums import MenuTypes
-import src.level_config.level_config as levels
+from src.enums import MenuType, LvlAttrEnum
+from src.level_config import pre_made
 from src.level_config import level_attributes as lvl_attr
 from src.ui.menu import Menu, MenuGrid, MenuItem
 from src.game_states.run_co_op import RunCoOp
@@ -15,11 +15,8 @@ MENU_HEIGHT = ui.PRESS_SPACE_RECT.top - ui.TITLE_RECT.bottom
 MENU_POS = (ui.TITLE_RECT.midbottom)
 MENU_SIZE = (cfg.WINDOW_W * 0.9, MENU_HEIGHT)
 
-# MENU_GRID_HEIGHT = ui.PRESS_SPACE_RECT.top - ui.PING_PANG_RECT.bottom
 PADDING = 80
-# MENU_GRID_POS = (cfg.CENTER[0], MENU_GRID_HEIGHT * .1)
 MENU_GRID_POS = (cfg.CENTER[0], PADDING)
-# MENU_GRID_SIZE = (cfg.WINDOW_W * 0.9, MENU_GRID_HEIGHT)
 MENU_GRID_SIZE = (cfg.WINDOW_W - PADDING * 2, cfg.WINDOW_H - PADDING * 2)
 
 CENTER = (cfg.WINDOW_W // 2, cfg.WINDOW_H // 2)
@@ -38,16 +35,16 @@ MENU_FONT_CONFIG = {
 
 def build_title_menus(controller):
     return {
-        MenuTypes.PLAYERS: build_players_menu(controller),
-        MenuTypes.LEVEL: build_level_menu(controller),
-        MenuTypes.MULTIPLAYER: build_multiplayer_menu(controller),
-        MenuTypes.CUSTOM: build_custom_menu(controller),
-        MenuTypes.BORDER: build_border_menu(controller),
-        MenuTypes.CELL_SIZE: build_cell_size_menu(controller),
-        MenuTypes.START_SPEED: build_start_speed_menu(controller),
-        MenuTypes.ACCELERATION: build_acceleration_menu(controller),
-        MenuTypes.FRUIT_QTY: build_fruit_qty_menu(controller),
-        MenuTypes.GROWTH_RATE: build_growth_rate_menu(controller)
+        MenuType.PLAYERS: build_players_menu(controller),
+        MenuType.LEVEL: build_level_menu(controller),
+        MenuType.MULTIPLAYER: build_multiplayer_menu(controller),
+        MenuType.CUSTOM: build_custom_menu(controller),
+        MenuType.BORDER: build_border_menu(controller),
+        MenuType.CELL_SIZE: build_cell_size_menu(controller),
+        MenuType.START_SPEED: build_start_speed_menu(controller),
+        MenuType.ACCELERATION: build_acceleration_menu(controller),
+        MenuType.FRUIT_QTY: build_fruit_qty_menu(controller),
+        MenuType.GROWTH_RATE: build_growth_rate_menu(controller)
     }
 
 
@@ -63,28 +60,28 @@ def build_level_menu(controller):
     level_menu_items = [
         MenuItem(
             "Classic",
-            lambda: controller.select_level(levels.CLASSIC),
+            lambda: controller.select_level(pre_made.CLASSIC),
             "The classic snake experience",
         ),     
         MenuItem(
             "Zooomed",
-            lambda: controller.select_level(levels.BIG),
+            lambda: controller.select_level(pre_made.BIG),
             "Zooomed in. Classic with a twist - ZOOM"
         ),
         MenuItem(
             "Super\nClassic",
-            lambda: controller.select_level(levels.SUPER),
+            lambda: controller.select_level(pre_made.SUPER),
             "More Fruit. More Growth. More Speed.",
         ),
         MenuItem(
             "Extreme",
-            lambda: controller.select_level(levels.EXTREME), 
+            lambda: controller.select_level(pre_made.EXTREME), 
             "Everything turned up to 11 on a large map",
         ),
     
         MenuItem(
             "Insane",
-            lambda: controller.select_level(levels.INSANE),
+            lambda: controller.select_level(pre_made.INSANE),
             "What even is this?"
         ),
         
@@ -125,34 +122,34 @@ def build_custom_menu(controller):
         [
             MenuItem(
                 "Cell\nSize",
-                lambda: controller.menu_stack.push(controller.menus[MenuTypes.CELL_SIZE]),
+                lambda: controller.menu_stack.push(controller.menus[MenuType.CELL_SIZE]),
                 lvl_attr.CELL_SIZE_MEDIUM.name
             ),
             MenuItem(
                 "Start\nSpeed",
-                lambda: controller.menu_stack.push(controller.menus[MenuTypes.START_SPEED]),
+                lambda: controller.menu_stack.push(controller.menus[MenuType.START_SPEED]),
                 lvl_attr.START_SPEED_SLOW.name
             ),
             MenuItem(
                 "Speed\nUp", 
-                lambda: controller.menu_stack.push(controller.menus[MenuTypes.ACCELERATION]),
+                lambda: controller.menu_stack.push(controller.menus[MenuType.ACCELERATION]),
                 lvl_attr.ACCELERATION_NONE.name
             ),
         ],
         [
              MenuItem(
                 "Border\nWall", 
-                lambda: controller.menu_stack.push(controller.menus[MenuTypes.BORDER]),
+                lambda: controller.menu_stack.push(controller.menus[MenuType.BORDER]),
                 lvl_attr.BORDER_ON.name
             ),
             MenuItem(
                 "Fruit\nQuantity", 
-                lambda: controller.menu_stack.push(controller.menus[MenuTypes.FRUIT_QTY]),
+                lambda: controller.menu_stack.push(controller.menus[MenuType.FRUIT_QTY]),
                 lvl_attr.FRUIT_QTY_LOW.name
             ),
             MenuItem(
                 "Growth\nRate",
-                lambda: controller.menu_stack.push(controller.menus[MenuTypes.GROWTH_RATE]),
+                lambda: controller.menu_stack.push(controller.menus[MenuType.GROWTH_RATE]),
                 lvl_attr.GROWTH_RATE_LOW.name
             ),
 
@@ -173,11 +170,11 @@ def build_border_menu(controller):
     border_menu_items = [
         MenuItem(
             lvl_attr.BORDER_ON.name, 
-            partial(controller.set_border, lvl_attr.BORDER_ON)
+            partial(controller.set_lvl_attr, lvl_attr.BORDER_ON)
         ),
         MenuItem(
             lvl_attr.BORDER_OFF.name, 
-            partial(controller.set_border, lvl_attr.BORDER_OFF)
+            partial(controller.set_lvl_attr, lvl_attr.BORDER_OFF)
         )
     ]
     return MenuGrid(border_menu_items, CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
@@ -188,19 +185,19 @@ def build_cell_size_menu(controller):
     cell_size_menu_items = [
         MenuItem(
             lvl_attr.CELL_SIZE_LARGE.name, 
-            partial(controller.set_cell_size, lvl_attr.CELL_SIZE_LARGE)
+            partial(controller.set_lvl_attr, lvl_attr.CELL_SIZE_LARGE)
         ),
         MenuItem(
             lvl_attr.CELL_SIZE_MEDIUM.name, 
-            partial(controller.set_cell_size, lvl_attr.CELL_SIZE_MEDIUM)
+            partial(controller.set_lvl_attr, lvl_attr.CELL_SIZE_MEDIUM)
         ),
         MenuItem(
             lvl_attr.CELL_SIZE_SMALL.name, 
-            partial(controller.set_cell_size, lvl_attr.CELL_SIZE_SMALL)
+            partial(controller.set_lvl_attr, lvl_attr.CELL_SIZE_SMALL)
         ),
         MenuItem(
             lvl_attr.CELL_SIZE_TINY.name, 
-            partial(controller.set_cell_size, lvl_attr.CELL_SIZE_TINY)
+            partial(controller.set_lvl_attr, lvl_attr.CELL_SIZE_TINY)
         )
     ]
     return MenuGrid(cell_size_menu_items, CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
@@ -211,15 +208,15 @@ def build_start_speed_menu(controller):
     start_speed_menu_items = [
         MenuItem(
             lvl_attr.START_SPEED_SLOW.name, 
-            partial(controller.set_start_speed, lvl_attr.START_SPEED_SLOW)
+            partial(controller.set_lvl_attr, lvl_attr.START_SPEED_SLOW)
         ),
         MenuItem(
             lvl_attr.START_SPEED_MEDIUM.name, 
-            partial(controller.set_start_speed, lvl_attr.START_SPEED_MEDIUM)
+            partial(controller.set_lvl_attr, lvl_attr.START_SPEED_MEDIUM)
         ),
         MenuItem(
             lvl_attr.START_SPEED_FAST.name, 
-            partial(controller.set_start_speed, lvl_attr.START_SPEED_FAST)
+            partial(controller.set_lvl_attr, lvl_attr.START_SPEED_FAST)
         ),
     ]
     return MenuGrid(start_speed_menu_items, CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
@@ -230,15 +227,15 @@ def build_acceleration_menu(controller):
     acceleration_menu_items = [
         MenuItem(
             lvl_attr.ACCELERATION_NONE.name, 
-            partial(controller.set_acceleration, lvl_attr.ACCELERATION_NONE)
+            partial(controller.set_lvl_attr, lvl_attr.ACCELERATION_NONE)
         ),
         MenuItem(
             lvl_attr.ACCELERATION_LOW.name, 
-            partial(controller.set_acceleration, lvl_attr.ACCELERATION_LOW)
+            partial(controller.set_lvl_attr, lvl_attr.ACCELERATION_LOW)
         ),
         MenuItem(
             lvl_attr.ACCELERATION_HIGH.name, 
-            partial(controller.set_acceleration, lvl_attr.ACCELERATION_HIGH)
+            partial(controller.set_lvl_attr, lvl_attr.ACCELERATION_HIGH)
         ),
     ]
     
@@ -250,15 +247,15 @@ def build_fruit_qty_menu(controller):
     fruit_qty_menu_items = [
         MenuItem(
             lvl_attr.FRUIT_QTY_LOW.name, 
-            partial(controller.set_fruit_qty, lvl_attr.FRUIT_QTY_LOW)
+            partial(controller.set_lvl_attr, lvl_attr.FRUIT_QTY_LOW)
         ),
         MenuItem(
             lvl_attr.FRUIT_QTY_MEDIUM.name, 
-            partial(controller.set_fruit_qty, lvl_attr.FRUIT_QTY_MEDIUM)
+            partial(controller.set_lvl_attr, lvl_attr.FRUIT_QTY_MEDIUM)
         ),
         MenuItem(
             lvl_attr.FRUIT_QTY_HIGH.name, 
-            partial(controller.set_fruit_qty, lvl_attr.FRUIT_QTY_HIGH)
+            partial(controller.set_lvl_attr, lvl_attr.FRUIT_QTY_HIGH)
         ),
     ]
     return MenuGrid(fruit_qty_menu_items, CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
@@ -269,15 +266,15 @@ def build_growth_rate_menu(controller):
     growth_rate_menu_items = [
         MenuItem(
             lvl_attr.GROWTH_RATE_LOW.name, 
-            partial(controller.set_growth_rate, lvl_attr.GROWTH_RATE_LOW)
+            partial(controller.set_lvl_attr, lvl_attr.GROWTH_RATE_LOW)
         ),
         MenuItem(
             lvl_attr.GROWTH_RATE_MEDIUM.name, 
-            partial(controller.set_growth_rate, lvl_attr.GROWTH_RATE_MEDIUM)
+            partial(controller.set_lvl_attr, lvl_attr.GROWTH_RATE_MEDIUM)
         ),
         MenuItem(
             lvl_attr.GROWTH_RATE_HIGH.name, 
-            partial(controller.set_growth_rate, lvl_attr.GROWTH_RATE_HIGH)
+            partial(controller.set_lvl_attr, lvl_attr.GROWTH_RATE_HIGH)
         ),
     ]
     return MenuGrid(growth_rate_menu_items, CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)

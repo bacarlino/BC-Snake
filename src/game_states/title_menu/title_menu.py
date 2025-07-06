@@ -4,7 +4,7 @@ from src.enums import MenuInput
 from src.game_states.game_state import GameState
 
 from src.game_states.title_menu.title_menu_controller import TitleMenuController
-import src.ui.ui_elements as ui
+from src.game_states.title_menu.title_menu_ui import TitleMenuUI
 from src.ui.ui_elements import NameBanner, TitleBanner, PressSpaceEscBanner
 
 
@@ -16,10 +16,7 @@ class TitleMenu(GameState):
         self.commands = {MenuInput.BACK: False}
         self.menu_controller = TitleMenuController(self, self.game)
 
-
-        self.name_banner = NameBanner()
-        self.title_banner = TitleBanner()
-        self.press_space_banner = PressSpaceEscBanner()
+        self.ui = TitleMenuUI()
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
@@ -34,13 +31,11 @@ class TitleMenu(GameState):
                 return
             else:
                 self.menu_controller.close_top_menu()
-
+                
         self.menu_controller.update()
-
         self.reset_command_flags()
 
     def draw(self, window):
-        self.name_banner.draw(window)
-        self.title_banner.draw(window)
+        self.ui.draw_title(window)
         self.menu_controller.draw(window)
-        self.press_space_banner.draw(window)
+        self.ui.draw_command_bar(window)

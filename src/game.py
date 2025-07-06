@@ -47,7 +47,6 @@ class Game:
         for game_state in self.game_state.stack:
             game_state.draw(window)
 
-        # self.game_state.draw(window)
         pygame.display.flip()
 
     def transition_to(self, state):
