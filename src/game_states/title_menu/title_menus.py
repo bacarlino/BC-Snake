@@ -5,9 +5,9 @@ from src.enums import MenuType
 from src.level_config import pre_made
 from src.level_config import level_attributes as lvl_attr
 from src.ui.menu import Menu, MenuGrid, MenuItem
-from src.game_states.run_co_op import RunCoOp
-from src.game_states.run_deathmatch import RunDeathMatch
-from src.game_states.run_score_battle import RunScoreBattle
+from src.game_states.play_co_op import PlayCoOp
+from src.game_states.play_deathmatch import PlayDeathMatch
+from src.game_states.play_score_battle import PlayScoreBattle
 import src.ui.ui_elements as ui
 
 
@@ -98,17 +98,17 @@ def build_multiplayer_menu(controller):
     multiplayer_menu_items = [
         MenuItem(
             "Death\nMatch", 
-            lambda: controller.select_multiplayer_mode(RunDeathMatch),
+            lambda: controller.select_multiplayer_mode(PlayDeathMatch),
             "Score when the other snake dies. 3 to win"
         ),
         MenuItem(
             "Score\nBattle", 
-            lambda: controller.select_multiplayer_mode(RunScoreBattle),
+            lambda: controller.select_multiplayer_mode(PlayScoreBattle),
             "Highest score held when the first snake dies wins"
         ),
         MenuItem(
             "Co-Op", 
-            lambda: controller.select_multiplayer_mode(RunCoOp),
+            lambda: controller.select_multiplayer_mode(PlayCoOp),
             "Work together to get a high score"
         )
     ]

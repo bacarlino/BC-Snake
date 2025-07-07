@@ -29,5 +29,4 @@ class Start(GameState):
         self.reset_command_flags()
 
     def draw(self, window):
-        # self.game.game_state.peek_below().draw(window)
         window.blit(ui.PRESS_SPACE_SURF, ui.PRESS_SPACE_RECT)

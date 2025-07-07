@@ -1,5 +1,5 @@
 from src.enums import MenuType
-from src.game_states.run_one_player import RunOnePlayer
+from src.game_states.play_state import PlayState
 from src.game_states.title_menu.title_menus import build_title_menus
 from src.level_config.level_config_controller import LevelConfigController
 from src.stack_manager import StackManager
@@ -44,7 +44,7 @@ class TitleMenuController:
         return self.current().displays_title()
     
     def select_one_player(self):
-        self.game.save_play_state(RunOnePlayer)
+        self.game.save_play_state(PlayState)
         self.menu_stack.push(self.menus[MenuType.LEVEL])
 
     def select_two_player(self):
