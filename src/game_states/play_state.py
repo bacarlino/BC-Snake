@@ -135,7 +135,14 @@ class PlayState(GameState):
                     self.game.window_size, self.level_config.cell_size
                 )
                 if self.border and coord in self.border: continue
-                if coord in self.snakes[0].body: continue
+               
+                snake_segments = [
+                    segment for snake in self.snakes for segment in snake.body
+                ]
+                if coord in snake_segments: 
+                    print("COORD IN SNAKE_SEGMENT, CONTINUE")
+                    continue
+
                 placed = True
                 self.fruits.append(coord)
 
