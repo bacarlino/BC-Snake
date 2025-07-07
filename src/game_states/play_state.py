@@ -1,11 +1,9 @@
-from abc import abstractmethod
 import time
 
 import pygame
 
 import src.app_config as cfg
 from src.enums import Play
-from src.controls import ARROW, WSAD
 from src.factories import create_one_player_snakes
 from src.game_states.game_state import GameState
 import src.ui.ui_elements as ui
@@ -13,10 +11,12 @@ from src.utils import get_rand_coord
 
 
 class PlayState(GameState):
+    """Single player mode"""
 
     def __init__(self, game, level_config):
         super().__init__(game)
         self.level_config = level_config
+        self.match_over = False
         
         self.border = None
         self.snakes = None
@@ -24,6 +24,7 @@ class PlayState(GameState):
         
         self.setup_border()
         self.setup_snakes()
+        self.set_snakes_moving()
         self.setup_fruit()
 
         self.commands = {
@@ -55,24 +56,39 @@ class PlayState(GameState):
         self.draw_score(window)
 
     def update_commands(self):
-        if self.commands[Play.PAUSE] == True:
+        if self.commands[Play.PAUSE]:
             self.game.push_pause()
-        if self.commands[Play.QUIT] == True:
+        if self.commands[Play.QUIT]:
             self.game.reset_game()
             return True
         return False
     
     def update_snakes(self):
-        print("UPDATE SNAKES")
         time_now = time.perf_counter()
-        for snake in self.snakes:
-            snake.update(time_now, self.border)
+        self.match_over = False
 
+        for snake in self.snakes:
+            other_snakes = self.other_snakes(snake)
+            snake.update(time_now, self.border, other_snakes)
+            self.handle_snake_collision(snake)
             self.handle_fruit_collision(snake)
 
+        self.check_game_over()
+
+    def other_snakes(self, snake):
+        return [
+            other for other in self.snakes if other is not snake
+        ]
+    
+    def handle_snake_collision(self, snake):
+        for snake in self.snakes:
             if snake.collision_detected:
                 snake.die()
-                self.game.push_game_over()
+                self.match_over = True
+
+    def check_game_over(self):
+        if self.match_over:
+            self.game.push_game_over()
 
     def draw_border(self, window):
         if self.level_config.has_border:
@@ -96,6 +112,8 @@ class PlayState(GameState):
 
     def setup_snakes(self):
         self.snakes = create_one_player_snakes(self.game.window_size, self.level_config)
+        
+    def set_snakes_moving(self):
         for snake in self.snakes:
             snake.moving = True
 
