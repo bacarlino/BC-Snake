@@ -58,17 +58,15 @@ class TitleMenuController:
         self.game.save_play_state(mode)
         self.menu_stack.push(self.menus[MenuType.LEVEL])
 
-    def level_menu(self):
-        self.title_hidden = False
-
     def custom_level_menu(self):
         self.menu_stack.push(self.menus[MenuType.CUSTOM])
-        self.title_hidden = True
 
     def set_lvl_attr(self, lvl_attr_cfg):
         self.menu_stack.pop()
-        setattr(self, lvl_attr_cfg.attr, lvl_attr_cfg)
+        print("set_lvl_attr: ", lvl_attr_cfg)
+        setattr(self.level_config, lvl_attr_cfg.attr, lvl_attr_cfg)
         self.current().update_sub_text(lvl_attr_cfg.name)
 
     def start_custom_game(self):
         self.game.start_custom_game(self.level_config.get_level_config())
+        print(self.level_config.get_level_config())

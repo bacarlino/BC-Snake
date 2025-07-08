@@ -23,6 +23,3 @@ class LevelConfigController:
             fruit_qty=self.fruit_qty.value,
             growth_rate=self.growth_rate.value      
         )
-    
-    def set_attr(self, attr):
-        pass

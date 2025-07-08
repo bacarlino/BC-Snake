@@ -60,10 +60,12 @@ class Game:
         self.game_state.push(Pause(self))
 
     def load_level(self, level):
+        print("load_level; ", level)
         self.level_config = level
         self.update_display_size()
     
     def start_game(self):
+        print("start_game with: ", self.level_config)
         self.game_state.clear()
         self.game_state.push(self.saved_play_state(self, self.level_config))
         self.game_state.push(Start(self))
@@ -90,5 +92,6 @@ class Game:
         self.game_state.pop()
 
     def start_custom_game(self, level_config):
+        print("start_custom_game: ", level_config)
         self.load_level(level_config)
         self.start_game()
