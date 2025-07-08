@@ -8,6 +8,7 @@ import src.app_config as cfg
 
 pygame.font.init()
 
+
 def get_pixelfont(size):
     base_path = Path(__file__).parent.parent.parent
     font_path = base_path / "assets" / "fonts" / "Pixeltype.ttf"
@@ -19,9 +20,6 @@ def rand_rgb():
     return (
         random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
     )
-
-def make_see_thru(rgb_color):
-    return ((r, g, b, 125) for r, g, b in rgb_color)
 
 
 menu_font = get_pixelfont(40)
@@ -56,12 +54,6 @@ def draw_border(window, border, cell_size):
             window, cfg.BLUE, ((coordinate), (cell_size - 4, cell_size - 4)), border_radius=cfg.BORDER_RADIUS
         )
 
-    
-def create_title():
-    surf = get_pixelfont(400).render("SNAKE", True, cfg.PINK)
-    rect = surf.get_rect(center = (cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.4))
-    return surf, rect
-
 
 class TitleBanner:
     def __init__(self):
@@ -71,6 +63,7 @@ class TitleBanner:
     def draw(self, window):
         window.blit(self.surf, self.rect)
 
+
 class NameBanner:
     def __init__(self):
         self.surf = get_pixelfont(50).render("Brandon Carlino's", False, cfg.LT_BLUE)
@@ -78,6 +71,7 @@ class NameBanner:
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
+
 
 class PressSpaceBanner:
     def __init__(self):
@@ -87,6 +81,7 @@ class PressSpaceBanner:
     def draw(self, window):
         window.blit(self.surf, self.rect)
 
+
 class PressSpaceEscBanner:
     def __init__(self):
         self.surf = get_pixelfont(40).render("SPACE: Confirm" + " " * 15 + "ESC: Back", False, cfg.LT_BLUE)
@@ -95,13 +90,16 @@ class PressSpaceEscBanner:
     def draw(self, window):
         window.blit(self.surf, self.rect)
 
+
 class MatchOverBanner:
     def __init__(self):
         self.surf = get_pixelfont(100).render("MATCH OVER", True, cfg.AQUA)
         self.rect = self.surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
 
     def draw(self, window):
+
         window.blit(self.surf, self.rect)
+
 
 class GameOverBanner:
     def __init__(self):
@@ -111,6 +109,7 @@ class GameOverBanner:
     def draw(self, window):
         window.blit(self.surf, self.rect)
 
+
 class PausedBanner:
     def __init__(self):
         self.surf = get_pixelfont(100).render("PAUSED", True, cfg.AQUA)
@@ -118,6 +117,7 @@ class PausedBanner:
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
+
 
 class WordBanner:
     def __init__(self, text="WordBanner", antialias=False, color=None, size=50, kw_pos={"topleft": (0, 0)}):
@@ -129,42 +129,6 @@ class WordBanner:
 
     def move_to(self, kw_pos):
         self.rect = self.rect.move_to(**kw_pos)
-
-
-def create_ping_pang():
-    surf = get_pixelfont(50).render("Brandon Carlino's", True, cfg.LT_BLUE)
-    rect = surf.get_rect(midbottom=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.15))
-    return surf, rect
-
-
-def create_press_space():     
-    surf = get_pixelfont(40).render("PRESS SPACE", True, cfg.LT_BLUE)
-    rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.85))
-    return surf, rect
-
-def menu_commands():     
-    surf = get_pixelfont(40).render("SPACE: Select -- ESC: Back", True, cfg.LT_BLUE)
-    rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H * 0.85))
-    return surf, rect
-
-def create_press_space_enter():
-    surf = get_pixelfont(50).render(
-        "Press ENTER to select / SPACE to start", True, cfg.LT_BLUE
-    )
-    rect = surf.get_rect(midbottom=(cfg.WINDOW_W / 2, cfg.WINDOW_H - 64))
-    return surf, rect
-
-
-def create_game_over():     
-    surf = get_pixelfont(100).render("GAME OVER", True, cfg.AQUA)
-    rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
-    return surf, rect
-
-
-def create_match_over():     
-    surf = get_pixelfont(100).render("MATCH OVER", True, cfg.AQUA)
-    rect = surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
-    return surf, rect
 
 
 def create_score_banner(score):
@@ -179,10 +143,3 @@ def create_2player_score_banner(p1_score, p2_score):
     surf = get_pixelfont(48).render(score_banner, True, cfg.AQUA)
     rect = surf.get_rect(center=(cfg.CENTER[0], cfg.WINDOW_W * .15))
     return surf, rect
-
-
-TITLE_SURF, TITLE_RECT = create_title()
-PING_PANG_SURF, PING_PANG_RECT = create_ping_pang()
-PRESS_SPACE_SURF, PRESS_SPACE_RECT = create_press_space()
-GAME_OVER_SURF, GAME_OVER_RECT = create_game_over()
-MATCH_OVER_SURF, MATCH_OVER_RECT = create_match_over()
