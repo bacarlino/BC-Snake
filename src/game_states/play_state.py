@@ -2,7 +2,7 @@ import time
 
 import pygame
 
-import src.app_config as cfg
+from src.ui.ui_config import BORDER_RADIUS, GREEN
 from src.enums import Play
 from src.factories import create_one_player_snakes
 from src.game_states.game_state import GameState
@@ -103,7 +103,7 @@ class PlayState(GameState):
     def draw_fruit(self, window):
         for fruit in self.fruits:
             pygame.draw.rect(
-                window, cfg.GREEN, ((fruit), (self.game.display_size)), border_radius=cfg.BORDER_RADIUS
+                window, GREEN, ((fruit), (self.game.display_size)), border_radius=BORDER_RADIUS
             )
 
     def draw_snakes(self, window):

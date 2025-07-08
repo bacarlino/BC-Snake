@@ -3,7 +3,8 @@ import random
 
 import pygame
 
-import src.app_config as cfg
+from src.app_config import WINDOW_W, WINDOW_H
+import src.ui.ui_config as ui_cfg
 
 
 pygame.font.init()
@@ -39,26 +40,26 @@ SUB_FONT = sub_font
 
 def create_border(cell_size):
     border = []
-    for point in range((cfg.WINDOW_W // cell_size)):
+    for point in range((ui_cfg.WINDOW_W // cell_size)):
         border.append((point * cell_size, 0))
-        border.append((point * cell_size, (cfg.WINDOW_H - cell_size)))
-    for point in range(cfg.WINDOW_H // cell_size):
+        border.append((point * cell_size, (ui_cfg.WINDOW_H - cell_size)))
+    for point in range(ui_cfg.WINDOW_H // cell_size):
         border.append((0, point * cell_size))
-        border.append((cfg.WINDOW_W - cell_size, point * cell_size))
+        border.append((ui_cfg.WINDOW_W - cell_size, point * cell_size))
     return border
 
 
 def draw_border(window, border, cell_size):
     for coordinate in border:
         pygame.draw.rect(
-            window, cfg.BLUE, ((coordinate), (cell_size - 4, cell_size - 4)), border_radius=cfg.BORDER_RADIUS
+            window, ui_cfg.BLUE, ((coordinate), (cell_size - 4, cell_size - 4)), border_radius=ui_cfg.BORDER_RADIUS
         )
 
 
 class TitleBanner:
     def __init__(self):
-        self.surf = get_pixelfont(400).render("SNAKE", True, cfg.PINK)
-        self.rect = self.surf.get_rect(center = (cfg.WINDOW_W // 2, cfg.WINDOW_H * 0.4))
+        self.surf = get_pixelfont(400).render("SNAKE", True, ui_cfg.PINK)
+        self.rect = self.surf.get_rect(center = (WINDOW_W // 2, WINDOW_H * 0.4))
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
@@ -66,8 +67,8 @@ class TitleBanner:
 
 class NameBanner:
     def __init__(self):
-        self.surf = get_pixelfont(50).render("Brandon Carlino's", False, cfg.LT_BLUE)
-        self.rect = self.surf.get_rect(midbottom=(cfg.WINDOW_W // 2, cfg.WINDOW_H * 0.15))
+        self.surf = get_pixelfont(50).render("Brandon Carlino's", False, ui_cfg.LT_BLUE)
+        self.rect = self.surf.get_rect(midbottom=(WINDOW_W // 2, WINDOW_H * 0.15))
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
@@ -75,8 +76,8 @@ class NameBanner:
 
 class PressSpaceBanner:
     def __init__(self):
-        self.surf = get_pixelfont(40).render("SPACE: Start", False, cfg.LT_BLUE)
-        self.rect = self.surf.get_rect(midbottom=(cfg.WINDOW_W // 2, cfg.WINDOW_H - 80))
+        self.surf = get_pixelfont(40).render("SPACE: Start", False, ui_cfg.LT_BLUE)
+        self.rect = self.surf.get_rect(midbottom=(WINDOW_W // 2, WINDOW_H - 80))
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
@@ -84,8 +85,8 @@ class PressSpaceBanner:
 
 class PressSpaceEscBanner:
     def __init__(self):
-        self.surf = get_pixelfont(40).render("SPACE: Confirm" + " " * 15 + "ESC: Back", False, cfg.LT_BLUE)
-        self.rect = self.surf.get_rect(midbottom=(cfg.WINDOW_W // 2, cfg.WINDOW_H - 80))
+        self.surf = get_pixelfont(40).render("SPACE: Confirm" + " " * 15 + "ESC: Back", False, ui_cfg.LT_BLUE)
+        self.rect = self.surf.get_rect(midbottom=(WINDOW_W // 2, WINDOW_H - 80))
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
@@ -93,8 +94,8 @@ class PressSpaceEscBanner:
 
 class MatchOverBanner:
     def __init__(self):
-        self.surf = get_pixelfont(100).render("MATCH OVER", True, cfg.AQUA)
-        self.rect = self.surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
+        self.surf = get_pixelfont(100).render("MATCH OVER", True, ui_cfg.AQUA)
+        self.rect = self.surf.get_rect(midtop=(WINDOW_W / 2, WINDOW_H / 2))
 
     def draw(self, window):
 
@@ -103,8 +104,8 @@ class MatchOverBanner:
 
 class GameOverBanner:
     def __init__(self):
-        self.surf = get_pixelfont(100).render("GAME OVER", True, cfg.AQUA)
-        self.rect = self.surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
+        self.surf = get_pixelfont(100).render("GAME OVER", True, ui_cfg.AQUA)
+        self.rect = self.surf.get_rect(midtop=(WINDOW_W / 2, WINDOW_H / 2))
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
@@ -112,8 +113,8 @@ class GameOverBanner:
 
 class PausedBanner:
     def __init__(self):
-        self.surf = get_pixelfont(100).render("PAUSED", True, cfg.AQUA)
-        self.rect = self.surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
+        self.surf = get_pixelfont(100).render("PAUSED", True, ui_cfg.AQUA)
+        self.rect = self.surf.get_rect(midtop=(WINDOW_W / 2, WINDOW_H / 2))
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
@@ -133,13 +134,13 @@ class WordBanner:
 
 def create_score_banner(score):
     score_banner = f"{score}"
-    surf = get_pixelfont(48).render(score_banner, True, cfg.AQUA)
-    rect = surf.get_rect(center=(cfg.CENTER[0], cfg.WINDOW_H * .15))
+    surf = get_pixelfont(48).render(score_banner, True, ui_cfg.AQUA)
+    rect = surf.get_rect(center=(ui_cfg.CENTER[0], WINDOW_H * .15))
     return surf, rect
 
 
 def create_2player_score_banner(p1_score, p2_score):
     score_banner = f"PURPLE: {p2_score}                                        PINK: {p1_score}"
-    surf = get_pixelfont(48).render(score_banner, True, cfg.AQUA)
-    rect = surf.get_rect(center=(cfg.CENTER[0], cfg.WINDOW_W * .15))
+    surf = get_pixelfont(48).render(score_banner, True, ui_cfg.AQUA)
+    rect = surf.get_rect(WINDOW_W * .15, center=ui_cfg.CENTER[0])
     return surf, rect

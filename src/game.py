@@ -1,6 +1,6 @@
 import pygame
 
-import src.app_config as cfg
+from src.ui.ui_config import BLACK
 from src.game_states.game_over import GameOver
 from src.game_states.pause import Pause
 from src.game_states.title.title import Title
@@ -40,7 +40,7 @@ class Game:
         self.game_state.update()
           
     def draw(self, window):
-        window.fill(cfg.BLACK)
+        window.fill(BLACK)
         
         for game_state in self.game_state.stack:
             game_state.draw(window)

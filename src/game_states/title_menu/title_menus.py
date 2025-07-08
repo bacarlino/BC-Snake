@@ -1,6 +1,6 @@
 from functools import partial
 
-import src.app_config as cfg
+import src.app_config as app_cfg
 from src.enums import MenuType
 from src.level_config import pre_made
 from src.level_config import level_attributes as lvl_attr
@@ -8,28 +8,27 @@ from src.ui.menu import Menu, MenuGrid, MenuItem
 from src.game_states.play_co_op import PlayCoOp
 from src.game_states.play_deathmatch import PlayDeathMatch
 from src.game_states.play_score_battle import PlayScoreBattle
+import src.ui.ui_config as ui_cfg
 import src.ui.ui_elements as ui
 
 
-MENU_HEIGHT = ui.PRESS_SPACE_RECT.top - ui.TITLE_RECT.bottom 
-MENU_POS = (ui.TITLE_RECT.midbottom)
-MENU_SIZE = (cfg.WINDOW_W * 0.9, MENU_HEIGHT)
+MENU_HEIGHT = 175
+MENU_POS = (app_cfg.CENTER[0], 413)
+MENU_SIZE = (app_cfg.WINDOW_W * 0.9, MENU_HEIGHT)
 
-PADDING = 80
-MENU_GRID_POS = (cfg.CENTER[0], PADDING)
-MENU_GRID_SIZE = (cfg.WINDOW_W - PADDING * 2, cfg.WINDOW_H - PADDING * 2)
-
-CENTER = (cfg.WINDOW_W // 2, cfg.WINDOW_H // 2)
-
+MENU_PADDING = 80
+MENU_GRID_POS = (app_cfg.CENTER[0], MENU_PADDING)
+MENU_GRID_SIZE = (app_cfg.WINDOW_W - MENU_PADDING * 2, app_cfg.WINDOW_H - MENU_PADDING * 2)
+ 
 
 MENU_FONT_CONFIG = {            
     "main_font": ui.MENU_FONT, 
     "highlight_font": ui.HIGHTLIGHT_FONT,
     "sub_font": ui.SUB_FONT,
-    "main_color": cfg.PINK, 
-    "highlight_color": cfg.WHITE,
-    "sub_color": cfg.AQUA,
-    "bg_color": cfg.BLACK, 
+    "main_color": ui_cfg.PINK, 
+    "highlight_color": ui_cfg.WHITE,
+    "sub_color": ui_cfg.AQUA,
+    "bg_color": ui_cfg.BLACK, 
 }
 
 
@@ -166,7 +165,7 @@ def build_custom_menu(controller):
     
     
 def build_border_menu(controller):
-    word_banner = ui.WordBanner("Border Wall", False, cfg.PINK, 60)
+    word_banner = ui.WordBanner("Border Wall", False, ui_cfg.PINK, 60)
     border_menu_items = [
         MenuItem(
             lvl_attr.BORDER_ON.name, 
@@ -177,11 +176,11 @@ def build_border_menu(controller):
             partial(controller.set_lvl_attr, lvl_attr.BORDER_OFF)
         )
     ]
-    return MenuGrid(border_menu_items, CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
+    return MenuGrid(border_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
 
 
 def build_cell_size_menu(controller):
-    word_banner = ui.WordBanner("Cell Size", False, cfg.PINK, 60)
+    word_banner = ui.WordBanner("Cell Size", False, ui_cfg.PINK, 60)
     cell_size_menu_items = [
         MenuItem(
             lvl_attr.CELL_SIZE_LARGE.name, 
@@ -200,11 +199,11 @@ def build_cell_size_menu(controller):
             partial(controller.set_lvl_attr, lvl_attr.CELL_SIZE_TINY)
         )
     ]
-    return MenuGrid(cell_size_menu_items, CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
+    return MenuGrid(cell_size_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
 
 
 def build_start_speed_menu(controller):
-    word_banner = ui.WordBanner("Start Speed", False, cfg.PINK, 60)
+    word_banner = ui.WordBanner("Start Speed", False, ui_cfg.PINK, 60)
     start_speed_menu_items = [
         MenuItem(
             lvl_attr.START_SPEED_SLOW.name, 
@@ -219,11 +218,11 @@ def build_start_speed_menu(controller):
             partial(controller.set_lvl_attr, lvl_attr.START_SPEED_FAST)
         ),
     ]
-    return MenuGrid(start_speed_menu_items, CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
+    return MenuGrid(start_speed_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
 
 
 def build_acceleration_menu(controller):
-    word_banner = ui.WordBanner("Speed Up", False, cfg.PINK, 60)
+    word_banner = ui.WordBanner("Speed Up", False, ui_cfg.PINK, 60)
     acceleration_menu_items = [
         MenuItem(
             lvl_attr.ACCELERATION_NONE.name, 
@@ -239,11 +238,11 @@ def build_acceleration_menu(controller):
         ),
     ]
     
-    return MenuGrid(acceleration_menu_items, CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
+    return MenuGrid(acceleration_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
 
 
 def build_fruit_qty_menu(controller):
-    word_banner = ui.WordBanner("Fruit Quantity", False, cfg.PINK, 60)
+    word_banner = ui.WordBanner("Fruit Quantity", False, ui_cfg.PINK, 60)
     fruit_qty_menu_items = [
         MenuItem(
             lvl_attr.FRUIT_QTY_LOW.name, 
@@ -258,11 +257,11 @@ def build_fruit_qty_menu(controller):
             partial(controller.set_lvl_attr, lvl_attr.FRUIT_QTY_HIGH)
         ),
     ]
-    return MenuGrid(fruit_qty_menu_items, CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
+    return MenuGrid(fruit_qty_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
 
 
 def build_growth_rate_menu(controller):
-    word_banner = ui.WordBanner("Growth Rate", False, cfg.PINK, 60)
+    word_banner = ui.WordBanner("Growth Rate", False, ui_cfg.PINK, 60)
     growth_rate_menu_items = [
         MenuItem(
             lvl_attr.GROWTH_RATE_LOW.name, 
@@ -277,4 +276,4 @@ def build_growth_rate_menu(controller):
             partial(controller.set_lvl_attr, lvl_attr.GROWTH_RATE_HIGH)
         ),
     ]
-    return MenuGrid(growth_rate_menu_items, CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
+    return MenuGrid(growth_rate_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
