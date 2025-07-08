@@ -16,22 +16,14 @@ class Snake:
         length=5,
     ):
         
+        # GAME INFO
+        self.window_w, self.window_h = window_size
         self.cell_size = cell_size
         self.display_size = (self.cell_size - 4, self.cell_size - 4)
-        self.main_color = color
-        self.current_color = color
-        self.flash_colors = [self.main_color, (230, 230, 230)]
         
-        self.body = []
-        self.length = self.initial_length = length
-        self.has_eaten = False
-        self.belly = 0
-        self.score = 0
-
-        self.window_w, self.window_h = window_size
+        # MOVING / POSITIONING
         self.initial_position = position
         self.head_position = self.initial_position
-
         self.moving = False
         self.initial_direction = direction
         self.direction = self.initial_direction
@@ -42,10 +34,22 @@ class Snake:
         self.acceleration = acceleration
         self.prev_move_time = time.perf_counter()
 
+        # PHYSICAL 
+        self.body = []
+        self.length = self.initial_length = length
+        self.has_eaten = False
+        self.belly = 0
+        self.main_color = color
+        self.current_color = color
         self.collision_detected = False
         self.dead = False
         self.prev_flash_time = self.prev_move_time
-        
+        self.flash_colors = [color, (230, 230, 230)]
+
+        # SCORING
+        self.score = 0
+
+        # INPUT
         self.controls = controls
         self.commands = {
             Move.UP: False,

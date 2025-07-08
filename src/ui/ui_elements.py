@@ -70,7 +70,6 @@ class TitleBanner:
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
-    
 
 class NameBanner:
     def __init__(self):
@@ -79,7 +78,6 @@ class NameBanner:
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
-
 
 class PressSpaceBanner:
     def __init__(self):
@@ -97,6 +95,29 @@ class PressSpaceEscBanner:
     def draw(self, window):
         window.blit(self.surf, self.rect)
 
+class MatchOverBanner:
+    def __init__(self):
+        self.surf = get_pixelfont(100).render("MATCH OVER", True, cfg.AQUA)
+        self.rect = self.surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
+
+    def draw(self, window):
+        window.blit(self.surf, self.rect)
+
+class GameOverBanner:
+    def __init__(self):
+        self.surf = get_pixelfont(100).render("GAME OVER", True, cfg.AQUA)
+        self.rect = self.surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
+
+    def draw(self, window):
+        window.blit(self.surf, self.rect)
+
+class PausedBanner:
+    def __init__(self):
+        self.surf = get_pixelfont(100).render("PAUSED", True, cfg.AQUA)
+        self.rect = self.surf.get_rect(midtop=(cfg.WINDOW_W / 2, cfg.WINDOW_H / 2))
+
+    def draw(self, window):
+        window.blit(self.surf, self.rect)
 
 class WordBanner:
     def __init__(self, text="WordBanner", antialias=False, color=None, size=50, kw_pos={"topleft": (0, 0)}):

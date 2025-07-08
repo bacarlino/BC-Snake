@@ -2,12 +2,14 @@ import pygame
 
 from src.game_states.game_state import GameState
 from src.enums import Play
-import src.ui.ui_elements as ui
+from src.ui.ui_elements import PausedBanner, PressSpaceBanner
 
 class Pause(GameState):
     
     def __init__(self, game):
         super().__init__(game)
+        self.paused_banner = PausedBanner()
+        self.command_bar = PressSpaceBanner()
         self.commands = {
             Play.PAUSE: False,
             Play.QUIT: False
@@ -30,4 +32,5 @@ class Pause(GameState):
         self.reset_command_flags()
 
     def draw(self, window):
-        window.blit(ui.PRESS_SPACE_SURF, ui.PRESS_SPACE_RECT)
+        self.paused_banner.draw(window)
+        self.command_bar.draw(window)

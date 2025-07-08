@@ -140,7 +140,6 @@ class PlayState(GameState):
                     segment for snake in self.snakes for segment in snake.body
                 ]
                 if coord in snake_segments: 
-                    print("COORD IN SNAKE_SEGMENT, CONTINUE")
                     continue
 
                 placed = True
