@@ -16,6 +16,7 @@ BLUE = (0,21,255)
 LT_BLUE = (0, 142, 255)
 GREEN = (0, 255, 100)
 AQUA = (0, 255, 230)
+
 BLACK = (25, 25, 25)
 WHITE = (230, 230, 230)
 ORANGE = (230,95,31)
@@ -35,8 +36,6 @@ HIGHTLIGHT_FONT = highlight_font
 sub_font = get_pixelfont(30)
 sub_font.align = pygame.FONT_CENTER
 SUB_FONT = sub_font
-
-
 
 MENU_STYLE = {            
     "main_font": MENU_FONT, 

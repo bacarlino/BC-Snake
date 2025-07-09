@@ -16,7 +16,7 @@ class TitleMenu(GameState):
         self.commands = {MenuInput.BACK: False}
         self.menu_controller = TitleMenuController(self, self.game)
 
-        self.ui = TitleMenuUI()
+        self.ui = TitleMenuUI(self.menu_controller.current())
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
@@ -36,6 +36,7 @@ class TitleMenu(GameState):
         self.reset_command_flags()
 
     def draw(self, window):
-        self.ui.draw_title(window)
-        self.menu_controller.draw(window)
-        self.ui.draw_command_bar(window)
+        self.ui.draw(window)
+
+    def update_ui(self):
+        self.ui.update_menu(self.menu_controller.current())

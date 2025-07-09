@@ -27,9 +27,6 @@ class MenuGrid:
             MenuInput.DOWN: False
         }
 
-    # def displays_title(self):
-    #     return False
-
     def check_list_format(self, item_grid):
         return [item_grid] if not isinstance(item_grid[0], list) else item_grid
         
@@ -224,9 +221,7 @@ class Menu:
             item.make_sub_color(self.sub_color)
             item.update()
 
-    def displays_title(self):
-        return True
-        
+
     def update_sub_text(self, text):
         self.items[self.index].sub_text = text
 

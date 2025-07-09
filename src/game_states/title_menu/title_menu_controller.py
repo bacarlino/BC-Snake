@@ -33,19 +33,21 @@ class TitleMenuController:
 
     def close_top_menu(self):
         self.menu_stack.pop()
+        self.game_state.update_ui()
 
     def push_menu(self, menu):
         self.menu_stack.push(menu)
+        self.game_state.update_ui()
     
     def stack_has_one_item(self):
         return self.menu_stack.has_one_item()
     
     def select_one_player(self):
         self.game.save_play_state(PlayState)
-        self.menu_stack.push(self.menus[MenuType.LEVEL])
+        self.push_menu(self.menus[MenuType.LEVEL])
 
     def select_two_player(self):
-        self.menu_stack.push(self.menus[MenuType.MULTIPLAYER])
+        self.push_menu(self.menus[MenuType.MULTIPLAYER])
 
     def select_level(self, level):
         self.game.load_level(level)
@@ -53,13 +55,13 @@ class TitleMenuController:
 
     def select_multiplayer_mode(self, mode):
         self.game.save_play_state(mode)
-        self.menu_stack.push(self.menus[MenuType.LEVEL])
+        self.push_menu(self.menus[MenuType.LEVEL])
 
     def custom_level_menu(self):
-        self.menu_stack.push(self.menus[MenuType.CUSTOM])
+        self.push_menu(self.menus[MenuType.CUSTOM])
 
     def set_lvl_attr(self, lvl_attr_cfg):
-        self.menu_stack.pop()
+        self.close_top_menu()
         print("set_lvl_attr: ", lvl_attr_cfg)
         setattr(self.level_config, lvl_attr_cfg.attr, lvl_attr_cfg)
         self.current().update_sub_text(lvl_attr_cfg.name)
