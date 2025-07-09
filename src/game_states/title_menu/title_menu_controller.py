@@ -40,9 +40,6 @@ class TitleMenuController:
     def stack_has_one_item(self):
         return self.menu_stack.has_one_item()
     
-    def displays_title(self):
-        return self.current().displays_title()
-    
     def select_one_player(self):
         self.game.save_play_state(PlayState)
         self.menu_stack.push(self.menus[MenuType.LEVEL])

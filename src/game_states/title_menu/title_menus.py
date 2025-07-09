@@ -10,26 +10,17 @@ from src.game_states.play_deathmatch import PlayDeathMatch
 from src.game_states.play_score_battle import PlayScoreBattle
 import src.ui.ui_config as ui_cfg
 import src.ui.ui_elements as ui
+from src.ui.ui_config import MENU_STYLE
 
 
 MENU_HEIGHT = 175
-MENU_POS = (app_cfg.CENTER[0], 413)
+MENU_POS = (ui_cfg.CENTER[0], 413)
 MENU_SIZE = (app_cfg.WINDOW_W * 0.9, MENU_HEIGHT)
 
 MENU_PADDING = 80
-MENU_GRID_POS = (app_cfg.CENTER[0], MENU_PADDING)
+MENU_GRID_POS = (ui_cfg.CENTER[0], MENU_PADDING)
 MENU_GRID_SIZE = (app_cfg.WINDOW_W - MENU_PADDING * 2, app_cfg.WINDOW_H - MENU_PADDING * 2)
  
-
-MENU_FONT_CONFIG = {            
-    "main_font": ui.MENU_FONT, 
-    "highlight_font": ui.HIGHTLIGHT_FONT,
-    "sub_font": ui.SUB_FONT,
-    "main_color": ui_cfg.PINK, 
-    "highlight_color": ui_cfg.WHITE,
-    "sub_color": ui_cfg.AQUA,
-    "bg_color": ui_cfg.BLACK, 
-}
 
 
 def build_title_menus(controller):
@@ -52,7 +43,7 @@ def build_players_menu(controller):
         MenuItem("1 Player", controller.select_one_player, sub_text=None),
         MenuItem("2 Player", controller.select_two_player, sub_text=None)
     ]
-    return Menu(players_menu_items, MENU_POS, MENU_SIZE, **MENU_FONT_CONFIG)
+    return Menu(players_menu_items, MENU_POS, MENU_SIZE, **MENU_STYLE)
 
 
 def build_level_menu(controller):
@@ -90,7 +81,7 @@ def build_level_menu(controller):
             "Create your own game",
         )
     ]
-    return Menu(level_menu_items, MENU_POS, MENU_SIZE, **MENU_FONT_CONFIG)
+    return Menu(level_menu_items, MENU_POS, MENU_SIZE, **MENU_STYLE)
 
 
 def build_multiplayer_menu(controller):
@@ -112,7 +103,7 @@ def build_multiplayer_menu(controller):
         )
     ]
     return Menu(
-        multiplayer_menu_items, MENU_POS, MENU_SIZE, **MENU_FONT_CONFIG
+        multiplayer_menu_items, MENU_POS, MENU_SIZE, **MENU_STYLE
     )
 
 
@@ -161,7 +152,7 @@ def build_custom_menu(controller):
             )
         ]
     ]
-    return MenuGrid(custom_level_items, MENU_GRID_POS, MENU_GRID_SIZE, MENU_FONT_CONFIG)
+    return MenuGrid(custom_level_items, MENU_GRID_POS, MENU_GRID_SIZE, MENU_STYLE)
     
     
 def build_border_menu(controller):
@@ -176,7 +167,7 @@ def build_border_menu(controller):
             partial(controller.set_lvl_attr, lvl_attr.BORDER_OFF)
         )
     ]
-    return MenuGrid(border_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
+    return MenuGrid(border_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_STYLE, word_banner)
 
 
 def build_cell_size_menu(controller):
@@ -199,7 +190,7 @@ def build_cell_size_menu(controller):
             partial(controller.set_lvl_attr, lvl_attr.CELL_SIZE_TINY)
         )
     ]
-    return MenuGrid(cell_size_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
+    return MenuGrid(cell_size_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_STYLE, word_banner)
 
 
 def build_start_speed_menu(controller):
@@ -218,7 +209,7 @@ def build_start_speed_menu(controller):
             partial(controller.set_lvl_attr, lvl_attr.START_SPEED_FAST)
         ),
     ]
-    return MenuGrid(start_speed_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
+    return MenuGrid(start_speed_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_STYLE, word_banner)
 
 
 def build_acceleration_menu(controller):
@@ -238,7 +229,7 @@ def build_acceleration_menu(controller):
         ),
     ]
     
-    return MenuGrid(acceleration_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
+    return MenuGrid(acceleration_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_STYLE, word_banner)
 
 
 def build_fruit_qty_menu(controller):
@@ -257,7 +248,7 @@ def build_fruit_qty_menu(controller):
             partial(controller.set_lvl_attr, lvl_attr.FRUIT_QTY_HIGH)
         ),
     ]
-    return MenuGrid(fruit_qty_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
+    return MenuGrid(fruit_qty_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_STYLE, word_banner)
 
 
 def build_growth_rate_menu(controller):
@@ -276,4 +267,4 @@ def build_growth_rate_menu(controller):
             partial(controller.set_lvl_attr, lvl_attr.GROWTH_RATE_HIGH)
         ),
     ]
-    return MenuGrid(growth_rate_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_FONT_CONFIG, word_banner)
+    return MenuGrid(growth_rate_menu_items, ui_cfg.CENTER, MENU_GRID_SIZE, MENU_STYLE, word_banner)
