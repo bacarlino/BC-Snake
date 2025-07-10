@@ -1,4 +1,5 @@
 from src.ui.ui_elements import NameBanner, TitleBanner, PressSpaceEscBanner
+from src.ui.ui_helpers import layout_title_banners
 
 
 class TitleMenuUI:
@@ -10,7 +11,9 @@ class TitleMenuUI:
         self.menu = menu
 
     def layout(self):
-        pass
+        layout_title_banners(
+            self.name_banner, self.title_banner, self.cmd_banner
+        )
 
     def draw(self, window):
         self.name_banner.draw(window)

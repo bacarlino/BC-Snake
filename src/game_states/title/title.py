@@ -12,6 +12,7 @@ class Title(GameState):
     def __init__(self, game):
         super().__init__(game)
         self.ui = TitleUI()
+        self.ui.layout()
         
         self.commands = {
             MenuInput.SELECT: False

@@ -59,7 +59,7 @@ def draw_border(window, border, cell_size):
 class TitleBanner:
     def __init__(self):
         self.surf = get_pixelfont(400).render("SNAKE", True, ui_cfg.PINK)
-        self.rect = self.surf.get_rect(center = (WINDOW_W // 2, WINDOW_H * 0.4))
+        self.rect = self.surf.get_rect()
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
@@ -68,7 +68,7 @@ class TitleBanner:
 class NameBanner:
     def __init__(self):
         self.surf = get_pixelfont(50).render("Brandon Carlino's", False, ui_cfg.LT_BLUE)
-        self.rect = self.surf.get_rect(midbottom=(WINDOW_W // 2, WINDOW_H * 0.15))
+        self.rect = self.surf.get_rect()
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
@@ -77,7 +77,7 @@ class NameBanner:
 class PressSpaceBanner:
     def __init__(self):
         self.surf = get_pixelfont(40).render("SPACE: Start", False, ui_cfg.LT_BLUE)
-        self.rect = self.surf.get_rect(midbottom=(WINDOW_W // 2, WINDOW_H - 80))
+        self.rect = self.surf.get_rect()
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
@@ -86,7 +86,7 @@ class PressSpaceBanner:
 class PressSpaceEscBanner:
     def __init__(self):
         self.surf = get_pixelfont(40).render("SPACE: Confirm" + " " * 15 + "ESC: Back", False, ui_cfg.LT_BLUE)
-        self.rect = self.surf.get_rect(midbottom=(WINDOW_W // 2, WINDOW_H - 80))
+        self.rect = self.surf.get_rect()
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
@@ -95,7 +95,7 @@ class PressSpaceEscBanner:
 class MatchOverBanner:
     def __init__(self):
         self.surf = get_pixelfont(100).render("MATCH OVER", True, ui_cfg.AQUA)
-        self.rect = self.surf.get_rect(midtop=(WINDOW_W / 2, WINDOW_H / 2))
+        self.rect = self.surf.get_rect()
 
     def draw(self, window):
 
@@ -105,7 +105,7 @@ class MatchOverBanner:
 class GameOverBanner:
     def __init__(self):
         self.surf = get_pixelfont(100).render("GAME OVER", True, ui_cfg.AQUA)
-        self.rect = self.surf.get_rect(midtop=(WINDOW_W / 2, WINDOW_H / 2))
+        self.rect = self.surf.get_rect()
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
@@ -114,16 +114,16 @@ class GameOverBanner:
 class PausedBanner:
     def __init__(self):
         self.surf = get_pixelfont(100).render("PAUSED", True, ui_cfg.AQUA)
-        self.rect = self.surf.get_rect(midtop=(WINDOW_W / 2, WINDOW_H / 2))
+        self.rect = self.surf.get_rect()
 
     def draw(self, window):
         window.blit(self.surf, self.rect)
 
 
 class WordBanner:
-    def __init__(self, text="WordBanner", antialias=False, color=None, size=50, kw_pos={"topleft": (0, 0)}):
+    def __init__(self, text="WordBanner", antialias=False, color=None, size=50):
         self.surf = get_pixelfont(size).render(text, antialias, color)
-        self.rect = self.surf.get_rect(**kw_pos)
+        self.rect = self.surf.get_rect()
     
     def draw(self, window):
         window.blit(self.surf, self.rect)

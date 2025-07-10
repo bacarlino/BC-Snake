@@ -5,7 +5,6 @@ from src.game_states.game_state import GameState
 
 from src.game_states.title_menu.title_menu_controller import TitleMenuController
 from src.game_states.title_menu.title_menu_ui import TitleMenuUI
-from src.ui.ui_elements import NameBanner, TitleBanner, PressSpaceEscBanner
 
 
 class TitleMenu(GameState):
@@ -17,6 +16,7 @@ class TitleMenu(GameState):
         self.menu_controller = TitleMenuController(self, self.game)
 
         self.ui = TitleMenuUI(self.menu_controller.current())
+        self.ui.layout()
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:

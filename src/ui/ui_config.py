@@ -5,6 +5,9 @@ from src.ui.ui_elements import get_pixelfont
 
 
 CENTER = (WINDOW_W // 2, WINDOW_H // 2)
+TITLE_BANNER_CENTER = (WINDOW_W // 2, WINDOW_H * 0.4)
+NAME_BANNER_CENTER = (WINDOW_W // 2, WINDOW_H * 0.15)
+COMMAND_BAR_MIDBOTTOM = (WINDOW_W // 2, WINDOW_H - 80)
 
 BORDER_RADIUS = 4
 
