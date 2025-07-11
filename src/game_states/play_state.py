@@ -1,6 +1,7 @@
 import pygame
 
 from src.game_world.game_world import GameWorld
+from src.game_world.score_strategy import fruit_scoring
 from src.ui.border import Border
 from src.enums import Play, SnakeID
 from src.factories import create_one_player_snakes
@@ -17,6 +18,7 @@ class PlayState(GameState):
         self.level_config = level_config
         self.match_over = False
         self.scores = {SnakeID.ONE: 0, SnakeID.TWO: 0}
+        
 
         self.game_world = GameWorld(
             self.game.window_size,
@@ -24,10 +26,12 @@ class PlayState(GameState):
             self.get_snakes(), 
             self.get_border(), 
             self.level_config,
-            self.scores
+            self.scores,
         )
+        self.game_world.set_fruit_score_strategy(fruit_scoring)
 
         self.score_banner = ScoreBanner(self.scores[SnakeID.ONE])
+        
 
         self.commands = {
             Play.START: False, 
@@ -52,7 +56,7 @@ class PlayState(GameState):
         self.update_score_banner()
         self.reset_command_flags()
 
-    def game_over_update(self):
+    def match_over_update(self):
         self.game_world.update_snakes_no_collision()
 
     def draw(self, window):
@@ -79,6 +83,9 @@ class PlayState(GameState):
 
     def get_snakes(self):
         return create_one_player_snakes(self.game.window_size, self.level_config)
+
+    def reset_snakes(self):
+        self.game_world.reset_snakes()
 
     def get_border(self):
         if self.level_config.has_border:

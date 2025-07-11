@@ -17,9 +17,13 @@ class GameWorld:
         self.level_config = level_config
         self.fruits = []
         self.scores = scores
+        self.fruit_score_strategy = None
 
         self.set_snakes_moving()
         self.add_fruit(level_config.fruit_qty)
+
+    def set_fruit_score_strategy(self, strategy_fn):
+        self.score_strategy = strategy_fn
 
     def handle_event(self, event):
         for snake in self.snakes:
@@ -41,6 +45,10 @@ class GameWorld:
         time_now = time.perf_counter()
         for snake in self.snakes:
             snake.update(time_now)
+        
+    def reset_snakes(self):
+        for snake in self.snakes:
+            snake.reset()
 
     def draw(self, window):
         if self.border:
@@ -64,8 +72,9 @@ class GameWorld:
 
     def handle_snake_collision(self, snake):
         for snake in self.snakes:
-            if snake.collision_detected:
-                snake.die()
+            if not snake.dead:
+                if snake.collision_detected:
+                    snake.die()
 
     def other_snakes(self, snake):
         return [
@@ -75,6 +84,9 @@ class GameWorld:
     def all_snake_segments_list(self):
         return [segment for snake in self.snakes for segment in snake.body]
     
+    def any_snake_dead(self):
+        return any([snake.dead for snake in self.snakes])
+
     def all_snakes_dead(self):
         return all([snake.dead for snake in self.snakes])
     
@@ -94,8 +106,10 @@ class GameWorld:
                 self.fruits.append(coord)
     
     def handle_fruit_collision(self, snake):
+        print("PlayState handle_fruit_collision")
         if snake.head_position in self.fruits:
             snake.eat(self.level_config.growth_rate)
-            self.scores[snake.id] += (len(snake.body) * 10)
+            self.score_strategy(snake, self.scores)
+            # self.scores[snake.id] += (len(snake.body) * 10)
             self.fruits.remove(snake.head_position)
             self.add_fruit()

@@ -5,13 +5,16 @@ import pygame
 from src.game_states.game_state import GameState
 from src.enums import Play
 from src.ui.ui_elements import GameOverBanner, PressSpaceBanner
+from src.ui.ui_config import CENTER, COMMAND_BAR_MIDBOTTOM
 
 class GameOver(GameState):
 
     def __init__(self, game):
         super().__init__(game)
         self.game_over_banner = GameOverBanner()
-        self.press_space_banner = PressSpaceBanner()
+        self.command_bar = PressSpaceBanner()
+        self.layout_ui()
+
         self.commands = {
             Play.START: False,
             Play.QUIT: False
@@ -32,13 +35,13 @@ class GameOver(GameState):
             self.game.reset_game()
             return
 
-        self.game.get_previous_state().game_over_update()
+        self.game.get_previous_state().match_over_update()
         self.reset_command_flags()
 
     def draw(self, window):
         self.game_over_banner.draw(window)
-        self.press_space_banner.draw(window)
+        self.command_bar.draw(window)
 
-    def reset_snakes(self):
-        for snake in self.game.game_state.peek_below().snakes:
-            snake.reset()
+    def layout_ui(self):
+        self.game_over_banner.rect.center = CENTER
+        self.command_bar.rect.midbottom = COMMAND_BAR_MIDBOTTOM

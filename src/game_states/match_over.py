@@ -5,13 +5,15 @@ import pygame
 from src.game_states.game_state import GameState
 from src.enums import Play
 from src.ui.ui_elements import MatchOverBanner, PressSpaceBanner
+from src.ui.ui_config import CENTER, COMMAND_BAR_MIDBOTTOM
 
 class MatchOver(GameState):
 
     def __init__(self, game):
         super().__init__(game)
         self.match_over_banner = MatchOverBanner()
-        self.press_space_banner = PressSpaceBanner()
+        self.command_bar = PressSpaceBanner()
+        self.layout_ui()
 
         self.commands = {
             Play.START: False,
@@ -27,25 +29,23 @@ class MatchOver(GameState):
 
     def update(self):
         if self.commands[Play.START] == True:
-            for snake in self.game.game_state.peek_below().snakes:
-                snake.reset()
+            self.game.get_previous_state().reset_snakes()
+            # for snake in self.game.get_previous_state():
+            #     snake.reset()
             self.game.next_round()
             return
         if self.commands[Play.QUIT] == True:
             self.game.reset_game()
             return
 
-        time_now = time.perf_counter()
-        for snake in self.game.game_state.peek_below().snakes:
-            if snake.dead:
-                snake.update(time_now)
+        self.game.get_previous_state().match_over_update()
 
         self.reset_command_flags()
 
     def draw(self, window):
         self.match_over_banner.draw(window)
-        self.press_space_banner.draw(window)
+        self.command_bar.draw(window)
 
-    def reset_snakes(self):
-        for snake in self.game.game_state.peek_below().snakes:
-            snake.reset()
+    def layout_ui(self):
+        self.match_over_banner.rect.center = CENTER
+        self.command_bar.rect.midbottom = COMMAND_BAR_MIDBOTTOM

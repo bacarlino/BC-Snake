@@ -13,8 +13,8 @@ import src.ui.ui_elements as ui
 from src.ui.ui_config import MENU_STYLE
 
 
-MENU_HEIGHT = 175
-MENU_POS = (ui_cfg.CENTER[0], 413)
+MENU_HEIGHT = 200
+MENU_POS = (ui_cfg.CENTER[0], 415)
 MENU_SIZE = (app_cfg.WINDOW_W * 0.9, MENU_HEIGHT)
 
 MENU_PADDING = 80

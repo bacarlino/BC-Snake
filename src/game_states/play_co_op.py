@@ -13,7 +13,6 @@ class PlayCoOp(PlayState):
 
     def check_game_over(self):
         if self.game_world.all_snakes_dead():
-        # if all([snake.dead for snake in self.snakes]):
             self.game.push_game_over()
 
     def update_score_banner(self):
