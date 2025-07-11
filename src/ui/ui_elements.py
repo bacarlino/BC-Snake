@@ -83,7 +83,7 @@ class ScoreBanner:
     def __init__(self, score=0):
         self.update(score)
 
-    def update(self, score):
+    def update(self, score=0):
         score_str = f"{score}"
         self.surf = get_pixelfont(48).render(score_str, True, ui_cfg.AQUA)
         self.rect = self.surf.get_rect(center=(ui_cfg.CENTER[0], WINDOW_H * .15))

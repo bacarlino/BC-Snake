@@ -7,10 +7,11 @@ from src.enums import Play, SnakeID
 from src.factories import create_one_player_snakes
 from src.game_states.game_state import GameState
 from src.ui.ui_elements import ScoreBanner
+from src.game_states.play_state.play_state_ui import PlayStateUI
 
 
 class PlayState(GameState):
-    """Single player mode"""
+    """Single player and base state for 2 player modes"""
 
     def __init__(self, game, level_config):
         super().__init__(game)
@@ -18,7 +19,6 @@ class PlayState(GameState):
         self.level_config = level_config
         self.match_over = False
         self.scores = {SnakeID.ONE: 0, SnakeID.TWO: 0}
-        
 
         self.game_world = GameWorld(
             self.game.window_size,
@@ -30,7 +30,8 @@ class PlayState(GameState):
         )
         self.game_world.set_fruit_score_strategy(fruit_scoring)
 
-        self.score_banner = ScoreBanner(self.scores[SnakeID.ONE])
+        self.ui = PlayStateUI(ScoreBanner(self.scores[SnakeID.ONE]))
+        self.ui.layout()
         
 
         self.commands = {
@@ -53,7 +54,7 @@ class PlayState(GameState):
         if self.update_commands(): return
         self.match_over = self.game_world.update()
         self.check_game_over()
-        self.update_score_banner()
+        self.ui.update(self.get_scores())
         self.reset_command_flags()
 
     def match_over_update(self):
@@ -61,7 +62,7 @@ class PlayState(GameState):
 
     def draw(self, window):
         self.game_world.draw(window)
-        self.draw_score(window)
+        self.ui.draw(window)
 
     def update_commands(self):
         if self.commands[Play.PAUSE]:
@@ -71,15 +72,13 @@ class PlayState(GameState):
             return True
         return False
 
-    def update_score_banner(self):
-        self.score_banner.update(self.scores[SnakeID.ONE])
+    def get_scores(self):
+        return self.scores[SnakeID.ONE]
 
     def check_game_over(self):
         if self.game_world.all_snakes_dead():
             self.game.push_game_over()
 
-    def draw_score(self, window):
-        self.score_banner.draw(window)
 
     def get_snakes(self):
         return create_one_player_snakes(self.game.window_size, self.level_config)

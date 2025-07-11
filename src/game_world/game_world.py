@@ -106,10 +106,8 @@ class GameWorld:
                 self.fruits.append(coord)
     
     def handle_fruit_collision(self, snake):
-        print("PlayState handle_fruit_collision")
         if snake.head_position in self.fruits:
             snake.eat(self.level_config.growth_rate)
             self.score_strategy(snake, self.scores)
-            # self.scores[snake.id] += (len(snake.body) * 10)
             self.fruits.remove(snake.head_position)
             self.add_fruit()

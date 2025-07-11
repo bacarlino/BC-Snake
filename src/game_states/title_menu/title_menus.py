@@ -5,9 +5,9 @@ from src.enums import MenuType
 from src.level_config import pre_made
 from src.level_config import level_attributes as lvl_attr
 from src.ui.menu import Menu, MenuGrid, MenuItem
-from src.game_states.play_co_op import PlayCoOp
-from src.game_states.play_deathmatch import PlayDeathMatch
-from src.game_states.play_score_battle import PlayScoreBattle
+from src.game_states.play_state.play_co_op import PlayCoOp
+from src.game_states.play_state.play_deathmatch import PlayDeathMatch
+from src.game_states.play_state.play_score_battle import PlayScoreBattle
 import src.ui.ui_config as ui_cfg
 import src.ui.ui_elements as ui
 from src.ui.ui_config import MENU_STYLE

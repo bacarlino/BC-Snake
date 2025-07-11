@@ -1,5 +1,5 @@
 from src.enums import MenuType
-from src.game_states.play_state import PlayState
+from src.game_states.play_state.play_state import PlayState
 from src.game_states.title_menu.title_menus import build_title_menus
 from src.level_config.level_config_controller import LevelConfigController
 from src.stack_manager import StackManager
