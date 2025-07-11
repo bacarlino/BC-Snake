@@ -1,4 +1,4 @@
-from enum import Enum, StrEnum, auto
+from enum import Enum, IntEnum, StrEnum, auto
 
 
 class Move(Enum):
@@ -44,3 +44,8 @@ class LvlAttrEnum(StrEnum):
     FRUIT_QTY = "fruit_qty"
     GROWTH_RATE = "growth_rate"
     BORDER_COLOR = "border_color"
+
+
+class SnakeID(Enum):
+    ONE = auto()
+    TWO = auto()

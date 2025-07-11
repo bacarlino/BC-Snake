@@ -1,3 +1,4 @@
+from src.enums import SnakeID
 from src.ui.ui_config import PINK, PURPLE
 from src.controls import ARROW, WSAD
 from src.snake import Snake
@@ -9,6 +10,7 @@ def create_one_player_snakes(window_size, level_config):
     return [Snake(
         window_size=window_size,
         controls=[WSAD, ARROW],
+        id=SnakeID.ONE,
         cell_size=level_config.cell_size,
         position=grid_center,
         color=PINK, 
@@ -23,6 +25,7 @@ def create_two_player_snakes(window_size, level_config):
         Snake(
             window_size=window_size, 
             controls=[ARROW],
+            id=SnakeID.ONE,
             cell_size=level_config.cell_size, 
             position=(grid_center[0] * 1.5, grid_center[1]),           
             direction=(0, 1),
@@ -34,6 +37,7 @@ def create_two_player_snakes(window_size, level_config):
         Snake(
             window_size=window_size, 
             controls=[WSAD],
+            id=SnakeID.TWO,
             cell_size=level_config.cell_size, 
             position=(grid_center[0] * .5, grid_center[1]),
             direction=(0, -1),

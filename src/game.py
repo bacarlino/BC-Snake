@@ -53,6 +53,9 @@ class Game:
     def push_game_state(self, state):
         self.game_state.push(state)
 
+    def get_previous_state(self):
+        return self.game_state.peek_below()
+
     def push_game_over(self):
         self.game_state.push(GameOver(self))
 
@@ -60,12 +63,10 @@ class Game:
         self.game_state.push(Pause(self))
 
     def load_level(self, level):
-        print("load_level; ", level)
         self.level_config = level
         self.update_display_size()
     
     def start_game(self):
-        print("start_game with: ", self.level_config)
         self.game_state.clear()
         self.game_state.push(self.saved_play_state(self, self.level_config))
         self.game_state.push(Start(self))

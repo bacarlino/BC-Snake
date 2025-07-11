@@ -11,7 +11,7 @@ import src.ui.ui_helpers as ui
 class Snake:
 
     def __init__(
-        self, window_size, controls, cell_size=1, position=(0, 0), 
+        self, window_size, controls, id, cell_size=1, position=(0, 0), 
         direction=(1, 0), initial_speed=5, acceleration=0, color=ui.rand_rgb(),
         length=5,
     ):
@@ -20,6 +20,7 @@ class Snake:
         self.window_w, self.window_h = window_size
         self.cell_size = cell_size
         self.display_size = (self.cell_size - 4, self.cell_size - 4)
+        self.id = id
         
         # MOVING / POSITIONING
         self.initial_position = position

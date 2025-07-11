@@ -32,17 +32,12 @@ class GameOver(GameState):
             self.game.reset_game()
             return
 
-        time_now = time.perf_counter()
-        for snake in self.game.game_state.peek_below().snakes:
-            if snake.dead:
-                snake.update(time_now)
-
+        self.game.get_previous_state().game_over_update()
         self.reset_command_flags()
 
     def draw(self, window):
         self.game_over_banner.draw(window)
         self.press_space_banner.draw(window)
-
 
     def reset_snakes(self):
         for snake in self.game.game_state.peek_below().snakes:
