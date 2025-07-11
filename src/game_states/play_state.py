@@ -21,6 +21,7 @@ class PlayState(GameState):
         self.level_config = level_config
         self.match_over = False
         
+        # Game World
         self.border = None
         self.setup_border()
         
@@ -52,11 +53,12 @@ class PlayState(GameState):
 
     def update(self):
         if self.update_commands(): return
-        self.update_snakes()
-        print("snake.score: ", self.snakes[0].score)
-        self.score_banner.update(self.snakes[0].score)
+        self.update_snakes() # GameWorld
+        self.update_score_banner()
         self.reset_command_flags()
 
+
+    # PlayStateUI
     def draw(self, window):
         if self.border:
             self.border.draw(window)
@@ -72,6 +74,8 @@ class PlayState(GameState):
             return True
         return False
     
+
+    # GameWorld
     def update_snakes(self):
         time_now = time.perf_counter()
         self.match_over = False
@@ -84,11 +88,15 @@ class PlayState(GameState):
 
         self.check_game_over()
 
+    def update_score_banner(self):
+        self.score_banner.update(self.snakes[0].score)
+
+    # GameWorld
     def other_snakes(self, snake):
         return [
             other for other in self.snakes if other is not snake
         ]
-    
+    # GameWorld
     def handle_snake_collision(self, snake):
         for snake in self.snakes:
             if snake.collision_detected:

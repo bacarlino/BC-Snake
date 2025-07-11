@@ -26,7 +26,7 @@ class PlayDeathMatch(PlayState):
         self.reset_command_flags()
 
     def update_score_banner(self):
-        pass
+        self.score_banner.update((self.snakes[0].score, self.snakes[1].score))
 
     def draw_score(self, window):
         self.score_banner.draw(window)
