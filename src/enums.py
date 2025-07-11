@@ -43,3 +43,4 @@ class LvlAttrEnum(StrEnum):
     ACCELERATION = "acceleration"
     FRUIT_QTY = "fruit_qty"
     GROWTH_RATE = "growth_rate"
+    BORDER_COLOR = "border_color"

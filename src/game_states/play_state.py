@@ -2,11 +2,13 @@ import time
 
 import pygame
 
+from src.ui.border import Border
 from src.ui.ui_config import BORDER_RADIUS, GREEN
 from src.enums import Play
 from src.factories import create_one_player_snakes
 from src.game_states.game_state import GameState
-import src.ui.ui_elements as ui
+from src.ui.ui_config import PINK, PURPLE
+from src.ui.ui_elements import ScoreBanner
 from src.utils import get_rand_coord
 
 
@@ -15,17 +17,21 @@ class PlayState(GameState):
 
     def __init__(self, game, level_config):
         super().__init__(game)
+        
         self.level_config = level_config
         self.match_over = False
         
         self.border = None
-        self.snakes = None
-        self.fruits = None
-        
         self.setup_border()
+        
+        self.snakes = None
         self.setup_snakes()
         self.set_snakes_moving()
-        self.setup_fruit()
+        
+        self.fruits = []
+        self.add_fruit(self.level_config.fruit_qty)
+
+        self.score_banner = ScoreBanner(str(self.snakes[0].score))
 
         self.commands = {
             Play.START: False, 
@@ -47,10 +53,13 @@ class PlayState(GameState):
     def update(self):
         if self.update_commands(): return
         self.update_snakes()
+        print("snake.score: ", self.snakes[0].score)
+        self.score_banner.update(self.snakes[0].score)
         self.reset_command_flags()
 
     def draw(self, window):
-        self.draw_border(window)
+        if self.border:
+            self.border.draw(window)
         self.draw_fruit(window)
         self.draw_snakes(window)
         self.draw_score(window)
@@ -92,13 +101,10 @@ class PlayState(GameState):
 
     def draw_border(self, window):
         if self.level_config.has_border:
-            ui.draw_border(window, self.border, self.level_config.cell_size)
+            self.border.draw(window)
 
     def draw_score(self, window):
-        score_surf, score_rect = ui.create_score_banner(
-            self.snakes[0].score
-        )
-        window.blit(score_surf, score_rect)
+        self.score_banner.draw(window)
 
     def draw_fruit(self, window):
         for fruit in self.fruits:
@@ -119,12 +125,11 @@ class PlayState(GameState):
 
     def setup_border(self):
         if self.level_config.has_border:
-            self.border = ui.create_border(self.level_config.cell_size)
+            self.border = Border(self.game.window_size, self.level_config.cell_size, self.level_config.border_color)
         else:
             self.border = None
 
     def setup_fruit(self):
-        self.fruits = []
         self.add_fruit(self.level_config.fruit_qty)
           
     def add_fruit(self, n=1):
@@ -134,16 +139,16 @@ class PlayState(GameState):
                 coord = get_rand_coord(
                     self.game.window_size, self.level_config.cell_size
                 )
-                if self.border and coord in self.border: continue
+                if self.border and coord in self.border.coord_list: continue
                
-                snake_segments = [
-                    segment for snake in self.snakes for segment in snake.body
-                ]
-                if coord in snake_segments: 
+                if coord in self.snake_segment_list(): 
                     continue
 
                 placed = True
                 self.fruits.append(coord)
+
+    def snake_segment_list(self):
+        return [segment for snake in self.snakes for segment in snake.body]
 
     def handle_fruit_collision(self, snake):
         if snake.head_position in self.fruits:

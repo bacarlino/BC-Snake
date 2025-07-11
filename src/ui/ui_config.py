@@ -1,7 +1,7 @@
 import pygame
 
 from src.app_config import WINDOW_W, WINDOW_H
-from src.ui.ui_elements import get_pixelfont
+from src.ui.ui_helpers import get_pixelfont
 
 
 CENTER = (WINDOW_W // 2, WINDOW_H // 2)

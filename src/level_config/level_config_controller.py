@@ -1,5 +1,6 @@
 from src.level_config.level_config import LevelConfig
 from src.level_config import level_attributes as lvl_attr
+from src.ui.ui_helpers import rand_rgb
 
 
 class LevelConfigController:
@@ -11,7 +12,6 @@ class LevelConfigController:
         self.cell_size = lvl_attr.CELL_SIZE_MEDIUM
         self.fruit_qty = lvl_attr.FRUIT_QTY_LOW
         self.growth_rate = lvl_attr.GROWTH_RATE_LOW
-        (self.has_border.value)
 
 
     def get_level_config(self):
@@ -21,5 +21,6 @@ class LevelConfigController:
             acceleration=self.acceleration.value,
             cell_size=self.cell_size.value,
             fruit_qty=self.fruit_qty.value,
-            growth_rate=self.growth_rate.value      
+            growth_rate=self.growth_rate.value,
+            border_color=rand_rgb() 
         )

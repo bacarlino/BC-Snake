@@ -1,23 +1,28 @@
 from src.factories import create_two_player_snakes
 from src.game_states.play_state import PlayState
+from src.ui.ui_elements import ScoreBanner
 
-import src.ui.ui_elements as ui
 
 
 class PlayCoOp(PlayState):
 
     def __init__(self, game, level_config):
         super().__init__(game, level_config)
+        score = self.snakes[0].score + self.snakes[1].score
+        self.score_banner = ScoreBanner(score)
 
     def check_game_over(self):
         if all([snake.dead for snake in self.snakes]):
             self.game.push_game_over()
 
+    def update_score_banner(self, score):
+        self.score_banner.update(score)
+        
+    def get_score(self):
+        return self.snakes[0].score + self.snakes[1].score
+
     def draw_score(self, window):
-        score_surf, score_rect = ui.create_score_banner(
-            self.snakes[0].score + self.snakes[1].score
-        )
-        window.blit(score_surf, score_rect)
+        self.score_banner.draw(window)
 
     def setup_snakes(self):
         self.snakes = create_two_player_snakes(self.game.window_size, self.level_config)

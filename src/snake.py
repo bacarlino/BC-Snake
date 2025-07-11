@@ -5,7 +5,7 @@ import pygame
 from src.ui.ui_config import BORDER_RADIUS
 from src.enums import Move
 from src.sounds import EAT_FRUIT_SFX, COLLISION_SFX
-import src.ui.ui_elements as ui
+import src.ui.ui_helpers as ui
 
 
 class Snake:
@@ -128,7 +128,7 @@ class Snake:
                 self.collision_detected = True
                 return
             
-            if border and (new_x, new_y) in border:
+            if border and (new_x, new_y) in border.coord_list:
                 self.collision_detected = True
                 return
             

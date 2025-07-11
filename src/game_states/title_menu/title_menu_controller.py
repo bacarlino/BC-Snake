@@ -60,9 +60,11 @@ class TitleMenuController:
     def custom_level_menu(self):
         self.push_menu(self.menus[MenuType.CUSTOM])
 
+    def push_custom_attr_menu(self, menu):
+        self.push_menu(menu)
+
     def set_lvl_attr(self, lvl_attr_cfg):
         self.close_top_menu()
-        print("set_lvl_attr: ", lvl_attr_cfg)
         setattr(self.level_config, lvl_attr_cfg.attr, lvl_attr_cfg)
         self.current().update_sub_text(lvl_attr_cfg.name)
 

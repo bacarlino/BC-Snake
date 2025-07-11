@@ -112,34 +112,34 @@ def build_custom_menu(controller):
         [
             MenuItem(
                 "Cell\nSize",
-                lambda: controller.menu_stack.push(controller.menus[MenuType.CELL_SIZE]),
+                lambda: controller.push_custom_attr_menu(controller.menus[MenuType.CELL_SIZE]),
                 lvl_attr.CELL_SIZE_MEDIUM.name
             ),
             MenuItem(
                 "Start\nSpeed",
-                lambda: controller.menu_stack.push(controller.menus[MenuType.START_SPEED]),
+                lambda: controller.push_custom_attr_menu(controller.menus[MenuType.START_SPEED]),
                 lvl_attr.START_SPEED_SLOW.name
             ),
             MenuItem(
                 "Speed\nUp", 
-                lambda: controller.menu_stack.push(controller.menus[MenuType.ACCELERATION]),
+                lambda: controller.push_custom_attr_menu(controller.menus[MenuType.ACCELERATION]),
                 lvl_attr.ACCELERATION_NONE.name
             ),
         ],
         [
              MenuItem(
                 "Border\nWall", 
-                lambda: controller.menu_stack.push(controller.menus[MenuType.BORDER]),
+                lambda: controller.push_custom_attr_menu(controller.menus[MenuType.BORDER]),
                 lvl_attr.BORDER_ON.name
             ),
             MenuItem(
                 "Fruit\nQuantity", 
-                lambda: controller.menu_stack.push(controller.menus[MenuType.FRUIT_QTY]),
+                lambda: controller.push_custom_attr_menu(controller.menus[MenuType.FRUIT_QTY]),
                 lvl_attr.FRUIT_QTY_LOW.name
             ),
             MenuItem(
                 "Growth\nRate",
-                lambda: controller.menu_stack.push(controller.menus[MenuType.GROWTH_RATE]),
+                lambda: controller.push_custom_attr_menu(controller.menus[MenuType.GROWTH_RATE]),
                 lvl_attr.GROWTH_RATE_LOW.name
             ),
 

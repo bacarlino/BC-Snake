@@ -9,3 +9,4 @@ class LevelConfig:
     cell_size: int
     fruit_qty: int
     growth_rate: int
+    border_color: tuple
